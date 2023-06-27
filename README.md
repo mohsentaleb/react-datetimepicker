@@ -1,6 +1,6 @@
 # 📦 React Tailwindcss Date-Time Picker
 
-This is a feature rich React date-time picker component built with React 18+ and [Vitejs](https://vitejs.dev/) which supports:
+This is a feature rich React date-time picker component built with **React 18** and [Vitejs](https://vitejs.dev/) which supports:
 
     1. Selecting a date range from calendar
     2. Selecting time for both start and end of the range
