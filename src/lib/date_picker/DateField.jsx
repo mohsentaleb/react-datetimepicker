@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { darkTheme, lightTheme } from '../utils/StyleUtils';
 
-import { ReactComponent as CalendarIcon } from '../icons/calendar.svg';
+import CalendarIcon from '../icons/calendar.svg?react';
 import clsx from 'clsx';
 
 class DateField extends React.Component {

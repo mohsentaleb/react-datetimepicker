@@ -5,7 +5,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import { generateMinutes } from '../utils/TimeFunctionUtils';
 import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
-import { ReactComponent as TimeIcon } from '../icons/clock.svg';
+import TimeIcon from '../icons/clock.svg?react';
 class TimeField extends React.Component {
   constructor(props) {
     super(props);

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
-import { ReactComponent as ChevronRightIcon } from '../icons/chevron-right.svg';
-import { ReactComponent as ChevronLeftIcon } from '../icons/chevron-left.svg';
+import ChevronRightIcon from '../icons/chevron-right.svg?react';
+import ChevronLeftIcon from '../icons/chevron-left.svg?react';
 
 class MonthYearSelector extends React.Component {
   constructor(props) {
