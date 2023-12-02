@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import MonthYearSelector from './MonthYearSelector';
 import CalendarHeader from './CalendarHeader';
 import CalendarRows from './CalendarRows';
@@ -11,32 +9,56 @@ import {
   getFourtyTwoDays,
 } from '../utils/TimeFunctionUtils';
 
-class Calendar extends React.Component {
-  constructor(props) {
+import type { Moment } from 'moment-timezone';
+import type { Locale, Mode, Style } from '../types';
+import type { BaseSyntheticEvent } from 'react';
+
+interface Props {
+  date: Moment;
+  mode: Mode;
+  otherDate: Moment;
+  maxDate?: Moment;
+  dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
+  keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
+  focusOnCallback: (date: Moment | boolean) => void;
+  focusDate: boolean | Moment;
+  descendingYears?: boolean;
+  years?: [number, number];
+  pastSearchFriendly?: boolean;
+  smartMode?: boolean;
+  cellFocusedCallback: (date: Moment) => void;
+  local: Locale;
+  style?: Style;
+  darkMode?: boolean;
+}
+
+interface State {
+  month: number;
+  year: number;
+}
+
+export default class Calendar extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       month: 0,
       year: 0,
     };
-
-    this.changeMonthCallback = this.changeMonthCallback.bind(this);
-    this.changeYearCallback = this.changeYearCallback.bind(this);
-    this.changeMonthArrowsCallback = this.changeMonthArrowsCallback.bind(this);
   }
 
   componentDidMount() {
     this.updateMonthYear();
   }
 
-  componentDidUpdate(previousProps) {
+  componentDidUpdate(previousProps: Props) {
     let isDifferentMomentObject =
-      !previousProps.date.isSame(this.props.date) ||
-      !previousProps.otherDate.isSame(this.props.otherDate);
+      !previousProps.date?.isSame(this.props.date) ||
+      !previousProps.otherDate?.isSame(this.props.otherDate);
     let isDifferentTime =
-      this.props.date.format('DD-MM-YYYY HH:mm') !==
-        previousProps.date.format('DD-MM-YYYY HH:mm') ||
-      this.props.otherDate.format('DD-MM-YYYY HH:mm') !==
-        previousProps.otherDate.format('DD-MM-YYYY HH:mm');
+      this.props.date?.format('DD-MM-YYYY HH:mm') !==
+        previousProps.date?.format('DD-MM-YYYY HH:mm') ||
+      this.props.otherDate?.format('DD-MM-YYYY HH:mm') !==
+        previousProps.otherDate?.format('DD-MM-YYYY HH:mm');
     if (isDifferentMomentObject || isDifferentTime) {
       this.updateMonthYear();
     }
@@ -63,7 +85,7 @@ class Calendar extends React.Component {
     });
   }
 
-  createMonths(local) {
+  createMonths(local: Locale) {
     if (local && local.months) {
       return local.months;
     }
@@ -84,20 +106,23 @@ class Calendar extends React.Component {
     return months;
   }
 
-  changeMonthCallback(event) {
+  changeMonthCallback = (event: BaseSyntheticEvent) => {
     for (let i = 0; i < event.target.length; i++) {
       if (event.target[i].value === event.target.value) {
         this.setState({ month: i });
       }
     }
-  }
+  };
 
-  changeMonthArrowsCallback(isPreviousChange, isNextChange) {
+  changeMonthArrowsCallback = (
+    isPreviousChange: boolean,
+    isNextChange: boolean
+  ) => {
     let years = createYears(this.props.years, this.props.descendingYears);
-    let monthLocal = parseInt(this.state.month);
-    let yearLocal = parseInt(this.state.year);
+    let monthLocal = this.state.month;
+    let yearLocal = this.state.year;
 
-    let newMonthYear;
+    let newMonthYear = { monthLocal: 0, yearLocal: 0 };
     if (isPreviousChange) {
       newMonthYear = this.getPreviousMonth(monthLocal, yearLocal, years);
     }
@@ -109,11 +134,11 @@ class Calendar extends React.Component {
       year: newMonthYear.yearLocal,
       month: newMonthYear.monthLocal,
     });
-  }
+  };
 
-  getPreviousMonth(monthLocal, yearLocal, years) {
+  getPreviousMonth(monthLocal: number, yearLocal: number, years: number[]) {
     let isStartOfMonth = monthLocal === 0;
-    let isFirstYear = parseInt(yearLocal) === years[0];
+    let isFirstYear = yearLocal === years[0];
 
     if (!(isStartOfMonth && isFirstYear)) {
       if (monthLocal === 0) {
@@ -126,9 +151,9 @@ class Calendar extends React.Component {
     return { monthLocal, yearLocal };
   }
 
-  getNextMonth(monthLocal, yearLocal, years) {
+  getNextMonth(monthLocal: number, yearLocal: number, years: number[]) {
     let isEndOfMonth = monthLocal === 11;
-    let isLastYear = parseInt(yearLocal) === years[years.length - 1];
+    let isLastYear = yearLocal === years[years.length - 1];
     if (!(isEndOfMonth && isLastYear)) {
       if (monthLocal === 11) {
         monthLocal = 0;
@@ -140,9 +165,9 @@ class Calendar extends React.Component {
     return { monthLocal, yearLocal };
   }
 
-  changeYearCallback(event) {
+  changeYearCallback = (event: BaseSyntheticEvent) => {
     this.setState({ year: parseInt(event.target.value) });
-  }
+  };
 
   render() {
     let months = this.createMonths(this.props.local);
@@ -155,7 +180,10 @@ class Calendar extends React.Component {
       }
       if (this.props.local.sundayFirst) {
         sundayFirst = true;
-        headers.unshift(headers.pop());
+        const lastDay = headers.pop();
+        if (lastDay !== undefined) {
+          headers = [lastDay, ...headers];
+        }
       }
     }
 
@@ -199,23 +227,3 @@ class Calendar extends React.Component {
     );
   }
 }
-
-Calendar.propTypes = {
-  date: momentPropTypes.momentObj,
-  mode: PropTypes.string.isRequired,
-  otherDate: momentPropTypes.momentObj,
-  maxDate: momentPropTypes.momentObj,
-  dateSelectedNoTimeCallback: PropTypes.func.isRequired,
-  keyboardCellCallback: PropTypes.func.isRequired,
-  focusOnCallback: PropTypes.func.isRequired,
-  focusDate: PropTypes.any.isRequired,
-  descendingYears: PropTypes.bool,
-  years: PropTypes.array,
-  pastSearchFriendly: PropTypes.bool,
-  smartMode: PropTypes.bool,
-  cellFocusedCallback: PropTypes.func.isRequired,
-  local: PropTypes.object,
-  style: PropTypes.object,
-  darkMode: PropTypes.bool,
-};
-export default Calendar;

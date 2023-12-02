@@ -6,6 +6,7 @@
     "dist"
   ],
   "main": "./dist/react-tailwindcss-datetimepicker.js",
+  "types": "./dist/index.d.ts",
   "module": "./dist/react-tailwindcss-datetimepicker.js",
   "exports": {
     ".": {
@@ -15,7 +16,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && build:types",
+    "build:types": "tsc -p config/tsconfig.types.json",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

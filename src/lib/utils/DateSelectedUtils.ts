@@ -1,20 +1,26 @@
 import moment from 'moment';
+import type { Moment } from 'moment';
 
 export const datePicked = (
-  startDate,
-  endDate,
-  newDate,
-  startMode,
-  smartMode
+  startDate: Moment,
+  endDate: Moment,
+  newDate: Moment,
+  startMode: boolean,
+  smartMode?: boolean
 ) => {
   if (startMode) {
-    return newDateStartMode(newDate, endDate, smartMode, startDate);
+    return newDateStartMode(newDate, endDate, startDate, smartMode);
   } else {
-    return newDateEndMode(newDate, startDate, smartMode, endDate);
+    return newDateEndMode(newDate, startDate, endDate, smartMode);
   }
 };
 
-const newDateStartMode = (newDate, endDate, smartMode, startDate) => {
+const newDateStartMode = (
+  newDate: Moment,
+  endDate: Moment,
+  startDate: Moment,
+  smartMode?: boolean
+) => {
   // Create a new moment object which combines the new date and the original start date as newDate
   // doesnt contain time info which is important to determining equality
   let newDateWithTime = createNewDateWithTime(
@@ -34,7 +40,12 @@ const newDateStartMode = (newDate, endDate, smartMode, startDate) => {
   }
 };
 
-const newDateEndMode = (newDate, startDate, smartMode, endDate) => {
+const newDateEndMode = (
+  newDate: Moment,
+  startDate: Moment,
+  endDate: Moment,
+  smartMode?: boolean
+) => {
   // Create a new moment object which combines the new date and the original end date as newDate
   // doesnt contain time info which is important to determining equality
   let newDateWithTime = createNewDateWithTime(
@@ -54,7 +65,12 @@ const newDateEndMode = (newDate, startDate, smartMode, endDate) => {
   }
 };
 
-const createNewDateWithTime = (newDate, hour, minute, second) => {
+const createNewDateWithTime = (
+  newDate: Moment,
+  hour: number,
+  minute: number,
+  second: number
+) => {
   let newDateTmp = [newDate.year(), newDate.month(), newDate.date()];
   let newDateWithTime = moment(newDateTmp);
   newDateWithTime.hour(hour);
@@ -63,14 +79,18 @@ const createNewDateWithTime = (newDate, hour, minute, second) => {
   return newDateWithTime;
 };
 
-const returnDateObject = (startDate, endDate) => {
-  let returnValues = {};
-  returnValues.startDate = startDate;
-  returnValues.endDate = endDate;
-  return returnValues;
+const returnDateObject = (startDate: Moment, endDate: Moment) => {
+  return {
+    startDate,
+    endDate,
+  };
 };
 
-export const pastMaxDate = (currentDate, maxDate, minuteMode) => {
+export const pastMaxDate = (
+  currentDate: Moment,
+  maxDate?: Moment,
+  minuteMode?: boolean
+) => {
   if (!maxDate) {
     return false;
   }

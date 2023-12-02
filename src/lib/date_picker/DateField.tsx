@@ -1,37 +1,39 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/// <reference types="vite-plugin-svgr/client" />
+import React, { BaseSyntheticEvent } from 'react';
 import { darkTheme, lightTheme } from '../utils/StyleUtils';
 
 import CalendarIcon from '../icons/calendar.svg?react';
 import clsx from 'clsx';
+import { Mode } from '../types';
 
-class DateField extends React.Component {
-  constructor(props) {
-    super(props);
+interface Props {
+  changeSelectingModeCallback: (selectingModeFromParam: boolean) => void;
+  mode: Mode;
+  dateLabel: string;
+  dateTextFieldCallback: (mode: Mode) => void;
+  onChangeDateTextHandlerCallback: (newValue: string, mode: Mode) => void;
+  darkMode?: boolean;
+}
 
-    this.onChangeDateTextHandler = this.onChangeDateTextHandler.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.onClick = this.onClick.bind(this);
-  }
-
-  onChangeDateTextHandler(event) {
+export default class DateField extends React.Component<Props> {
+  onChangeDateTextHandler = (event: BaseSyntheticEvent) => {
     this.props.onChangeDateTextHandlerCallback(
       event.target.value,
       this.props.mode
     );
-  }
+  };
 
-  onBlur() {
+  onBlur = () => {
     this.props.dateTextFieldCallback(this.props.mode);
-  }
+  };
 
-  onClick() {
+  onClick = () => {
     if (this.props.mode === 'start') {
       this.props.changeSelectingModeCallback(true);
     } else {
       this.props.changeSelectingModeCallback(false);
     }
-  }
+  };
 
   render() {
     let theme = this.props.darkMode ? darkTheme : lightTheme;
@@ -58,13 +60,3 @@ class DateField extends React.Component {
     );
   }
 }
-
-DateField.propTypes = {
-  changeSelectingModeCallback: PropTypes.func.isRequired,
-  mode: PropTypes.string.isRequired,
-  dateLabel: PropTypes.string.isRequired,
-  dateTextFieldCallback: PropTypes.func.isRequired,
-  onChangeDateTextHandlerCallback: PropTypes.func.isRequired,
-  darkMode: PropTypes.bool,
-};
-export default DateField;

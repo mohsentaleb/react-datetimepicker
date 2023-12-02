@@ -1,12 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
 import ChevronRightIcon from '../icons/chevron-right.svg?react';
 import ChevronLeftIcon from '../icons/chevron-left.svg?react';
+import { Mode } from '../types';
+import type { BaseSyntheticEvent } from 'react';
 
-class MonthYearSelector extends React.Component {
-  constructor(props) {
+interface Props {
+  months: string[];
+  years: number[];
+  month: number;
+  year: number;
+  changeMonthCallback: (event: BaseSyntheticEvent) => void;
+  changeYearCallback: (event: BaseSyntheticEvent) => void;
+  changeMonthArrowsCallback: (
+    isPreviousChange: boolean,
+    isNextChange: boolean
+  ) => void;
+  darkMode?: boolean;
+  mode: Mode;
+}
+
+interface State {
+  monthFocus: boolean;
+  yearFocus: boolean;
+}
+
+export default class MonthYearSelector extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       monthFocus: false,
@@ -19,11 +40,11 @@ class MonthYearSelector extends React.Component {
     this.yearBlur = this.yearBlur.bind(this);
   }
 
-  createCalendarMonths(months) {
+  createCalendarMonths(months: string[]) {
     return this.mapToOption(months);
   }
 
-  createYears(years) {
+  createYears(years: number[]) {
     return this.mapToOption(years);
   }
 
@@ -43,7 +64,7 @@ class MonthYearSelector extends React.Component {
     this.setState({ yearFocus: false });
   }
 
-  mapToOption(variableArray) {
+  mapToOption(variableArray: number[] | string[]) {
     return variableArray.map(function (varInstance, i) {
       return <option key={i}>{varInstance}</option>;
     });
@@ -108,16 +129,3 @@ class MonthYearSelector extends React.Component {
     );
   }
 }
-
-MonthYearSelector.propTypes = {
-  months: PropTypes.array.isRequired,
-  years: PropTypes.array.isRequired,
-  month: PropTypes.number.isRequired,
-  year: PropTypes.number.isRequired,
-  changeMonthCallback: PropTypes.func.isRequired,
-  changeYearCallback: PropTypes.func.isRequired,
-  changeMonthArrowsCallback: PropTypes.func.isRequired,
-  darkMode: PropTypes.bool,
-  mode: PropTypes.string.isRequired,
-};
-export default MonthYearSelector;

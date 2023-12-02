@@ -1,9 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import type { PresetDateRanges } from '../types';
 
-class RangeButton extends React.Component {
-  constructor(props) {
+interface Props {
+  selectedRange: number;
+  rangeSelectedCallback: (index: number, value: keyof PresetDateRanges) => void;
+  viewingIndexChangeCallback: (newIndex: number) => void;
+  setFocusedCallback: (index: number, focusedInput: boolean) => void;
+  index: number;
+  viewingIndex: number;
+  label: string;
+  focused: boolean[];
+  style?: React.CSSProperties;
+}
+
+interface State {
+  focused: boolean;
+}
+
+export default class RangeButton extends React.Component<Props, State> {
+  button: HTMLButtonElement | null = null;
+
+  constructor(props: Props) {
     super(props);
 
     this.onFocus = this.onFocus.bind(this);
@@ -26,7 +44,7 @@ class RangeButton extends React.Component {
     // Then add an event listener for this button and set it as focused
     if (isComponentViewing && focusedOnARange) {
       document.addEventListener('keydown', this.keyDown, false);
-      this.button.focus();
+      this.button?.focus();
     }
   }
 
@@ -41,20 +59,20 @@ class RangeButton extends React.Component {
     document.removeEventListener('keydown', this.keyDown, false);
   }
 
-  keyDown(e) {
+  keyDown(e: KeyboardEvent) {
     let componentFocused = document.activeElement === this.button;
     // Up Key
-    if (e.keyCode === 38 && componentFocused) {
+    if (e.code === 'ArrowUp' && componentFocused) {
       e.preventDefault();
       this.props.viewingIndexChangeCallback(this.props.index - 1);
     }
     // Down Key
-    else if (e.keyCode === 40 && componentFocused) {
+    else if (e.code === 'ArrowDown' && componentFocused) {
       e.preventDefault();
       this.props.viewingIndexChangeCallback(this.props.index + 1);
     }
     // Space Bar and Enter
-    else if (e.keyCode === 32 || e.keyCode === 13) {
+    else if (e.code === 'Space' || e.code === 'Enter') {
       this.props.rangeSelectedCallback(this.props.index, this.props.label);
     }
   }
@@ -96,15 +114,3 @@ class RangeButton extends React.Component {
   }
 }
 
-RangeButton.propTypes = {
-  selectedRange: PropTypes.number.isRequired,
-  rangeSelectedCallback: PropTypes.func.isRequired,
-  viewingIndexChangeCallback: PropTypes.func.isRequired,
-  setFocusedCallback: PropTypes.func.isRequired,
-  index: PropTypes.number.isRequired,
-  viewingIndex: PropTypes.number.isRequired,
-  label: PropTypes.string.isRequired,
-  focused: PropTypes.array.isRequired,
-  style: PropTypes.object,
-};
-export default RangeButton;

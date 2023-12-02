@@ -1,4 +1,7 @@
-export const addFocusStyle = (focused, currentStyle) => {
+export const addFocusStyle = (
+  focused: boolean,
+  currentStyle: React.CSSProperties
+) => {
   let style = JSON.parse(JSON.stringify(currentStyle));
   if (focused) {
     style.outline = 'cornflowerblue';

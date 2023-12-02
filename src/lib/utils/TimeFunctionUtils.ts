@@ -1,5 +1,6 @@
-import moment from 'moment';
+import moment, { type Moment } from 'moment';
 import { ModeEnum } from '../DateTimeRangePicker';
+import { Mode } from '../types';
 
 export const generateHours = () => {
   let hours = [];
@@ -22,12 +23,13 @@ export const generateMinutes = () => {
 };
 
 function workOutMonthYear(
-  date,
-  secondDate,
-  mode,
-  pastSearchFriendly,
-  smartMode
+  date: Moment,
+  secondDate: Moment,
+  mode?: Mode,
+  pastSearchFriendly?: boolean,
+  smartMode?: boolean
 ) {
+  console.log(date, secondDate, mode, pastSearchFriendly, smartMode);
   // If both months are different months then
   // allow normal display in the calendar
   let selectedMonth = date.month();
@@ -66,11 +68,11 @@ function workOutMonthYear(
 }
 
 export const getMonth = (
-  date,
-  secondDate,
-  mode,
-  pastSearchFriendly,
-  smartMode
+  date: Moment,
+  secondDate: Moment,
+  mode?: Mode,
+  pastSearchFriendly?: boolean,
+  smartMode?: boolean
 ) =>
   workOutMonthYear(
     date,
@@ -81,11 +83,11 @@ export const getMonth = (
   ).month();
 
 export const getYear = (
-  date,
-  secondDate,
-  mode,
-  pastSearchFriendly,
-  smartMode
+  date: Moment,
+  secondDate: Moment,
+  mode?: Mode,
+  pastSearchFriendly?: boolean,
+  smartMode?: boolean
 ) =>
   workOutMonthYear(
     date,
@@ -95,7 +97,7 @@ export const getYear = (
     smartMode
   ).year();
 
-const getDaysBeforeStartMonday = (firstDayOfMonth) => {
+const getDaysBeforeStartMonday = (firstDayOfMonth: Moment) => {
   let fourtyTwoDays = [];
   let dayBeforeFirstDayOfMonth = firstDayOfMonth.day() - 1; // We dont want to include the first day of the new month
   // Case whereby day before is a Saturday (6) and we require Saturday back to Monday for that week
@@ -125,7 +127,7 @@ const getDaysBeforeStartMonday = (firstDayOfMonth) => {
   return fourtyTwoDays;
 };
 
-const getDaysBeforeStartSunday = (firstDayOfMonth) => {
+const getDaysBeforeStartSunday = (firstDayOfMonth: Moment) => {
   let fourtyTwoDays = [];
   let dayBeforeFirstDayOfMonth = firstDayOfMonth.day() - 1; // We dont want to include the first day of the new month
 
@@ -148,7 +150,7 @@ const getDaysBeforeStartSunday = (firstDayOfMonth) => {
   return fourtyTwoDays;
 };
 
-const getDaysBeforeStart = (firstDayOfMonth, sundayFirst) => {
+const getDaysBeforeStart = (firstDayOfMonth: Moment, sundayFirst: boolean) => {
   if (!sundayFirst) {
     return getDaysBeforeStartMonday(firstDayOfMonth);
   } else {
@@ -156,7 +158,11 @@ const getDaysBeforeStart = (firstDayOfMonth, sundayFirst) => {
   }
 };
 
-export const getFourtyTwoDays = (initMonth, initYear, sundayFirst) => {
+export const getFourtyTwoDays = (
+  initMonth: number,
+  initYear: number,
+  sundayFirst: boolean
+) => {
   let fourtyTwoDays = [];
   let firstDayOfMonth = moment(new Date(initYear, initMonth, 1));
 
@@ -182,7 +188,12 @@ export const getFourtyTwoDays = (initMonth, initYear, sundayFirst) => {
   return fourtyTwoDays;
 };
 
-export const isInbetweenDates = (isStartDate, dayToFindOut, start, end) => {
+export const isInbetweenDates = (
+  isStartDate: boolean,
+  dayToFindOut: Moment,
+  start: Moment,
+  end?: Moment
+) => {
   let isInBetweenDates;
   if (isStartDate) {
     isInBetweenDates =
@@ -194,7 +205,12 @@ export const isInbetweenDates = (isStartDate, dayToFindOut, start, end) => {
   return isInBetweenDates;
 };
 
-export const isValidTimeChange = (mode, date, start, end) => {
+export const isValidTimeChange = (
+  mode: Mode,
+  date: Moment,
+  start: Moment,
+  end: Moment
+) => {
   let modeStartAndDateSameOrBeforeStart =
     mode === 'start' && date.isSameOrBefore(end);
   let modeEndAndDateSameOrAfterEnd =
@@ -226,7 +242,7 @@ export const inBetweenStyle = () => ({
   cursor: 'pointer',
 });
 
-export const normalCellStyle = (darkMode) => {
+export const normalCellStyle = (darkMode?: boolean) => {
   let color = darkMode ? 'white' : 'black';
   return {
     borderRadius: '0 0 0 0',
@@ -236,7 +252,7 @@ export const normalCellStyle = (darkMode) => {
   };
 };
 
-export const hoverCellStyle = (between, darkMode) => {
+export const hoverCellStyle = (between: boolean, darkMode?: boolean) => {
   let borderRadius = '4px 4px 4px 4px';
   let color = darkMode ? 'white' : 'black';
   let backgroundColor = darkMode ? 'rgb(53, 122, 189)' : '#eee';
@@ -252,7 +268,7 @@ export const hoverCellStyle = (between, darkMode) => {
   };
 };
 
-export const greyCellStyle = (darkMode) => {
+export const greyCellStyle = (darkMode?: boolean) => {
   let color = darkMode ? '#ffffff' : '#999';
   let backgroundColor = darkMode ? '#777777' : '#fff';
   let opacity = darkMode ? '0.5' : '0.25';
@@ -267,7 +283,7 @@ export const greyCellStyle = (darkMode) => {
   };
 };
 
-export const invalidStyle = (darkMode) => {
+export const invalidStyle = (darkMode?: boolean) => {
   let style = greyCellStyle(darkMode);
   style.cursor = 'not-allowed';
   return style;

@@ -1,14 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import RangeButton from './RangeButton';
-class Ranges extends React.Component {
-  constructor(props) {
+
+import type { PresetDateRanges, Style } from '../types';
+
+interface Props {
+  ranges: PresetDateRanges;
+  screenWidthToTheRight: number;
+  selectedRange: number;
+  rangeSelectedCallback: (index: number, value: keyof PresetDateRanges) => void;
+  style?: Style
+  noMobileMode?: boolean;
+  forceMobileMode?: boolean;
+}
+
+interface State {
+  viewingIndex: number;
+  focused: boolean[];
+}
+
+export default class Ranges extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     let focused = [];
-    let ranges = Object.keys(this.props.ranges).map(
-      (key) => this.props.ranges[key]
-    );
+    const ranges = Object.values(this.props.ranges);
+
     for (let i = 0; i < ranges.length; i++) {
       focused.push(false);
     }
@@ -23,7 +39,7 @@ class Ranges extends React.Component {
     this.setFocusedCallback = this.setFocusedCallback.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props !== prevProps) {
       if (this.props.selectedRange !== prevProps.selectedRange) {
         this.setState({
@@ -33,7 +49,7 @@ class Ranges extends React.Component {
     }
   }
 
-  viewingIndexChangeCallback(newIndex) {
+  viewingIndexChangeCallback(newIndex: number) {
     // Allow a new item selected to be made
     let length = this.state.focused.length;
     if (newIndex >= 0 && newIndex < length) {
@@ -43,7 +59,7 @@ class Ranges extends React.Component {
     }
   }
 
-  setFocusedCallback(index, focusedInput) {
+  setFocusedCallback(index: number, focusedInput: boolean) {
     // Set the focus value of indexed item, focusedInput is true or false
     let focused = this.state.focused;
     focused[index] = focusedInput;
@@ -61,7 +77,7 @@ class Ranges extends React.Component {
             key={i}
             index={i}
             label={range}
-            value={this.props.ranges[range]}
+            // value={this.props.ranges[range]}
             selectedRange={this.props.selectedRange}
             rangeSelectedCallback={this.props.rangeSelectedCallback}
             viewingIndex={this.state.viewingIndex}
@@ -75,14 +91,3 @@ class Ranges extends React.Component {
     );
   }
 }
-
-Ranges.propTypes = {
-  ranges: PropTypes.object.isRequired,
-  screenWidthToTheRight: PropTypes.number.isRequired,
-  selectedRange: PropTypes.number.isRequired,
-  rangeSelectedCallback: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  noMobileMode: PropTypes.bool,
-  forceMobileMode: PropTypes.bool,
-};
-export default Ranges;

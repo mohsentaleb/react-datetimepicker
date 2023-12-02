@@ -1,10 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import clsx from 'clsx';
 
-class ApplyCancelButtons extends React.Component {
-  constructor(props) {
+import type { Moment } from 'moment-timezone';
+import { Locale, Mode, Style } from '../types';
+
+interface Props {
+  local: Locale;
+  maxDate?: Moment;
+  applyCallback: () => void;
+  changeVisibleState: () => void;
+  autoApply?: boolean;
+  standalone?: boolean;
+}
+
+interface State {
+  hoverColourApply: string;
+  hoverColourCancel: string;
+  applyFocus: boolean;
+  cancelFocus: boolean;
+}
+
+export default class ApplyCancelButtons extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       hoverColourApply: '#5cb85c',
@@ -12,44 +29,41 @@ class ApplyCancelButtons extends React.Component {
       applyFocus: false,
       cancelFocus: false,
     };
-    this.bindToFunctions();
   }
 
-  bindToFunctions() {
-    this.cancelPressed = this.cancelPressed.bind(this);
-    this.applyPressed = this.applyPressed.bind(this);
-    this.applyOnKeyPress = this.applyOnKeyPress.bind(this);
-    this.cancelOnKeyPress = this.cancelOnKeyPress.bind(this);
-  }
-
-  cancelPressed() {
+  cancelPressed = () => {
     this.props.changeVisibleState();
-  }
+  };
 
-  applyPressed() {
+  applyPressed = () => {
     this.props.applyCallback();
-  }
+  };
 
-  isSpaceBarOrEnterPressed(e) {
-    if (e.keyCode === 32 || e.keyCode === 13) {
+  isSpaceBarOrEnterPressed(e: KeyboardEvent) {
+    if (e.key === ' ' || e.key === 'Enter') {
       return true;
     }
     return false;
   }
 
-  applyOnKeyPress(e) {
+  applyOnKeyPress = (e: KeyboardEvent) => {
     if (this.isSpaceBarOrEnterPressed(e)) {
       this.props.applyCallback();
     }
-  }
+  };
 
-  cancelOnKeyPress(e) {
+  cancelOnKeyPress = (e: KeyboardEvent) => {
     if (this.isSpaceBarOrEnterPressed(e)) {
       this.props.changeVisibleState();
     }
-  }
+  };
 
-  renderButton(className, onClick, onKeyDown, text) {
+  renderButton(
+    className: string,
+    onClick: (e: KeyboardEvent) => void,
+    onKeyDown: (e: KeyboardEvent) => void,
+    text: string
+  ) {
     return (
       <button
         className={className}
@@ -121,13 +135,3 @@ class ApplyCancelButtons extends React.Component {
     );
   }
 }
-
-ApplyCancelButtons.propTypes = {
-  local: PropTypes.object,
-  maxDate: momentPropTypes.momentObj,
-  applyCallback: PropTypes.func.isRequired,
-  changeVisibleState: PropTypes.func.isRequired,
-  autoApply: PropTypes.bool,
-  standalone: PropTypes.bool,
-};
-export default ApplyCancelButtons;

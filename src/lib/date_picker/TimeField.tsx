@@ -1,25 +1,33 @@
 import React from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import { generateMinutes } from '../utils/TimeFunctionUtils';
 import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
 import TimeIcon from '../icons/clock.svg?react';
-class TimeField extends React.Component {
-  constructor(props) {
+
+import type { Moment } from 'moment-timezone';
+import type { Meridiem, Mode } from '../types';
+import type { BaseSyntheticEvent } from 'react';
+
+interface Props {
+  timeChangeCallback: (newHour: number, newMinute: number, mode: Mode) => void;
+  mode: Mode;
+  date: Moment;
+  darkMode?: boolean;
+  twelveHoursClock?: boolean;
+}
+
+interface State {
+  hourFocus: boolean;
+  minuteFocus: boolean;
+}
+export default class TimeField extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       hourFocus: false,
       minuteFocus: false,
     };
-    this.handleHourChange = this.handleHourChange.bind(this);
-    this.handleMinuteChange = this.handleMinuteChange.bind(this);
-    this.handleMeridiemChange = this.handleMeridiemChange.bind(this);
-    this.hourFocus = this.hourFocus.bind(this);
-    this.minuteFocus = this.minuteFocus.bind(this);
-    this.hourBlur = this.hourBlur.bind(this);
-    this.minuteBlur = this.minuteBlur.bind(this);
   }
 
   generateHourSelectValues() {
@@ -64,35 +72,35 @@ class TimeField extends React.Component {
     return selectValues;
   }
 
-  convertHourUsingMeridiem(hour, meridiem) {
+  convertHourUsingMeridiem(hour: number, meridiem: Meridiem) {
     if (meridiem === 'pm' && hour !== 12) {
       return hour + 12;
     } else if (meridiem === 'am' && hour === 12) return 0;
     else return hour;
   }
 
-  handleHourChange(event) {
+  handleHourChange = (event: BaseSyntheticEvent) => {
     this.props.timeChangeCallback(
       this.props.twelveHoursClock
         ? this.convertHourUsingMeridiem(
             parseInt(event.target.value),
-            this.props.date.format('a')
+            this.props.date.format('a') as Meridiem
           )
         : parseInt(event.target.value),
       this.props.date.minute(),
       this.props.mode
     );
-  }
+  };
 
-  handleMinuteChange(event) {
+  handleMinuteChange = (event: BaseSyntheticEvent) => {
     this.props.timeChangeCallback(
       this.props.date.hour(),
       parseInt(event.target.value),
       this.props.mode
     );
-  }
+  };
 
-  handleMeridiemChange(event) {
+  handleMeridiemChange = (event: BaseSyntheticEvent) => {
     this.props.timeChangeCallback(
       this.convertHourUsingMeridiem(
         parseInt(this.props.date.format('h')),
@@ -101,25 +109,30 @@ class TimeField extends React.Component {
       this.props.date.minute(),
       this.props.mode
     );
-  }
+  };
 
-  hourFocus() {
+  hourFocus = () => {
     this.setState({ hourFocus: true });
-  }
+  };
 
-  hourBlur() {
+  hourBlur = () => {
     this.setState({ hourFocus: false });
-  }
+  };
 
-  minuteFocus() {
+  minuteFocus = () => {
     this.setState({ minuteFocus: true });
-  }
+  };
 
-  minuteBlur() {
+  minuteBlur = () => {
     this.setState({ minuteFocus: false });
-  }
+  };
 
-  renderSelectField(valueInput, onChangeInput, optionsInput, id) {
+  renderSelectField(
+    valueInput: number | string,
+    onChangeInput: (event: BaseSyntheticEvent) => void,
+    optionsInput: JSX.Element[],
+    id: string
+  ) {
     let theme = this.props.darkMode ? darkTheme : lightTheme;
     return (
       <select
@@ -193,12 +206,3 @@ class TimeField extends React.Component {
     );
   }
 }
-
-TimeField.propTypes = {
-  timeChangeCallback: PropTypes.func.isRequired,
-  mode: PropTypes.string.isRequired,
-  date: momentPropTypes.momentObj,
-  darkMode: PropTypes.bool,
-  twelveHoursClock: PropTypes.bool,
-};
-export default TimeField;

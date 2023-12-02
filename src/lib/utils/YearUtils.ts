@@ -1,6 +1,9 @@
 import moment from 'moment';
 
-export const createYears = (userDefinedYears, descendingYears) => {
+export const createYears = (
+  userDefinedYears?: [number, number],
+  descendingYears?: boolean
+) => {
   let years = [];
   if (!userDefinedYears) {
     //Range from 1900 to 25 years into the future
@@ -25,7 +28,7 @@ export const createYears = (userDefinedYears, descendingYears) => {
   return sortYears(years, descendingYears);
 };
 
-const sortYears = (years, descendingYears) => {
+const sortYears = (years: number[], descendingYears?: boolean) => {
   // Decides whether to order dates in ascending or descending order
   if (descendingYears) {
     return years.reverse();

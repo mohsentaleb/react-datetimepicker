@@ -1,13 +1,49 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import { DateTimeRangePicker } from './DateTimeRangePicker';
 import { propValidation } from './utils/PropValidation';
 import { darkTheme, lightTheme } from './utils/StyleUtils';
 import clsx from 'clsx';
 
-class DateTimeRangeContainer extends React.Component {
-  constructor(props) {
+import type { ReactNode } from 'react';
+import type { Moment } from 'moment-timezone';
+import type { Locale, PresetDateRanges, Style } from './types';
+
+export interface Props {
+  ranges: PresetDateRanges;
+  start: Moment;
+  end: Moment;
+  local: Locale;
+  applyCallback: (start: Moment, end: Moment) => void;
+  rangeCallback?: () => void;
+  autoApply?: boolean;
+  maxDate?: Moment;
+  descendingYears?: boolean;
+  pastSearchFriendly?: boolean;
+  years?: [number, number];
+  smartMode?: boolean;
+  darkMode?: boolean;
+  noMobileMode?: boolean;
+  forceMobileMode?: boolean;
+  style?: Style;
+  children: ReactNode;
+  leftMode?: boolean;
+  centerMode?: boolean;
+  standalone?: boolean;
+  twelveHoursClock?: boolean;
+}
+
+interface State {
+  visible: boolean;
+  x: number;
+  y: number;
+  screenWidthToTheRight: number;
+  containerClassName: string;
+}
+
+class DateTimeRangeContainer extends React.Component<Props, State> {
+  container: HTMLDivElement | null = null;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       visible: false,
@@ -16,14 +52,10 @@ class DateTimeRangeContainer extends React.Component {
       screenWidthToTheRight: 0,
       containerClassName: '',
     };
-    let propValidationReturn = propValidation(this.props);
-    if (propValidationReturn !== true) {
+    const propValidationReturn = propValidation(this.props);
+    if (!propValidationReturn) {
       alert(propValidationReturn);
     }
-    this.onClickContainerHandler = this.onClickContainerHandler.bind(this);
-    this.handleOutsideClick = this.handleOutsideClick.bind(this);
-    this.changeVisibleState = this.changeVisibleState.bind(this);
-    this.keyDown = this.keyDown.bind(this);
   }
 
   componentDidMount() {
@@ -35,37 +67,37 @@ class DateTimeRangeContainer extends React.Component {
     document.removeEventListener('click', this.handleOutsideClick, false);
   }
 
-  keyDown(e) {
-    if (e.keyCode === 27) {
+  keyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
       this.setState({ visible: false });
       document.removeEventListener('keydown', this.keyDown, false);
     }
-  }
+  };
 
-  onClickContainerHandler() {
+  onClickContainerHandler = () => {
     if (!this.state.visible) {
       document.addEventListener('click', this.handleOutsideClick, false);
       document.addEventListener('keydown', this.keyDown, false);
       this.changeVisibleState();
     }
-  }
+  };
 
-  handleOutsideClick(e) {
+  handleOutsideClick = (e: MouseEvent) => {
     // ignore clicks on the component itself
     if (this.state.visible) {
-      if (this.container.contains(e.target)) {
+      if (this.container?.contains(e.target as Node)) {
         return;
       }
       document.removeEventListener('click', this.handleOutsideClick, false);
       this.changeVisibleState();
     }
-  }
+  };
 
-  changeVisibleState() {
+  changeVisibleState = () => {
     this.setState((prevState) => ({
       visible: !prevState.visible,
     }));
-  }
+  };
 
   renderPicker() {
     return (
@@ -129,7 +161,9 @@ class DateTimeRangeContainer extends React.Component {
         }}
       >
         {this.props.children && (
-          <div id="DateRangePickerChildren" className="pointer-events-none">{this.props.children}</div>
+          <div id="DateRangePickerChildren" className="pointer-events-none">
+            {this.props.children}
+          </div>
         )}
         <div
           id="daterangepicker"
@@ -152,29 +186,5 @@ class DateTimeRangeContainer extends React.Component {
     );
   }
 }
-
-DateTimeRangeContainer.propTypes = {
-  ranges: PropTypes.object.isRequired,
-  start: momentPropTypes.momentObj,
-  end: momentPropTypes.momentObj,
-  local: PropTypes.object.isRequired,
-  applyCallback: PropTypes.func.isRequired,
-  rangeCallback: PropTypes.func,
-  autoApply: PropTypes.bool,
-  maxDate: momentPropTypes.momentObj,
-  descendingYears: PropTypes.bool,
-  pastSearchFriendly: PropTypes.bool,
-  years: PropTypes.array,
-  smartMode: PropTypes.bool,
-  darkMode: PropTypes.bool,
-  noMobileMode: PropTypes.bool,
-  forceMobileMode: PropTypes.bool,
-  style: PropTypes.object,
-  children: PropTypes.any,
-  leftMode: PropTypes.bool,
-  centerMode: PropTypes.bool,
-  standalone: PropTypes.bool,
-  twelveHoursClock: PropTypes.bool,
-};
 
 export default DateTimeRangeContainer;

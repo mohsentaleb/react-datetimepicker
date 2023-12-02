@@ -1,7 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
-import momentPropTypes from 'react-moment-proptypes';
 import {
   startDateStyle,
   endDateStyle,
@@ -16,28 +14,49 @@ import { addFocusStyle } from '../utils/StyleUtils';
 import { pastMaxDate } from '../utils/DateSelectedUtils';
 import { ModeEnum } from '../DateTimeRangePicker';
 
-class Cell extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { style: {} };
+import type { Moment } from 'moment-timezone';
+import { Mode, Style } from '../types';
 
-    this.mouseEnter = this.mouseEnter.bind(this);
-    this.mouseLeave = this.mouseLeave.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.keyDown = this.keyDown.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
+interface Props {
+  id: number;
+  cellDay: Moment;
+  date: Moment;
+  otherDate: Moment;
+  maxDate?: Moment;
+  dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
+  keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
+  focusOnCallback: (date: Moment | boolean) => void;
+  focusDate: boolean | Moment;
+  month: number;
+  cellFocusedCallback: (date: Moment) => void;
+  mode: Mode;
+  smartMode?: boolean;
+  style?: Style;
+  darkMode?: boolean;
+  row?: number;
+}
+
+interface State {
+  style: Style;
+  focus: boolean;
+}
+
+export default class Cell extends React.Component<Props, State> {
+  cell: HTMLDivElement | null = null;
+  constructor(props: Props) {
+    super(props);
+    this.state = { style: {} as State['style'], focus: false };
   }
 
-  componentDidUpdate(oldProps) {
+  componentDidUpdate(oldProps: Props) {
     let isDifferentMomentObject =
       !oldProps.date.isSame(this.props.date) ||
-      !oldProps.otherDate.isSame(this.props.otherDate);
+      !oldProps.otherDate?.isSame(this.props.otherDate);
     let isDifferentTime =
       this.props.date.format('DD-MM-YYYY HH:mm') !==
         oldProps.date.format('DD-MM-YYYY HH:mm') ||
-      this.props.otherDate.format('DD-MM-YYYY HH:mm') !==
-        oldProps.otherDate.format('DD-MM-YYYY HH:mm');
+      this.props.otherDate?.format('DD-MM-YYYY HH:mm') !==
+        oldProps.otherDate?.format('DD-MM-YYYY HH:mm');
 
     if (isDifferentMomentObject || isDifferentTime) {
       this.styleCellNonMouseEnter();
@@ -60,7 +79,7 @@ class Cell extends React.Component {
     let focusDateIsCellDate =
       typeof this.props.focusDate === 'object' &&
       this.props.focusDate.isSame(this.props.cellDay, 'day');
-    let activeElement = document.activeElement.id;
+    let activeElement = document.activeElement?.id;
     if (activeElement && activeElement.indexOf('_cell_') !== -1) {
       cellFocused = true;
     }
@@ -69,12 +88,12 @@ class Cell extends React.Component {
       focusDateIsCellDate &&
       !this.isCellMonthSameAsPropMonth(this.props.cellDay)
     ) {
-      this.cell.focus();
+      this.cell?.focus();
       this.props.focusOnCallback(false);
     }
   }
 
-  pastMaxDatePropsChecker(isCellDateProp, days) {
+  pastMaxDatePropsChecker(isCellDateProp: boolean, days: number) {
     if (isCellDateProp) {
       if (
         pastMaxDate(
@@ -99,27 +118,30 @@ class Cell extends React.Component {
     return false;
   }
 
-  keyDown(e) {
+  keyDown = (e: KeyboardEvent) => {
     let componentFocused = document.activeElement === this.cell;
-    // console.log('sssssssssssss', this.cell);
-    if (componentFocused && e.keyCode >= 37 && e.keyCode <= 40) {
+
+    if (
+      componentFocused &&
+      ['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.key)
+    ) {
       e.preventDefault();
       let newDate = moment(this.props.cellDay);
       // Check to see if this cell is the date prop
       let isCellDateProp = this.props.cellDay.isSame(this.props.date, 'day');
-      if (e.keyCode === 38) {
+      if (e.key === 'ArrowUp') {
         // Up Key
         newDate.subtract(7, 'days');
-      } else if (e.keyCode === 40) {
+      } else if (e.key === 'ArrowDown') {
         // Down Key
         if (this.pastMaxDatePropsChecker(isCellDateProp, 7)) {
           return;
         }
         newDate.add(7, 'days');
-      } else if (e.keyCode === 37) {
+      } else if (e.key === 'ArrowLeft') {
         // Left Key
         newDate.subtract(1, 'days');
-      } else if (e.keyCode === 39) {
+      } else if (e.key === 'ArrowRight') {
         // Right Key
         if (this.pastMaxDatePropsChecker(isCellDateProp, 1)) {
           return;
@@ -134,16 +156,16 @@ class Cell extends React.Component {
         this.props.focusOnCallback(newDate);
       }
     }
-  }
+  };
 
-  onClick() {
+  onClick = () => {
     if (pastMaxDate(this.props.cellDay, this.props.maxDate, false)) {
       return;
     }
     this.props.dateSelectedNoTimeCallback(this.props.cellDay, this.props.mode);
-  }
+  };
 
-  mouseEnter() {
+  mouseEnter = () => {
     // If Past Max Date Style Cell Out of Use
     if (this.checkAndSetMaxDateStyle(this.props.cellDay)) {
       return;
@@ -180,22 +202,22 @@ class Cell extends React.Component {
     } else {
       this.setState({ style: hoverCellStyle(false, this.props.darkMode) });
     }
-  }
+  };
 
-  mouseLeave() {
+  mouseLeave = () => {
     this.styleCellNonMouseEnter();
-  }
+  };
 
-  onFocus() {
+  onFocus = () => {
     this.props.cellFocusedCallback(this.props.cellDay);
     this.setState({ focus: true });
-  }
+  };
 
-  onBlur() {
+  onBlur = () => {
     this.setState({ focus: false });
-  }
+  };
 
-  isCellMonthSameAsPropMonth(cellDay) {
+  isCellMonthSameAsPropMonth(cellDay: Moment) {
     let month = this.props.month;
     let cellDayMonth = cellDay.month();
     if (month !== cellDayMonth) {
@@ -203,7 +225,13 @@ class Cell extends React.Component {
     }
   }
 
-  shouldStyleCellStartEnd(cellDay, date, otherDate, startCheck, endCheck) {
+  shouldStyleCellStartEnd(
+    cellDay: Moment,
+    date: Moment,
+    otherDate: Moment,
+    startCheck: boolean,
+    endCheck: boolean
+  ) {
     let isCellDateProp = cellDay.isSame(date, 'day');
     let isCellOtherDateProp = cellDay.isSame(otherDate, 'day');
     let isDateStart = date.isSameOrBefore(otherDate, 'second');
@@ -222,7 +250,7 @@ class Cell extends React.Component {
     }
   }
 
-  checkAndSetMaxDateStyle(cellDate) {
+  checkAndSetMaxDateStyle(cellDate: Moment) {
     // If Past Max Date Style Cell Out of Use
     if (pastMaxDate(cellDate, this.props.maxDate, false)) {
       this.setState({ style: invalidStyle(this.props.darkMode) });
@@ -231,7 +259,7 @@ class Cell extends React.Component {
     return false;
   }
 
-  nonSmartModePastStartAndEndChecks(cellDate) {
+  nonSmartModePastStartAndEndChecks(cellDate: Moment) {
     // If in start mode and cellDate past end date style as unavailable. If in end mode and cellDate before start date style as unavailable
     if (this.props.mode === ModeEnum.start) {
       // We know now the date prop is the start date and the otherDate is the end date in non smart mode
@@ -370,23 +398,3 @@ class Cell extends React.Component {
     );
   }
 }
-
-Cell.propTypes = {
-  id: PropTypes.number.isRequired,
-  cellDay: momentPropTypes.momentObj.isRequired,
-  date: momentPropTypes.momentObj.isRequired,
-  otherDate: momentPropTypes.momentObj,
-  maxDate: momentPropTypes.momentObj,
-  dateSelectedNoTimeCallback: PropTypes.func.isRequired,
-  keyboardCellCallback: PropTypes.func.isRequired,
-  focusOnCallback: PropTypes.func.isRequired,
-  focusDate: PropTypes.any.isRequired,
-  month: PropTypes.number.isRequired,
-  cellFocusedCallback: PropTypes.func.isRequired,
-  mode: PropTypes.string.isRequired,
-  smartMode: PropTypes.bool,
-  style: PropTypes.object,
-  darkMode: PropTypes.bool,
-  row: PropTypes.number,
-};
-export default Cell;

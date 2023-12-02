@@ -1,9 +1,28 @@
 import React from 'react';
-import momentPropTypes from 'react-moment-proptypes';
-import PropTypes from 'prop-types';
 import CalendarRow from './CalendarRow';
 
-class CalendarRows extends React.Component {
+import type { Moment } from 'moment-timezone';
+import { Mode, Style } from '../types';
+
+interface Props {
+  date: Moment;
+  fourtyTwoDays: Moment[];
+  otherDate: Moment;
+  maxDate?: Moment;
+  dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
+  keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
+  focusOnCallback: (date: Moment | boolean) => void;
+  focusDate: boolean | Moment;
+  cellFocusedCallback: (date: Moment) => void;
+  year: number;
+  month: number;
+  mode: Mode;
+  smartMode?: boolean;
+  style?: Style;
+  darkMode?: boolean;
+}
+
+export default class CalendarRows extends React.Component<Props> {
   generateDays() {
     let calendarRows = [];
     for (let i = 0; i < 6; i++) {
@@ -40,23 +59,3 @@ class CalendarRows extends React.Component {
     return <div>{calendarRows}</div>;
   }
 }
-
-CalendarRows.propTypes = {
-  date: momentPropTypes.momentObj,
-  fourtyTwoDays: PropTypes.array.isRequired,
-  otherDate: momentPropTypes.momentObj,
-  maxDate: momentPropTypes.momentObj,
-  dateSelectedNoTimeCallback: PropTypes.func.isRequired,
-  keyboardCellCallback: PropTypes.func.isRequired,
-  focusOnCallback: PropTypes.func.isRequired,
-  focusDate: PropTypes.any.isRequired,
-  cellFocusedCallback: PropTypes.func.isRequired,
-  year: PropTypes.number.isRequired,
-  month: PropTypes.number.isRequired,
-  mode: PropTypes.string.isRequired,
-  smartMode: PropTypes.bool,
-  style: PropTypes.object,
-  darkMode: PropTypes.bool,
-};
-
-export default CalendarRows;

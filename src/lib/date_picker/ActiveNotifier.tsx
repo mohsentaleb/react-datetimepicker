@@ -1,13 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import type { Locale, Mode, Style } from '../types';
 
-class ActiveNotifier extends React.Component {
-  getDotDiv(text, style, id) {
+interface Props {
+  mode: Mode;
+  selectingModeFrom: boolean;
+  smartMode?: boolean;
+  style?: Style;
+  local?: Locale;
+}
+export default class ActiveNotifier extends React.Component<Props> {
+  getDotDiv(text: string, style: React.CSSProperties, id: string) {
     return (
       <div className="activeNotifier flex items-center justify-center" id={id}>
         {text}{' '}
         <span
-          className="inline-block h-3 w-3 rounded-full bg-green-700 ml-2"
+          className="ml-2 inline-block h-3 w-3 rounded-full bg-green-700"
           style={style}
         />
       </div>
@@ -50,12 +57,3 @@ class ActiveNotifier extends React.Component {
     return <div />;
   }
 }
-
-ActiveNotifier.propTypes = {
-  mode: PropTypes.string.isRequired,
-  selectingModeFrom: PropTypes.bool.isRequired,
-  smartMode: PropTypes.bool,
-  style: PropTypes.object,
-  local: PropTypes.object,
-};
-export default ActiveNotifier;
