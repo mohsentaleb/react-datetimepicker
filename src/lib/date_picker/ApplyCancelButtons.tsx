@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent } from 'react';
 import clsx from 'clsx';
 
 import type { Moment } from 'moment-timezone';
@@ -60,8 +60,8 @@ export default class ApplyCancelButtons extends React.Component<Props, State> {
 
   renderButton(
     className: string,
-    onClick: (e: KeyboardEvent) => void,
-    onKeyDown: (e: KeyboardEvent) => void,
+    onClick: (e: MouseEvent) => void,
+    onKeyDown: KeyboardEventHandler<HTMLButtonElement>,
     text: string
   ) {
     return (

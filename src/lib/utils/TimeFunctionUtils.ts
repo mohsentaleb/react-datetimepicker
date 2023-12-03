@@ -29,7 +29,6 @@ function workOutMonthYear(
   pastSearchFriendly?: boolean,
   smartMode?: boolean
 ) {
-  console.log(date, secondDate, mode, pastSearchFriendly, smartMode);
   // If both months are different months then
   // allow normal display in the calendar
   let selectedMonth = date.month();
