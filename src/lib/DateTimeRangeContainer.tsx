@@ -14,22 +14,22 @@ export interface Props {
   end: Moment;
   local: Locale;
   applyCallback: (start: Moment, end: Moment) => void;
-  rangeCallback?: () => void;
-  autoApply?: boolean;
+  rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
   maxDate?: Moment;
+  autoApply?: boolean;
   descendingYears?: boolean;
-  pastSearchFriendly?: boolean;
   years?: [number, number];
   smartMode?: boolean;
+  pastSearchFriendly?: boolean;
   darkMode?: boolean;
   noMobileMode?: boolean;
   forceMobileMode?: boolean;
-  style?: Style;
-  children: ReactNode;
+  twelveHoursClock?: boolean;
+  standalone?: boolean;
   leftMode?: boolean;
   centerMode?: boolean;
-  standalone?: boolean;
-  twelveHoursClock?: boolean;
+  style?: Style;
+  children: ReactNode;
 }
 
 interface State {

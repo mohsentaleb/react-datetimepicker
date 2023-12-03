@@ -1,14 +1,19 @@
 # 📦 React TailwindCSS Date and Time Picker
 
-This is a feature rich React date-time picker component built with **React 18** and [Vitejs](https://vitejs.dev/) which supports:
+This is a feature rich React date-time picker component built with **React 18** and [Vitejs](https://vitejs.dev/) offering the following functionalities:
 
-    1. Selecting a date range from calendar
-    2. Selecting time for both start and end of the range
-    3. Defining custom range presets for quicker access
-    4. keyboard accessibility - Arrow key and Tab navigation
-    5. Fully responsive
+1. Selection of date ranger
+2. Setting specific start and end times for the selected range
+3. Creating personalized range presets for faster selection
+4. Enhancing keyboard accessibility with arrow key and Tab navigation
+5. Ensuring full responsiveness across different devices
+6. Comprehensive typing throughout the component for enhanced code reliability and development support.
 
-It's a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepicker) but CSS styles are completely rewritten using [TailwindCSS](https://tailwindcss.com/).
+This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepicker) with **significant alterations** including:
+
+- Complete revamp of CSS styles utilizing [TailwindCSS](https://tailwindcss.com/).
+- Transition to [Vitejs](https://vitejs.dev/) for the build system.
+- Conversion of all files to TypeScript for improved type safety and development efficiency.
 
 <a href="https://github.com/microsoft/react-native-macos/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native for macOS is released under the MIT license." />
@@ -21,20 +26,23 @@ It's a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepi
 
 **Check out the [online demo](https://codesandbox.io/p/github/mohsentaleb/react-tailwindcss-datetimepicker/master) at codesandbox.io**
 
-![Date Time Picker](https://raw.githubusercontent.com/mohsentaleb/react-tailwindcss-datetimepicker/master/public/date-picker-screenshot.png)
+![Date Time Picker](https://raw.githubusercontent.com/mohsentaleb/react-tailwindcss-datetimepicker/master/public/demo.gif)
 
 ## Table of Contents
 
-- [Setup](#setup)
-  - [With TailwindCSS](#with-tailwindcss)
-  - [Without TailwindCSS](#without-tailwindcss)
+- [Basic Setup](#basic-setup)
+  * [With TailwindCSS](#with-tailwindcss)
+  * [Without TailwindCSS](#without-tailwindcss)
 - [Basic Usage](#basic-usage)
+  * [Function Components](#function-components)
+  * [Legacy Class Components](#legacy-class-components)
 - [Component Props](#component-props)
 - [Development](#development)
+- [Production](#production)
 - [Roadmap](#roadmap)
 - [License](#license)
 
-## Setup
+## Basic Setup
 
 Install via npm:
 
@@ -53,17 +61,15 @@ yarn add react-tailwindcss-datetimepicker
 If you're already including TailwindCSS in your project, just open up your `tailwind.config.js` file and add the following line to your `content` array so that tailwind could find CSS classes used in picker and add those to your project's global css file:
 
 ```js
+// tailwind.config.js
+
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
     './node_modules/react-tailwindcss-datetimepicker/dist/react-tailwindcss-datetimepicker.js',
     // ^^^^^^^^^
-    // This line
+    // Add this line
   ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
 };
 ```
 
@@ -75,10 +81,10 @@ Will be documented soon.
 
 ### Function Components
 
-```js
+```ts
 import React from 'react';
 import DateTimePicker from 'react-tailwindcss-datetimepicker';
-import moment from 'moment';
+import moment, { type Moment } from 'moment-timezone';
 
 function App() {
   const now = new Date();
@@ -92,18 +98,7 @@ function App() {
   });
   const ranges = {
     Today: [moment(start), moment(end)],
-    Yesterday: [
-      moment(start).subtract(1, 'days'),
-      moment(end).subtract(1, 'days'),
-    ],
-    '3 Days': [moment(start).subtract(3, 'days'), moment(end)],
-    '2 Weeks': [moment(start).subtract(14, 'days'), moment(end)],
-    '1 Month': [moment(start).subtract(1, 'months'), moment(end)],
-    '1st August 18': [
-      moment('2018-08-01 00:00:00'),
-      moment('2018-08-02 23:59:59'),
-    ],
-    '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
+    '1 Month': [moment(start).subtract(1, 'months'), moment(end)]
   };
   const local = {
     format: 'DD-MM-YYYY HH:mm',
@@ -123,7 +118,6 @@ function App() {
       local={local}
       maxDate={maxDate}
       applyCallback={handleApply}
-      smartMode
     >
       <input
         placeholder="Enter date..."
@@ -137,12 +131,15 @@ function App() {
 export default App;
 ```
 
-### Class Components
+### Legacy Class Components
 
-```js
+<details>
+  <summary>For implementing it in a legacy class component check out here</summary>
+
+```ts
 import React from 'react';
 import DateTimePicker from 'react-tailwindcss-datetimepicker';
-import moment from 'moment';
+import moment, { type Moment } from 'moment-timezone';
 
 class App extends React.Component {
   constructor(props) {
@@ -156,11 +153,9 @@ class App extends React.Component {
       start: start,
       end: end,
     };
-
-    this.applyCallback = this.applyCallback.bind(this); // Or use arrow functions and omit this :) 
   }
 
-  applyCallback(startDate, endDate) {
+  applyCallback = (startDate: Moment, endDate: Moment) => {
     this.setState({
       start: startDate,
       end: endDate,
@@ -175,18 +170,7 @@ class App extends React.Component {
     const end = moment(start).add(1, 'days').subtract(1, 'seconds');
     const ranges = {
       Today: [moment(start), moment(end)],
-      Yesterday: [
-        moment(start).subtract(1, 'days'),
-        moment(end).subtract(1, 'days'),
-      ],
-      '3 Days': [moment(start).subtract(3, 'days'), moment(end)],
-      '2 Weeks': [moment(start).subtract(14, 'days'), moment(end)],
       '1 Month': [moment(start).subtract(1, 'months'), moment(end)],
-      '1st August 18': [
-        moment('2018-08-01 00:00:00'),
-        moment('2018-08-02 23:59:59'),
-      ],
-      '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
     };
     const local = {
       format: 'DD-MM-YYYY HH:mm',
@@ -194,28 +178,30 @@ class App extends React.Component {
     };
     let maxDate = moment(start).add(24, 'hour');
     return (
-      <div>
-        <DateTimePicker
-          ranges={ranges}
-          start={this.state.start}
-          end={this.state.end}
-          local={local}
-          maxDate={maxDate}
-          applyCallback={this.applyCallback}
-        >
-          <input
-            placeholder="Enter date..."
-            value={`${range.start} - ${range.end}`}
-            disabled
-          />
-        </DateTimePicker>
-      </div>
+      <DateTimePicker
+        ranges={ranges}
+        start={this.state.start}
+        end={this.state.end}
+        local={local}
+        maxDate={maxDate}
+        applyCallback={this.applyCallback}
+      >
+        <input
+          placeholder="Enter date..."
+          value={`${range.start} - ${range.end}`}
+          disabled
+        />
+      </DateTimePicker>
     );
   }
 }
 
 export default App;
 ```
+  
+</details>
+
+
 
 ## Component Props
 
@@ -224,16 +210,16 @@ export default App;
 (Required)
 `Record<string, [Moment, Moment]>`
 
-A record of ranges defined using an array of Moment times.
+A record of ranges defined using a tuple of Moment times.
 
 ```js
 const ranges = {
-  'Today Only': [moment(start), moment(end)],
-  'Yesterday Only': [
+  'Today': [moment(start), moment(end)],
+  'Yesterday': [
     moment(start).subtract(1, 'days'),
     moment(end).subtract(1, 'days'),
   ],
-  '3 Days': [moment(start).subtract(3, 'days'), moment(end)],
+  'Last 3 Days': [moment(start).subtract(3, 'days'), moment(end)],
 };
 ```
 
@@ -254,16 +240,20 @@ Initial end Date set in the picker
 ### `local`
 
 (Required)\*\*
-`{format: string; sundayFirst: boolean; days: string[]; months: string[]; fromDate: string; toDate: string; selectingFrom: string; selectingTo: string; maxDate: string; close: string; apply: string; cancel: string;}`
 
-Defines a local format for date labels to be shown as. Can also set Sunday to be first day or Monday. Local object accepts format and sunday first params. `format`: moment display format <br>`sundayFirst`: `true` if Sunday is the first day of the week. `false` if Monday is the first.
+Defines a locale format for date labels to be shown as. Can also set Sunday to be first day or Monday. Locale object has 2 required keys only:
+- `format`: Moment [display format](https://momentjs.com/docs/#/parsing/special-formats/).
+- `sundayFirst`: `true` if Sunday is the first day of the week. `false` if Monday is the first.
 
 Example:
 
-```js
-const local = {
-  format: 'DD-MM-YYYY HH:mm', // Moment format
+```ts
+const locale = {
+  // Mandatory
+  format: 'DD-MM-YYYY HH:mm', // See: https://momentjs.com/docs/#/parsing/special-formats/
   sundayFirst: false,
+
+  // Optional
   days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'So'],
   months: [
     'January',
@@ -294,41 +284,47 @@ const local = {
 
 (Required) `(start: Moment, end: Moment) => void`
 
-Function which is called when the apply button is clicked/pressed. Takes two params, start date and the end date.
+Function which is called when the apply button is clicked/pressed. Takes two params, start date and the end date which are both `Moment` dates.
+
+### `rangeCallback`
+
+(optional) `(index: number, value: keyof PresetDateRanges) => void`
+
+Function which is called when one of the preset ranges is clicked/selected. Takes two params: 
+- `index` is the index of item which is selected
+- `value` is the label of that item
 
 ### `maxDate`
 
 (optional) `Moment`
 
-Maximum date that can be selected.
+Maximum date that can be selected in calendar.
 
-### `rangeCallback`
-
-(optional) `(index: number, value: number) => void`
 
 ### `autoApply`
 
-(optional)\*\* `boolean`
+(optional)\*\* `boolean` defaults to `false`
 
 When set there will only be one button in the bottom right to close the screen. With this set to `true` upon changing anything in picker the `callbackfunction` will be automatically called
 
 ### `descendingYears`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
 To set years be displayed in descending order in picker instead of ascending.
 
 ### `years`
 
-(optional) `[number, number]`
+(optional) `[number, number]` defaults to `[1900, <currentYear>]`
 
-Takes an array where the first value is the start year and the second values is the end year. This will update the dropdown years to only show these years.
+Takes a tuple where the first value is the start year and the second values is the end year. This will update the dropdown years to only show these years.
+
 **WARNING:** This does not affect the ability to type in years in the text box and go beyond the values set here.
 
 Example:
 
-```
-years={[2010, 2020]}
+```js
+years={[1900, 2023]}
 ```
 
 Takes an array where the first value is the start year and the second values is the end year. This will
@@ -337,7 +333,7 @@ update the dropdown years to only show these years.
 
 ### `smartMode`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
 The date time picker will switch the month on the right hand side (RHS) when two dates in the same month are selected. Can be used in
 conjunction with `pastSearchFriendly` to switch the month on the left hand side (LHS) when the two dates are from the same month.
@@ -348,19 +344,19 @@ conjunction with `pastSearchFriendly` to switch the month on the left hand side 
 
 **Note:** Requires `smartMode` to be enabled.
 
-Changes the mode of the date time picker to be optimised for past searches. Where possible the start and end time will be shown on the RHS when the month and year are equal. This allows for the previous month to be shown on the LHS to allow easier backwards searching.
+Changes the mode of the date time picker to be optimised for past searches. Where possible, the start and end time will be shown on the RHS when the month and year are equal. This allows for the previous month to be shown on the LHS to allow easier backwards searching.
 
 This setting is `false` by default meaning that the LHS is used when dates are selected in the same month & year
 
 ### `darkMode`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
-Changes the DateTimePicker to be in Dark Mode, default is Light Mode.
+Changes the DateTimePicker to be in Dark Mode.
 
 ### `noMobileMode`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
 When set the mobile breakpoint to be ignored. Picker will always be displayed in full screen mode.
 
@@ -372,11 +368,11 @@ When set the mobile breakpoint to be ignored. Picker will always be displayed in
 
 ### `twelveHoursClock`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
-When set the picker time values will be in 12 hour mode instead of 24 hour mode
+When enabled, the picker will display time values in a 12-hour format rather than a 24-hour format.
 
-### `standaloneMode`
+### `standalone`
 
 (optional) `boolean`
 
@@ -395,24 +391,29 @@ When set and changed the picker will open to the left (right to left) instead of
 To allow flexibility, center mode has been added where leftMode or default is not enough.
 
 ## Development
+Runs the app in the development mode.
 
-In the project directory, run:
+```
+npm run dev
+```
 
-### `npm run dev`
-
-Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-**Hot module reloading** is enabled.
+**Hot module reloading** is enabled in dev mode.
 
-### `npm run build`
+## Production
 
-Builds the app for production to the `/dist` folder using vite's [library mode](https://vitejs.dev/guide/build.html#library-mode).
+```
+npm run build
+```
+
+Builds the app for production to the `/dist` folder using vite's [library mode](https://vitejs.dev/guide/build.html#library-mode). Type declarations are also created in the same directory.
 
 ## Roadmap
 
 - [x] Support TypeScript
 - [ ] The ability to add custom CSS classes for different parts of the picker
+- [ ] Migrate to [date-fns](https://www.npmjs.com/package/date-fns)
 - [ ] Write more tests
 
 ## License
