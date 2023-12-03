@@ -24,7 +24,7 @@ export default function Demo() {
   }
 
   return (
-    <div className="mb-4 rounded-lg border p-4">
+    <div className="mb-4 rounded-lg p-4">
       <h2 className="text-2xl font-extrabold">Demo</h2>
       <p className="mb-10">Click on the input to display the date picker</p>
       <DateTimeRangeContainer
