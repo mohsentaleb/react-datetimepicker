@@ -6,7 +6,7 @@ import { isValidTimeChange } from './utils/TimeFunctionUtils';
 import { datePicked, pastMaxDate } from './utils/DateSelectedUtils';
 import ApplyCancelButtons from './date_picker/ApplyCancelButtons';
 
-import type { Moment, MomentTimezone } from 'moment-timezone';
+import type { Moment } from 'moment-timezone';
 import type { Locale, Mode, PresetDateRanges, Style } from './types';
 
 export const ModeEnum = Object.freeze({ start: 'start', end: 'end' });

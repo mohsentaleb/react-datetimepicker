@@ -2,7 +2,7 @@ import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent } from 'react';
 import clsx from 'clsx';
 
 import type { Moment } from 'moment-timezone';
-import { Locale, Mode, Style } from '../types';
+import { Locale } from '../types';
 
 interface Props {
   local: Locale;
