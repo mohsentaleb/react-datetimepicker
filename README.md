@@ -1,4 +1,4 @@
-# 📦 React Tailwindcss Date-Time Picker
+# 📦 React TailwindCSS Date and Time Picker
 
 This is a feature rich React date-time picker component built with **React 18** and [Vitejs](https://vitejs.dev/) which supports:
 
@@ -411,7 +411,7 @@ Builds the app for production to the `/dist` folder using vite's [library mode](
 
 ## Roadmap
 
-- [ ] Support TypeScript
+- [x] Support TypeScript
 - [ ] The ability to add custom CSS classes for different parts of the picker
 - [ ] Write more tests
 

@@ -6,8 +6,8 @@
     "dist"
   ],
   "main": "./dist/react-tailwindcss-datetimepicker.js",
-  "types": "./dist/index.d.ts",
   "module": "./dist/react-tailwindcss-datetimepicker.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/react-tailwindcss-datetimepicker.js",
@@ -16,11 +16,12 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && build:types",
-    "build:types": "tsc -p config/tsconfig.types.json",
+    "build": "tsc -p ./tsconfig-build.json && vite build",
+    "build:types": "tsc",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "prepublishOnly": "npm run build",
   "repository": {
     "type": "git",
     "url": "https://github.com/mohsentaleb/react-tailwindcss-datetimepicker.git"
@@ -29,29 +30,33 @@
   "dependencies": {
     "clsx": "^2.0.0",
     "moment": "^2.29.4",
-    "moment-timezone": "^0.5.43",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-moment-proptypes": "^1.8.1",
-    "typescript": "^5.3.2"
+    "moment-timezone": "^0.5.43"
   },
   "devDependencies": {
-    "@types/react": "^18.2.38",
-    "@types/react-dom": "^18.2.16",
+    "@types/react": "^18.2.41",
+    "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.16",
-    "eslint": "^8.54.0",
+    "eslint": "^8.55.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.4",
-    "postcss": "^8.4.31",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "postcss": "^8.4.32",
     "prettier": "^3.1.0",
     "prettier-plugin-tailwindcss": "^0.5.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.5",
-    "vite": "^5.0.2",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.4",
+    "vite-plugin-dts": "^3.6.4",
     "vite-plugin-svgr": "^4.2.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "keywords": [
     "react",
