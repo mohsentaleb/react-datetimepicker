@@ -60,10 +60,22 @@
   },
   "keywords": [
     "react",
-    "dateime",
+    "date",
+    "time",
+    "calendar",
+    "date-picker",
     "datepicker",
-    "datetimepicker",
+    "daterangepicker",
+    "date-time-picker",
+    "react-datepicker",
+    "react-daterangepicker",
+    "date-range-picker",
+    "tailwind-daterange-picker",
+    "tailwind-datepicker",
     "tailwindcss",
-    "vite"
+    "vite",
+    "react-component",
+    "react-tailwind",
+    "ui"
   ]
 }

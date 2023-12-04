@@ -2,12 +2,11 @@
 
 This is a feature rich React date-time picker component built with **React 18** and [Vitejs](https://vitejs.dev/) offering the following functionalities:
 
-1. Selection of date ranger
-2. Setting specific start and end times for the selected range
-3. Creating personalized range presets for faster selection
-4. Enhancing keyboard accessibility with arrow key and Tab navigation
-5. Ensuring full responsiveness across different devices
-6. Comprehensive typing throughout the component for enhanced code reliability and development support.
+- ✅ Selection of date ranges
+- ✅ Selection of times for the selected range
+- ✅ Personalized range presets for faster selection (e.g.: Yesterday, last months etc.)
+- ✅ Keyboard navigation for accessibility
+- ✅ TypeScript support
 
 This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepicker) with **significant alterations** including:
 
@@ -44,15 +43,11 @@ This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react
 
 ## Basic Setup
 
-Install via npm:
-
 ```bash
+// Using npm
 npm i react-tailwindcss-datetimepicker
-```
 
-or Yarn
-
-```bash
+// Using yarn
 yarn add react-tailwindcss-datetimepicker
 ```
 
@@ -75,7 +70,7 @@ module.exports = {
 
 ### Without TailwindCSS
 
-Will be documented soon.
+The CSS file needed for this component is shipped in 
 
 ## Basic Usage
 
@@ -107,7 +102,7 @@ function App() {
         format: 'DD-MM-YYYY HH:mm',
         sundayFirst: false,
       }}
-      maxDate={moment(start).add(24, 'hour');}
+      maxDate={moment(start).add(24, 'hour')}
       applyCallback={handleApply}
     >
       <input

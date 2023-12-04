@@ -40,7 +40,10 @@ interface State {
   containerClassName: string;
 }
 
-export default class ReactDateTimePicker extends React.Component<ReactDateTimePickerProps, State> {
+export default class ReactDateTimePicker extends React.Component<
+  ReactDateTimePickerProps,
+  State
+> {
   container: HTMLDivElement | null = null;
 
   constructor(props: ReactDateTimePickerProps) {
