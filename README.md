@@ -69,8 +69,13 @@ module.exports = {
 ```
 
 ### Without TailwindCSS
+If you don't use TailwindCSS in your project you can simply import the shipped standalone CSS file needed for this component like so:
+```tsx
+// src/main.tsx
 
-The CSS file needed for this component is shipped in 
+import DateTimePicker from 'react-tailwindcss-datetimepicker';
+import 'react-tailwindcss-datetimepicker/style.css'
+```
 
 ## Basic Usage
 

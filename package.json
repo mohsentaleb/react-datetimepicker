@@ -17,7 +17,8 @@
         "default": "./dist/react-tailwindcss-datetimepicker.umd.cjs",
         "types": "./dist/index.d.ts"
       }
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "scripts": {
     "dev": "vite",
