@@ -1,3 +1,3 @@
-import DateTimeRangeContainer from './DateTimeRangeContainer';
+import ReactDateTimePicker from './ReactDateTimePicker';
 import '../index.css';
-export default DateTimeRangeContainer;
+export default ReactDateTimePicker;

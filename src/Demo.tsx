@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import moment, { type Moment } from 'moment-timezone';
-import DateTimeRangeContainer from './lib/index';
+import ReactDateTimePicker from './lib/index';
 import { MomentDateRanges } from './consts';
 
 export default function Demo() {
@@ -27,7 +27,7 @@ export default function Demo() {
     <div className="mb-4 rounded-lg p-4">
       <h2 className="text-2xl font-extrabold">Demo</h2>
       <p className="mb-10">Click on the input to display the date picker</p>
-      <DateTimeRangeContainer
+      <ReactDateTimePicker
         ranges={MomentDateRanges}
         start={selectedRange.start}
         end={selectedRange.end}
@@ -38,11 +38,10 @@ export default function Demo() {
         }}
         maxDate={moment(start).add(24, 'hour')}
         applyCallback={handleApply}
-        // smartMode
       >
         <input
           id="inputsTextB"
-          className="w-96 cursor-pointer rounded border bg-gray-50 p-2"
+          className="w-2/5 cursor-pointer rounded border bg-gray-50 p-2"
           type="text"
           placeholder="Enter text"
           style={{ cursor: 'pointer' }}
@@ -50,7 +49,7 @@ export default function Demo() {
           value={getUserFriendlyDateRangeString()}
           disabled
         />
-      </DateTimeRangeContainer>
+      </ReactDateTimePicker>
     </div>
   );
 }

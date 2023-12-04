@@ -82,29 +82,14 @@ Will be documented soon.
 ### Function Components
 
 ```ts
-import React from 'react';
+import { useState } from 'react';
 import DateTimePicker from 'react-tailwindcss-datetimepicker';
 import moment, { type Moment } from 'moment-timezone';
 
 function App() {
-  const now = new Date();
-  const start = moment(
-    new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
-  );
+  const start = moment(new Date());
   const end = moment(start).add(1, 'days').subtract(1, 'seconds');
-  const [range, setRange] = useState({
-    start: start,
-    end: end,
-  });
-  const ranges = {
-    Today: [moment(start), moment(end)],
-    '1 Month': [moment(start).subtract(1, 'months'), moment(end)]
-  };
-  const local = {
-    format: 'DD-MM-YYYY HH:mm',
-    sundayFirst: false,
-  };
-  const maxDate = moment(start).add(24, 'hour');
+  const [range, setRange] = useState({start, end });
 
   function handleApply(startDate: Moment, endDate: Moment) {
     setRange({ start: startDate, end: endDate });
@@ -112,11 +97,17 @@ function App() {
 
   return (
     <DateTimePicker
-      ranges={ranges}
+      ranges={{
+        Today: [moment(start), moment(end)],
+        '1 Month': [moment(start).subtract(1, 'months'), moment(end)]
+      }}
       start={range.start}
       end={range.end}
-      local={local}
-      maxDate={maxDate}
+      local={{
+        format: 'DD-MM-YYYY HH:mm',
+        sundayFirst: false,
+      }}
+      maxDate={moment(start).add(24, 'hour');}
       applyCallback={handleApply}
     >
       <input
@@ -239,7 +230,7 @@ Initial end Date set in the picker
 
 ### `local`
 
-(Required)\*\*
+(Required)
 
 Defines a locale format for date labels to be shown as. Can also set Sunday to be first day or Monday. Locale object has 2 required keys only:
 - `format`: Moment [display format](https://momentjs.com/docs/#/parsing/special-formats/).
@@ -412,7 +403,7 @@ Builds the app for production to the `/dist` folder using vite's [library mode](
 ## Roadmap
 
 - [x] Support TypeScript
-- [ ] The ability to add custom CSS classes for different parts of the picker
+- [ ] The ability to add custom CSS classes for different parts of the component
 - [ ] Migrate to [date-fns](https://www.npmjs.com/package/date-fns)
 - [ ] Write more tests
 

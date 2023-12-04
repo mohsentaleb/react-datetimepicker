@@ -34,7 +34,6 @@ export type Locale = {
 };
 
 export type Style = {
-  standaloneLayout?: CSSProperties;
   hoverCell?: boolean;
   borderRadius: string;
   borderColour: string;
@@ -45,8 +44,11 @@ export type Style = {
   fromDate?: React.CSSProperties;
   toDate?: React.CSSProperties;
   betweenDates?: React.CSSProperties;
-  fromDot?: React.CSSProperties;
   toDot?: React.CSSProperties;
+  fromDot?: React.CSSProperties;
+  customRangeButtons?: React.CSSProperties;
+  customRangeSelected?: React.CSSProperties;
+  standaloneLayout?: CSSProperties;
 };
 
 export type Mode = 'start' | 'end';

@@ -1,6 +1,6 @@
-import type { Props} from '../DateTimeRangeContainer'
+import type { ReactDateTimePickerProps} from '../ReactDateTimePicker'
 
-export const propValidation = (props: Props) => {
+export const propValidation = (props: ReactDateTimePickerProps) => {
   if (props.years) {
     const { start, end, years } = props;
     if (years[0] > years[1]) {

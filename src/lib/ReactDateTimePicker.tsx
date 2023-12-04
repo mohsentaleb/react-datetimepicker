@@ -8,7 +8,7 @@ import type { ReactNode } from 'react';
 import type { Moment } from 'moment-timezone';
 import type { Locale, PresetDateRanges, Style } from './types';
 
-export interface Props {
+export interface ReactDateTimePickerProps {
   ranges: PresetDateRanges;
   start: Moment;
   end: Moment;
@@ -40,10 +40,10 @@ interface State {
   containerClassName: string;
 }
 
-class DateTimeRangeContainer extends React.Component<Props, State> {
+export default class ReactDateTimePicker extends React.Component<ReactDateTimePickerProps, State> {
   container: HTMLDivElement | null = null;
 
-  constructor(props: Props) {
+  constructor(props: ReactDateTimePickerProps) {
     super(props);
     this.state = {
       visible: false,
@@ -186,5 +186,3 @@ class DateTimeRangeContainer extends React.Component<Props, State> {
     );
   }
 }
-
-export default DateTimeRangeContainer;
