@@ -43,7 +43,7 @@ This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react
 
 ## Basic Setup
 
-```bash
+```shell
 // Using npm
 npm i react-tailwindcss-datetimepicker
 
@@ -195,6 +195,28 @@ export default App;
 
 
 ## Component Props
+
+| Option                                      | Required     | Type          | Default     | Description                                                                    |
+|---------------------------------------------|--------------|---------------|-------------|--------------------------------------------------------------------------------|
+| [`ranges`](#ranges)                         | **Required** | `Object`      | `undefined` | A record of ranges defined using a tuple of Moment times.                      |
+| [`start`](#start)                           | **Required** | `Moment Date` | `undefined` | Initial start Date set in the picker                                           |
+| [`end`](#end)                               | **Required** | `Moment Date` | `undefined` | Initial end Date set in the picker                                             |
+| [`local`](#local)                           | **Required** | `Object`      | `undefined` | locale format for date labels                                                  |
+| [`applyCallback`](#applycallback)           | **Required** | `Function`    | `null`      | Function which is called when the apply button is clicked                      |
+| [`rangeCallback`](#rangecallback)           | optional     | `Function`    | `null`      | Function which is called when one of the preset ranges is clicked              |
+| [`maxDate`](#maxdate)                       | optional     | `Moment Date` | `undefined` | Maximum date that can be selected in calendar                                  |
+| [`autoApply`](#autoapply)                   | optional     | `Boolean`     | `false`     | Set dates as soon as they're clicked without pressing apply                    |
+| [`descendingYears`](#descendingyears)       | optional     | `Boolean`     | `false`     | Set years be displayed in descending order                                     |
+| [`years`](#years)                           | optional     | `Array`       | `undefined` | Limit the years shown in calendar                                              |
+| [`smartMode`](#smartmode)                   | optional     | `Boolean`     | `false`     | Switch the month on the right hand side (RHS) when two dates in the same month |
+| [`pastSearchFriendly`](#pastsearchfriendly) | optional     | `Boolean`     | `false`     | Optimize calendar for past searches                                            |
+| [`darkMode`](#darkmode)                     | optional     | `Boolean`     | `false`     | Changes UI to dark                                                             |
+| [`noMobileMode`](#nomobilemode)             | optional     | `Boolean`     | `false`     | Picker will always be displayed in full screen mode                            |
+| [`forceMobileMode`](#forcemobilemode)       | optional     | `Boolean`     | `false`     | Picker will always be displayed in condensed mode all the time                 |
+| [`twelveHoursClock`](#twelvehoursclock)     | optional     | `Boolean`     | `false`     | Display time values in a 12-hour format rather than a 24-hour format           |
+| [`standalone`](#standalone)                 | optional     | `Boolean`     | `false`     | When set the picker will be open by default                                    |
+| [`leftMode`](#leftmode)                     | optional     | `Boolean`     | `false`     | Picker will open to the left                                                   |
+| [`centerMode`](#centermode)                 | optional     | `Boolean`     | `false`     | Picker will open in center                                                     |
 
 ### `ranges`
 
@@ -355,7 +377,7 @@ When set the mobile breakpoint to be ignored. Picker will always be displayed in
 
 (optional) `boolean`
 
-When set the mobile breakpoint to be ignored. Picker will always be displayed in full screen mode.
+When set the mobile breakpoint to be ignored. Picker will always be displayed in condensed mode all the time.
 
 ### `twelveHoursClock`
 

@@ -83,5 +83,6 @@
     "react-component",
     "react-tailwind",
     "ui"
-  ]
+  ],
+  "license": "MIT"
 }
