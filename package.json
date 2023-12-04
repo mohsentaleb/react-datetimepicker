@@ -7,11 +7,16 @@
   ],
   "main": "./dist/react-tailwindcss-datetimepicker.js",
   "module": "./dist/react-tailwindcss-datetimepicker.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react-tailwindcss-datetimepicker.js",
-      "require": "./dist/react-tailwindcss-datetimepicker.umd.cjs"
+      "import": {
+        "default": "./dist/react-tailwindcss-datetimepicker.js",
+        "types": "./dist/index.d.ts"
+      },
+      "require": {
+        "default": "./dist/react-tailwindcss-datetimepicker.umd.cjs",
+        "types": "./dist/index.d.ts"
+      }
     }
   },
   "scripts": {
