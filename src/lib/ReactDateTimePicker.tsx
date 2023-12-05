@@ -164,7 +164,7 @@ export default class ReactDateTimePicker extends React.Component<
         }}
       >
         {this.props.children && (
-          <div id="DateRangePickerChildren" className="pointer-events-none">
+          <div id="DateRangePickerChildren">
             {this.props.children}
           </div>
         )}
