@@ -19,7 +19,7 @@ export default function Demo() {
   function getUserFriendlyDateRangeString() {
     const formattedSelectedStart = selectedRange.start.format('LLL');
     const formattedSelectedEnd = selectedRange.end.format('LLL');
-    const formattedDateRange = `${formattedSelectedStart} - ${formattedSelectedEnd}`;
+    const formattedDateRange = `${formattedSelectedStart} to ${formattedSelectedEnd}`;
 
     return formattedDateRange;
   }
@@ -27,8 +27,8 @@ export default function Demo() {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-4">
-        <p className="mb-5">Click on the input to display the date picker</p>
+      <div className="mx-auto max-w-7xl px-2 py-4 sm:px-6 lg:px-8">
+        <p className="mb-5">Click on the button to display the date picker</p>
         <ReactDateTimePicker
           ranges={MomentDateRanges}
           start={selectedRange.start}
@@ -41,16 +41,13 @@ export default function Demo() {
           maxDate={moment(start).add(24, 'hour')}
           applyCallback={handleApply}
         >
-          <input
+          <button
             id="inputsTextB"
-            className="w-3/5 cursor-pointer rounded border bg-gray-50 p-2"
-            type="text"
+            className="w-3/5 cursor-pointer rounded border bg-gray-50 px-3 py-2 text-left hover:border-gray-300"
             placeholder="Enter text"
-            style={{ cursor: 'pointer' }}
-            alt={getUserFriendlyDateRangeString()}
-            value={getUserFriendlyDateRangeString()}
-            disabled
-          />
+          >
+            {getUserFriendlyDateRangeString()}
+          </button>
         </ReactDateTimePicker>
       </div>
     </>
