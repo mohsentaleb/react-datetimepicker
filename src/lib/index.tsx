@@ -1,3 +1,3 @@
 import ReactDateTimePicker from './ReactDateTimePicker';
-import '../index.css';
+import './index.css';
 export default ReactDateTimePicker;
