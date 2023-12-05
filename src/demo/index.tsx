@@ -41,11 +41,7 @@ export default function Demo() {
           maxDate={moment(start).add(24, 'hour')}
           applyCallback={handleApply}
         >
-          <button
-            id="inputsTextB"
-            className="w-3/5 cursor-pointer rounded border bg-gray-50 px-3 py-2 text-left hover:border-gray-300"
-            placeholder="Enter text"
-          >
+          <button className="w-3/5 cursor-pointer rounded border bg-gray-50 px-3 py-2 text-left hover:border-gray-300">
             {getUserFriendlyDateRangeString()}
           </button>
         </ReactDateTimePicker>

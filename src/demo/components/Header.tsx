@@ -7,7 +7,7 @@ export default function Header() {
           href="https://github.com/mohsentaleb/react-tailwindcss-datetimepicker"
           title="Github"
         >
-          <img src="../../../github.svg" alt="Github" />
+          <img src="https://raw.githubusercontent.com/mohsentaleb/react-tailwindcss-datetimepicker/master/public/github.svg" alt="Github" />
         </a>
       </div>
     </div>
