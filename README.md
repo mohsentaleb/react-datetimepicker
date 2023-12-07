@@ -8,6 +8,7 @@ This is a feature rich React date-time picker component built with **React 18** 
 - ✅ Keyboard navigation for accessibility
 - ✅ TypeScript support
 - ✅ Out of the box Dark Mode support
+- ✅ Fully responsive (Optimized for mobile devices)
 
 This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepicker) with **significant alterations** including:
 
@@ -91,8 +92,8 @@ import moment, { type Moment } from 'moment';
 
 function App() {
   const start = moment(new Date());
-  const end = moment(start).add(1, 'days').subtract(1, 'seconds');
-  const [range, setRange] = useState({start, end });
+  const end = moment(start).add(1, "days").subtract(1, "seconds");
+  const [range, setRange] = useState({ start, end });
 
   function handleApply(startDate: Moment, endDate: Moment) {
     setRange({ start: startDate, end: endDate });
@@ -102,22 +103,20 @@ function App() {
     <DateTimePicker
       ranges={{
         Today: [moment(start), moment(end)],
-        '1 Month': [moment(start).subtract(1, 'months'), moment(end)]
+        "1 Month": [moment(start).subtract(1, "months"), moment(end)],
       }}
       start={range.start}
       end={range.end}
       locale={{
-        format: 'DD-MM-YYYY HH:mm',
+        format: "DD-MM-YYYY HH:mm",
         sundayFirst: false,
       }}
-      maxDate={moment(start).add(24, 'hour')}
+      maxDate={moment(start).add(24, "hour")}
       applyCallback={handleApply}
     >
-      <input
-        placeholder="Enter date..."
-        value={`${range.start} - ${range.end}`}
-        disabled
-      />
+      <button placeholder="Enter date...">
+        {`${range.start} - ${range.end}`}
+      </button>
     </DateTimePicker>
   );
 }
@@ -180,11 +179,9 @@ class App extends React.Component {
         maxDate={maxDate}
         applyCallback={this.applyCallback}
       >
-        <input
-          placeholder="Enter date..."
-          value={`${range.start} - ${range.end}`}
-          disabled
-        />
+        <button className="w-3/5 cursor-pointer rounded border bg-gray-50 px-3 py-2 text-left hover:border-gray-300">
+          {`${range.start} - ${range.end}`}
+        </button>
       </DateTimePicker>
     );
   }
