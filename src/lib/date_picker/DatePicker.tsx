@@ -10,7 +10,7 @@ import type { ClassNames, Locale, Mode } from '../types';
 import clsx from 'clsx';
 
 interface Props {
-  locale: Locale;
+  locale?: Locale;
   date: Moment;
   otherDate: Moment;
   mode: Mode;

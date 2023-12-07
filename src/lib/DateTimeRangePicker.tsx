@@ -7,12 +7,7 @@ import { datePicked, pastMaxDate } from './utils/DateSelectedUtils';
 import ApplyCancelButtons from './date_picker/ApplyCancelButtons';
 
 import type { Moment } from 'moment';
-import type {
-  Locale,
-  Mode,
-  PresetDateRanges,
-  ClassNames,
-} from './types';
+import type { Locale, Mode, PresetDateRanges, ClassNames } from './types';
 
 export const ModeEnum = Object.freeze({ start: 'start', end: 'end' });
 export let momentFormat = 'DD-MM-YYYY HH:mm';
@@ -21,7 +16,7 @@ interface Props {
   ranges: PresetDateRanges;
   start: Moment;
   end: Moment;
-  locale: Locale;
+  locale?: Locale;
   applyCallback: (start: Moment, end: Moment) => void;
   rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
   autoApply?: boolean;
@@ -62,7 +57,7 @@ class DateTimeRangePicker extends React.Component<Props, State> {
       this.props.twelveHoursClock ? 'h:mm A' : 'HH:mm'
     }`;
 
-    if (this.props.locale && this.props.locale.format) {
+    if (this.props.locale?.format) {
       momentFormat = this.props.locale.format;
       localeMomentFormat = this.props.locale.format;
     }
@@ -540,8 +535,8 @@ class DateTimeRangePicker extends React.Component<Props, State> {
     }
   };
 
-  renderStartDate(locale: Locale) {
-    let label = locale && locale.fromDate ? locale.fromDate : 'From Date';
+  renderStartDate(locale?: Locale) {
+    let label = locale?.fromDate ? locale.fromDate : 'From Date';
     return (
       <DatePicker
         label={label}
@@ -571,8 +566,8 @@ class DateTimeRangePicker extends React.Component<Props, State> {
     );
   }
 
-  renderEndDate(locale: Locale) {
-    let label = locale && locale.toDate ? locale.toDate : 'To Date';
+  renderEndDate(locale?: Locale) {
+    let label = locale?.toDate ? locale.toDate : 'To Date';
     return (
       <DatePicker
         label={label}

@@ -6,7 +6,7 @@ interface Props {
   mode: Mode;
   selectingModeFrom: boolean;
   smartMode?: boolean;
-  locale: Locale;
+  locale?: Locale;
   classNames?: ClassNames;
 }
 export default class ActiveNotifier extends React.Component<Props> {

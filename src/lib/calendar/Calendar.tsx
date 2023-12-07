@@ -27,7 +27,7 @@ interface Props {
   pastSearchFriendly?: boolean;
   smartMode?: boolean;
   cellFocusedCallback: (date: Moment) => void;
-  locale: Locale;
+  locale?: Locale;
   classNames?: ClassNames;
 }
 
@@ -84,8 +84,8 @@ export default class Calendar extends React.Component<Props, State> {
     });
   }
 
-  createMonths(locale: Locale) {
-    if (locale && locale.months) {
+  createMonths(locale?: Locale) {
+    if (locale?.months) {
       return locale.months;
     }
     let months = [

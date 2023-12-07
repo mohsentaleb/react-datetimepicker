@@ -5,8 +5,8 @@ export type PresetDateRanges = Record<string, [Moment, Moment]> &
   Partial<typeof customRange>;
 
 export type Locale = {
-  format: string;
-  sundayFirst: boolean;
+  format?: string;
+  sundayFirst?: boolean;
   days?: [string, string, string, string, string, string, string];
   months?: [
     string,

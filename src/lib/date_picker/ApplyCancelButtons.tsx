@@ -5,7 +5,7 @@ import type { Moment } from 'moment';
 import { ClassNames, Locale } from '../types';
 
 interface Props {
-  locale: Locale;
+  locale?: Locale;
   maxDate?: Moment;
   applyCallback: () => void;
   changeVisibleState: () => void;
@@ -52,7 +52,7 @@ export default class ApplyCancelButtons extends React.Component<Props> {
       let label = this.props.locale?.maxDate || 'Max Date';
       return (
         <div className="maxDateLabel p-2 text-xs">
-          {label}: {this.props.maxDate.format(this.props.locale.format)}
+          {label}: {this.props.maxDate.format(this.props.locale?.format)}
         </div>
       );
     }

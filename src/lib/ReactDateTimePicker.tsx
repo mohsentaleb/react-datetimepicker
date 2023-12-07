@@ -11,7 +11,7 @@ export interface ReactDateTimePickerProps {
   ranges: PresetDateRanges;
   start: Moment;
   end: Moment;
-  locale: Locale;
+  locale?: Locale;
   applyCallback: (start: Moment, end: Moment) => void;
   rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
   maxDate?: Moment;
