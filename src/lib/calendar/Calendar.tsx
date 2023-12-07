@@ -9,8 +9,8 @@ import {
   getFourtyTwoDays,
 } from '../utils/TimeFunctionUtils';
 
-import type { Moment } from 'moment-timezone';
-import type { Locale, Mode, Style } from '../types';
+import type { Moment } from 'moment';
+import type { ClassNames, Locale, Mode } from '../types';
 import type { BaseSyntheticEvent } from 'react';
 
 interface Props {
@@ -27,9 +27,8 @@ interface Props {
   pastSearchFriendly?: boolean;
   smartMode?: boolean;
   cellFocusedCallback: (date: Moment) => void;
-  local: Locale;
-  style?: Style;
-  darkMode?: boolean;
+  locale: Locale;
+  classNames?: ClassNames;
 }
 
 interface State {
@@ -85,9 +84,9 @@ export default class Calendar extends React.Component<Props, State> {
     });
   }
 
-  createMonths(local: Locale) {
-    if (local && local.months) {
-      return local.months;
+  createMonths(locale: Locale) {
+    if (locale && locale.months) {
+      return locale.months;
     }
     let months = [
       'January',
@@ -119,15 +118,15 @@ export default class Calendar extends React.Component<Props, State> {
     isNextChange: boolean
   ) => {
     let years = createYears(this.props.years, this.props.descendingYears);
-    let monthLocal = this.state.month;
-    let yearLocal = this.state.year;
+    let monthLocale = this.state.month;
+    let yearLocale = this.state.year;
 
     let newMonthYear = { monthLocal: 0, yearLocal: 0 };
     if (isPreviousChange) {
-      newMonthYear = this.getPreviousMonth(monthLocal, yearLocal, years);
+      newMonthYear = this.getPreviousMonth(monthLocale, yearLocale, years);
     }
     if (isNextChange) {
-      newMonthYear = this.getNextMonth(monthLocal, yearLocal, years);
+      newMonthYear = this.getNextMonth(monthLocale, yearLocale, years);
     }
 
     this.setState({
@@ -136,33 +135,33 @@ export default class Calendar extends React.Component<Props, State> {
     });
   };
 
-  getPreviousMonth(monthLocal: number, yearLocal: number, years: number[]) {
-    let isStartOfMonth = monthLocal === 0;
-    let isFirstYear = yearLocal === years[0];
+  getPreviousMonth(monthLocale: number, yearLocale: number, years: number[]) {
+    let isStartOfMonth = monthLocale === 0;
+    let isFirstYear = yearLocale === years[0];
 
     if (!(isStartOfMonth && isFirstYear)) {
-      if (monthLocal === 0) {
-        monthLocal = 11;
-        yearLocal -= 1;
+      if (monthLocale === 0) {
+        monthLocale = 11;
+        yearLocale -= 1;
       } else {
-        monthLocal -= 1;
+        monthLocale -= 1;
       }
     }
-    return { monthLocal, yearLocal };
+    return { monthLocal: monthLocale, yearLocal: yearLocale };
   }
 
-  getNextMonth(monthLocal: number, yearLocal: number, years: number[]) {
-    let isEndOfMonth = monthLocal === 11;
-    let isLastYear = yearLocal === years[years.length - 1];
+  getNextMonth(monthLocale: number, yearLocale: number, years: number[]) {
+    let isEndOfMonth = monthLocale === 11;
+    let isLastYear = yearLocale === years[years.length - 1];
     if (!(isEndOfMonth && isLastYear)) {
-      if (monthLocal === 11) {
-        monthLocal = 0;
-        yearLocal += 1;
+      if (monthLocale === 11) {
+        monthLocale = 0;
+        yearLocale += 1;
       } else {
-        monthLocal += 1;
+        monthLocale += 1;
       }
     }
-    return { monthLocal, yearLocal };
+    return { monthLocal: monthLocale, yearLocal: yearLocale };
   }
 
   changeYearCallback = (event: BaseSyntheticEvent) => {
@@ -170,15 +169,15 @@ export default class Calendar extends React.Component<Props, State> {
   };
 
   render() {
-    let months = this.createMonths(this.props.local);
+    let months = this.createMonths(this.props.locale);
     let years = createYears(this.props.years, this.props.descendingYears);
     let headers = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
     let sundayFirst = false;
-    if (this.props.local) {
-      if (this.props.local.days) {
-        headers = this.props.local.days;
+    if (this.props.locale) {
+      if (this.props.locale.days) {
+        headers = this.props.locale.days;
       }
-      if (this.props.local.sundayFirst) {
+      if (this.props.locale.sundayFirst) {
         sundayFirst = true;
         const lastDay = headers.pop();
         if (lastDay !== undefined) {
@@ -203,7 +202,6 @@ export default class Calendar extends React.Component<Props, State> {
           changeMonthCallback={this.changeMonthCallback}
           changeYearCallback={this.changeYearCallback}
           changeMonthArrowsCallback={this.changeMonthArrowsCallback}
-          darkMode={this.props.darkMode}
         />
         <CalendarHeader headers={headers} />
         <CalendarRows
@@ -220,8 +218,7 @@ export default class Calendar extends React.Component<Props, State> {
           focusDate={this.props.focusDate}
           cellFocusedCallback={this.props.cellFocusedCallback}
           smartMode={this.props.smartMode}
-          style={this.props.style}
-          darkMode={this.props.darkMode}
+          classNames={this.props.classNames}
         />
       </div>
     );

@@ -1,16 +1,16 @@
 import React from 'react';
 import RangeButton from './RangeButton';
 
-import type { PresetDateRanges, Style } from '../types';
+import type { ClassNames, PresetDateRanges } from '../types';
+import { clsx } from 'clsx';
 
 interface Props {
   ranges: PresetDateRanges;
-  screenWidthToTheRight: number;
   selectedRange: number;
   rangeSelectedCallback: (index: number, value: keyof PresetDateRanges) => void;
-  style?: Style
   noMobileMode?: boolean;
   forceMobileMode?: boolean;
+  classNames?: ClassNames;
 }
 
 interface State {
@@ -71,7 +71,12 @@ export default class Ranges extends React.Component<Props, State> {
   render() {
     // Map the range index and object name and value to a range button
     return (
-      <div className="flex flex-col gap-2">
+      <div
+        className={clsx(
+          'flex flex-col gap-2',
+          this.props.classNames?.rangesContainer
+        )}
+      >
         {Object.keys(this.props.ranges).map((range, i) => (
           <RangeButton
             key={i}
@@ -84,7 +89,7 @@ export default class Ranges extends React.Component<Props, State> {
             viewingIndexChangeCallback={this.viewingIndexChangeCallback}
             focused={this.state.focused}
             setFocusedCallback={this.setFocusedCallback}
-            style={this.props.style}
+            classNames={this.props.classNames}
           />
         ))}
       </div>

@@ -4,9 +4,10 @@ This is a feature rich React date-time picker component built with **React 18** 
 
 - ✅ Selection of date ranges
 - ✅ Selection of times for the selected range
-- ✅ Personalized range presets for faster selection (e.g.: Yesterday, last months etc.)
+- ✅ Customizable range presets for faster selection (e.g.: Yesterday, last months etc.)
 - ✅ Keyboard navigation for accessibility
 - ✅ TypeScript support
+- ✅ Out of the box Dark Mode support
 
 This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepicker) with **significant alterations** including:
 
@@ -38,6 +39,8 @@ This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react
 - [Component Props](#component-props)
 - [Development](#development)
 - [Production](#production)
+- [Breaking changes in v2](#breaking-changes-in-v2)
+  * [Upgrading from `1.x.x to ` to `2.x.x`](#upgrading-from-1xx-to--to-2xx)
 - [Roadmap](#roadmap)
 - [License](#license)
 
@@ -84,7 +87,7 @@ import 'react-tailwindcss-datetimepicker/style.css'
 ```ts
 import { useState } from 'react';
 import DateTimePicker from 'react-tailwindcss-datetimepicker';
-import moment, { type Moment } from 'moment-timezone';
+import moment, { type Moment } from 'moment';
 
 function App() {
   const start = moment(new Date());
@@ -103,7 +106,7 @@ function App() {
       }}
       start={range.start}
       end={range.end}
-      local={{
+      locale={{
         format: 'DD-MM-YYYY HH:mm',
         sundayFirst: false,
       }}
@@ -130,7 +133,7 @@ export default App;
 ```tsx
 import React from 'react';
 import DateTimePicker from 'react-tailwindcss-datetimepicker';
-import moment, { type Moment } from 'moment-timezone';
+import moment, { type Moment } from 'moment';
 
 class App extends React.Component {
   constructor(props) {
@@ -163,7 +166,7 @@ class App extends React.Component {
       Today: [moment(start), moment(end)],
       '1 Month': [moment(start).subtract(1, 'months'), moment(end)],
     };
-    const local = {
+    const locale = {
       format: 'DD-MM-YYYY HH:mm',
       sundayFirst: false,
     };
@@ -173,7 +176,7 @@ class App extends React.Component {
         ranges={ranges}
         start={this.state.start}
         end={this.state.end}
-        local={local}
+        locale={locale}
         maxDate={maxDate}
         applyCallback={this.applyCallback}
       >
@@ -201,7 +204,7 @@ export default App;
 | [`ranges`](#ranges)                         | **Required** | `Object`      | `undefined`  | A record of ranges defined using a tuple of Moment times.                      |
 | [`start`](#start)                           | **Required** | `Moment Date` | `undefined`  | Initial start Date set in the picker                                           |
 | [`end`](#end)                               | **Required** | `Moment Date` | `undefined`  | Initial end Date set in the picker                                             |
-| [`local`](#local)                           | **Required** | `Object`      | `undefined`  | locale format for date labels                                                  |
+| [`locale`](#locale)                         | **Required** | `Object`      | `undefined`  | locale format for date labels                                                  |
 | [`applyCallback`](#applycallback)           | **Required** | `Function`    | `null`       | Function which is called when the apply button is clicked                      |
 | [`rangeCallback`](#rangecallback)           | optional     | `Function`    | `null`       | Function which is called when one of the preset ranges is clicked              |
 | [`maxDate`](#maxdate)                       | optional     | `Moment Date` | `undefined`  | Maximum date that can be selected in calendar                                  |
@@ -210,13 +213,14 @@ export default App;
 | [`years`](#years)                           | optional     | `Array`       | `[1900, now]`| Limit the years shown in calendar                                              |
 | [`smartMode`](#smartmode)                   | optional     | `Boolean`     | `false`      | Switch the month on the right hand side (RHS) when two dates in the same month |
 | [`pastSearchFriendly`](#pastsearchfriendly) | optional     | `Boolean`     | `false`      | Optimize calendar for past searches                                            |
-| [`darkMode`](#darkmode)                     | optional     | `Boolean`     | `false`      | Changes UI to dark                                                             |
 | [`noMobileMode`](#nomobilemode)             | optional     | `Boolean`     | `false`      | Picker will always be displayed in full screen mode                            |
 | [`forceMobileMode`](#forcemobilemode)       | optional     | `Boolean`     | `false`      | Picker will always be displayed in condensed mode all the time                 |
 | [`twelveHoursClock`](#twelvehoursclock)     | optional     | `Boolean`     | `false`      | Display time values in a 12-hour format rather than a 24-hour format           |
 | [`standalone`](#standalone)                 | optional     | `Boolean`     | `false`      | When set the picker will be open by default                                    |
 | [`leftMode`](#leftmode)                     | optional     | `Boolean`     | `false`      | Picker will open to the left                                                   |
 | [`centerMode`](#centermode)                 | optional     | `Boolean`     | `false`      | Picker will open in center                                                     |
+| [`displayMaxDate`](#displaymaxdate)         | optional     | `Boolean`     | `false`      | Will display Max Date in picker footer                                         |
+| [`classNames`](#classnames)             | optional     | `Object`      | `undefined`  | Will override classNames for different parts of the picker
 
 ### `ranges`
 
@@ -250,7 +254,7 @@ Initial start Date set in the picker
 
 Initial end Date set in the picker
 
-### `local`
+### `locale`
 
 (Required)
 
@@ -361,12 +365,6 @@ Changes the mode of the date time picker to be optimised for past searches. Wher
 
 This setting is `false` by default meaning that the LHS is used when dates are selected in the same month & year
 
-### `darkMode`
-
-(optional) `boolean` defaults to `false`
-
-Changes the DateTimePicker to be in Dark Mode.
-
 ### `noMobileMode`
 
 (optional) `boolean` defaults to `false`
@@ -375,7 +373,7 @@ When set the mobile breakpoint to be ignored. Picker will always be displayed in
 
 ### `forceMobileMode`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
 When set the mobile breakpoint to be ignored. Picker will always be displayed in condensed mode all the time.
 
@@ -387,21 +385,60 @@ When enabled, the picker will display time values in a 12-hour format rather tha
 
 ### `standalone`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
 When set the picker will be open by default.
 
 ### `leftMode`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `true`
 
 When set and changed the picker will open to the left (right to left) instead of the default which is to open to the right (left to right)
 
 ### `centerMode`
 
-(optional) `boolean`
+(optional) `boolean` defaults to `false`
 
 To allow flexibility, center mode has been added where leftMode or default is not enough.
+
+### `displayMaxDate`
+
+(optional) `boolean` defaults to `false`
+
+To allow flexibility, center mode has been added where leftMode or default is not enough.
+
+### `classNames`
+
+(optional) `object`
+
+Will add extra classNames to different parts of the picker. It's great for for tailoring the component to match your preferred look and feel. The object has the following keys:
+- `rootContainer`
+- `rangesContainer`
+- `rangeButtonDefault`
+- `rangeButtonSelected`
+- `fromToRangeContainer`
+- `normalCell`
+- `normalCellHove`
+- `greyCel`
+- `invalidCel`
+- `startCel`
+- `endCel`
+- `withinRangeCel`
+- `startDot`
+- `endDot`
+- `footerContainer`
+- `applyButton`
+- `cancelButton`
+
+By providing CSS `className`(s) for these keys, you can customize/override them.
+
+**Note:** If you're already using TailwindCSS in your project, you can use the `!` operand for overriding an already exisiting className. (Just like `!important` in regular CSS) For example:
+```tsx
+classNames={{
+  rootContainer: '!bg-red-700'
+}}
+```
+
 
 ## Development
 Runs the app in the development mode.
@@ -422,10 +459,17 @@ npm run build
 
 Builds the app for production to the `/dist` folder using vite's [library mode](https://vitejs.dev/guide/build.html#library-mode). Type declarations are also created in the same directory.
 
+## Breaking changes in v2
+If you're upgrading from `1.x.x to ` to `2.x.x`:
+- `local` prop has been renamed to [`locale`](#locale)
+- `style` prop has been removed in favor of [`classNames`](#classnames)
+- `darkMode` prop has been removed. All UI elements of the picker now have dark styles defined for them. If you add `className=dark` to your `<body>` tag (or any other parent element of it), dark mode will be automatically turned on.
+
+
 ## Roadmap
 
 - [x] Support TypeScript
-- [ ] The ability to add custom CSS classes for different parts of the component
+- [x] Ability to add custom CSS classes for different parts of the component
 - [ ] Migrate to [date-fns](https://www.npmjs.com/package/date-fns)
 - [ ] Write more tests
 

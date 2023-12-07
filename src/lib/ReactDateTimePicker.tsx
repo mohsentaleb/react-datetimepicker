@@ -1,18 +1,17 @@
 import React from 'react';
 import { DateTimeRangePicker } from './DateTimeRangePicker';
 import { propValidation } from './utils/PropValidation';
-import { darkTheme, lightTheme } from './utils/StyleUtils';
 import clsx from 'clsx';
 
 import type { ReactNode } from 'react';
-import type { Moment } from 'moment-timezone';
-import type { Locale, PresetDateRanges, Style } from './types';
+import type { Moment } from 'moment';
+import type { ClassNames, Locale, PresetDateRanges } from './types';
 
 export interface ReactDateTimePickerProps {
   ranges: PresetDateRanges;
   start: Moment;
   end: Moment;
-  local: Locale;
+  locale: Locale;
   applyCallback: (start: Moment, end: Moment) => void;
   rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
   maxDate?: Moment;
@@ -21,23 +20,19 @@ export interface ReactDateTimePickerProps {
   years?: [number, number];
   smartMode?: boolean;
   pastSearchFriendly?: boolean;
-  darkMode?: boolean;
   noMobileMode?: boolean;
   forceMobileMode?: boolean;
   twelveHoursClock?: boolean;
   standalone?: boolean;
   leftMode?: boolean;
   centerMode?: boolean;
-  style?: Style;
+  classNames?: ClassNames;
+  displayMaxDate?: boolean;
   children: ReactNode;
 }
 
 interface State {
   visible: boolean;
-  x: number;
-  y: number;
-  screenWidthToTheRight: number;
-  containerClassName: string;
 }
 
 export default class ReactDateTimePicker extends React.Component<
@@ -50,10 +45,6 @@ export default class ReactDateTimePicker extends React.Component<
     super(props);
     this.state = {
       visible: false,
-      x: 0,
-      y: 0,
-      screenWidthToTheRight: 0,
-      containerClassName: '',
     };
     const propValidationReturn = propValidation(this.props);
     if (!propValidationReturn) {
@@ -108,46 +99,40 @@ export default class ReactDateTimePicker extends React.Component<
         ranges={this.props.ranges}
         start={this.props.start}
         end={this.props.end}
-        local={this.props.local}
+        locale={this.props.locale}
         applyCallback={this.props.applyCallback}
         rangeCallback={this.props.rangeCallback}
         autoApply={this.props.autoApply}
         changeVisibleState={this.changeVisibleState}
-        screenWidthToTheRight={this.state.screenWidthToTheRight}
         maxDate={this.props.maxDate}
         descendingYears={this.props.descendingYears}
         years={this.props.years}
         pastSearchFriendly={this.props.pastSearchFriendly}
         smartMode={this.props.smartMode}
-        style={this.props.style}
-        darkMode={this.props.darkMode}
         noMobileMode={this.props.noMobileMode}
         forceMobileMode={this.props.forceMobileMode}
         standalone={this.props.standalone}
         twelveHoursClock={this.props.twelveHoursClock == true}
+        classNames={this.props.classNames}
+        displayMaxDate={this.props.displayMaxDate}
       />
     );
   }
 
   render() {
-    let theme = this.props.darkMode ? darkTheme : lightTheme;
-
     // Special standalone render
-    if (
-      this.props.standalone &&
-      this.props.style &&
-      this.props.style.standaloneLayout
-    ) {
+    if (this.props.standalone) {
       return (
         <div
+          id="datepicker-container-standalone"
           className={clsx(
-            'mt-[1px] flex max-w-2xl flex-col rounded border border-gray-100 bg-white p-1 text-inherit shadow-lg',
+            'flex max-w-2xl flex-col rounded border border-gray-100 bg-white shadow-lg dark:border-none dark:bg-slate-700 dark:text-white',
             {
               '!flex-col': this.props.forceMobileMode,
               '!flex-row': this.props.noMobileMode,
-            }
+            },
+            this.props.classNames?.rootContainer
           )}
-          style={this.props.style.standaloneLayout}
         >
           {this.renderPicker()}
         </div>
@@ -156,7 +141,7 @@ export default class ReactDateTimePicker extends React.Component<
 
     return (
       <div
-        id="DateRangePickerContainer"
+        id="datepicker-container"
         className="relative"
         onClick={this.onClickContainerHandler}
         ref={(container) => {
@@ -164,14 +149,12 @@ export default class ReactDateTimePicker extends React.Component<
         }}
       >
         {this.props.children && (
-          <div id="DateRangePickerChildren">
-            {this.props.children}
-          </div>
+          <div id="datepicker-children">{this.props.children}</div>
         )}
         <div
-          id="daterangepicker"
+          id="datepicker"
           className={clsx(
-            'absolute top-10 z-20 mt-[1px] max-w-2xl rounded border border-gray-100 bg-white text-inherit shadow-lg',
+            'absolute top-full z-20 mt-[1px] w-full max-w-2xl rounded border border-gray-100 bg-white shadow-lg dark:border-none dark:bg-slate-700 dark:text-white',
             {
               'right-0': this.props.leftMode,
               'left-1/2': this.props.centerMode,
@@ -179,9 +162,9 @@ export default class ReactDateTimePicker extends React.Component<
               '!flex-col': this.props.forceMobileMode,
               '!flex-row': this.props.noMobileMode, // If no mobile mode prop not set then allow mobile mode
               hidden: !this.state.visible,
-            }
+            },
+            this.props.classNames?.rootContainer
           )}
-          style={{ ...theme }}
         >
           {this.renderPicker()}
         </div>

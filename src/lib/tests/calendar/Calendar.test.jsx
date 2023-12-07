@@ -26,7 +26,7 @@ let ranges = {
   '90 Days': [moment(start).subtract(90, 'days'), moment(end)],
   '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
 };
-let local = {
+let locale = {
   format: 'DD-MM-YYYY HH:mm',
   sundayFirst: false,
 };
@@ -52,7 +52,7 @@ const dateTimeRangeCalendarExpectedUseStartMode = mount(
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
     smartMode
-    local={local}
+    locale={locale}
   />
 );
 
@@ -68,7 +68,7 @@ const dateTimeRangeCalendarExpectedUseEndMode = mount(
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
     smartMode
-    local={local}
+    locale={locale}
   />
 );
 
@@ -83,7 +83,7 @@ const dateTimeRangeCalendarPastFriendlyStartMode = mount(
     focusOnCallback={focusOnCallback}
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
-    local={local}
+    locale={locale}
     smartMode
     pastSearchFriendly
   />
@@ -100,7 +100,7 @@ const dateTimeRangeCalendarPastFriendlyEndMode = mount(
     focusOnCallback={focusOnCallback}
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
-    local={local}
+    locale={locale}
     smartMode
     pastSearchFriendly
   />
@@ -117,7 +117,7 @@ const dateTimeRangeCalendarSmartModeDisabledStartMode = mount(
     focusOnCallback={focusOnCallback}
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
-    local={local}
+    locale={locale}
     pastSearchFriendly
   />
 );
@@ -133,12 +133,12 @@ const dateTimeRangeCalendarSmartModeDisabledEndMode = mount(
     focusOnCallback={focusOnCallback}
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
-    local={local}
+    locale={locale}
     pastSearchFriendly
   />
 );
 
-let localUSA = {
+let localeUSA = {
   format: 'MM-DD-YYYY HH:mm',
   sundayFirst: true,
 };
@@ -154,7 +154,7 @@ const dateTimeRangeCalendarAmerican = mount(
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
     smartMode
-    local={localUSA}
+    locale={localUSA}
   />
 );
 

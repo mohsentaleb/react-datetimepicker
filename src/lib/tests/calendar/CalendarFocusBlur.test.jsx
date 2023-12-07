@@ -26,7 +26,7 @@ let ranges = {
   '90 Days': [moment(start).subtract(90, 'days'), moment(end)],
   '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
 };
-let local = {
+let locale = {
   format: 'DD-MM-YYYY HH:mm',
   sundayFirst: false,
 };
@@ -51,7 +51,7 @@ const dateTimeRangeCalendarExpectedUse = mount(
     focusOnCallback={focusOnCallback}
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
-    local={local}
+    locale={locale}
   />
 );
 

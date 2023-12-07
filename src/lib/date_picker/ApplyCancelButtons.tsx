@@ -1,34 +1,23 @@
-import React, { KeyboardEvent, KeyboardEventHandler, MouseEvent } from 'react';
+import React, { KeyboardEvent } from 'react';
 import clsx from 'clsx';
 
-import type { Moment } from 'moment-timezone';
-import { Locale } from '../types';
+import type { Moment } from 'moment';
+import { ClassNames, Locale } from '../types';
 
 interface Props {
-  local: Locale;
+  locale: Locale;
   maxDate?: Moment;
   applyCallback: () => void;
   changeVisibleState: () => void;
   autoApply?: boolean;
   standalone?: boolean;
+  displayMaxDate?: boolean;
+  classNames?: ClassNames;
 }
 
-interface State {
-  hoverColourApply: string;
-  hoverColourCancel: string;
-  applyFocus: boolean;
-  cancelFocus: boolean;
-}
-
-export default class ApplyCancelButtons extends React.Component<Props, State> {
+export default class ApplyCancelButtons extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.state = {
-      hoverColourApply: '#5cb85c',
-      hoverColourCancel: '#fff',
-      applyFocus: false,
-      cancelFocus: false,
-    };
   }
 
   cancelPressed = () => {
@@ -58,79 +47,78 @@ export default class ApplyCancelButtons extends React.Component<Props, State> {
     }
   };
 
-  renderButton(
-    className: string,
-    onClick: (e: MouseEvent) => void,
-    onKeyDown: KeyboardEventHandler<HTMLButtonElement>,
-    text: string
-  ) {
-    return (
-      <button
-        className={className}
-        type="button"
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-        tabIndex={0}
-      >
-        {text}
-      </button>
-    );
-  }
-
   getMaxDateBox() {
     if (this.props.maxDate) {
-      let label = this.props.local?.maxDate || 'Max Date';
+      let label = this.props.locale?.maxDate || 'Max Date';
       return (
         <div className="maxDateLabel p-2 text-xs">
-          {label}: {this.props.maxDate.format(this.props.local.format)}
+          {label}: {this.props.maxDate.format(this.props.locale.format)}
         </div>
       );
     }
   }
 
-  renderButtons() {
+  renderButtons = () => {
     let applyButton;
-    let closeButtonText = this.props.local?.close || 'Close';
+    let closeButtonText = this.props.locale?.close || 'Close';
 
     if (!this.props.autoApply) {
-      applyButton = this.renderButton(
-        'applyButton inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm ',
-        this.applyPressed,
-        this.applyOnKeyPress,
-        this.props.local?.apply || 'Apply'
+      applyButton = (
+        <button
+          className={clsx(
+            'applyButton inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm',
+            this.props.classNames?.applyButton
+          )}
+          type="button"
+          onClick={this.applyPressed}
+          onKeyDown={this.applyOnKeyPress}
+          tabIndex={0}
+        >
+          {this.props.locale?.apply || 'Apply'}
+        </button>
       );
-      closeButtonText = this.props.local?.cancel || 'cancel';
+      closeButtonText = this.props.locale?.cancel || 'cancel';
     }
-
-    let closeButton = this.renderButton(
-      'cancelButton mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm',
-      this.cancelPressed,
-      this.cancelOnKeyPress,
-      closeButtonText
+    const closeButton = (
+      <button
+        className={clsx(
+          'cancelButton mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-slate-500 dark:hover:dark:bg-slate-400 dark:border-transparent dark:text-white sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm',
+          this.props.classNames?.cancelButton
+        )}
+        type="button"
+        onClick={this.applyPressed}
+        onKeyDown={this.applyOnKeyPress}
+        tabIndex={0}
+      >
+        {closeButtonText}
+      </button>
     );
+
     return (
       <>
         {applyButton}
         {!this.props.standalone ? closeButton : null}
       </>
     );
-  }
+  };
 
   render() {
-    let maxDateBox = this.getMaxDateBox();
-    let buttons = this.renderButtons();
+    const maxDateBox = this.getMaxDateBox();
+    const buttons = this.renderButtons();
 
     return (
       <div
-        id="buttonContainer"
-        className={clsx('buttonContainer', {
-          'float-right': this.props.standalone,
-          'bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:items-center sm:px-6':
-            !this.props.standalone,
-        })}
+        id="datepicker-footer"
+        className={clsx(
+          'rounded-b bg-gray-50 p-3 dark:bg-slate-600 sm:flex sm:flex-row-reverse sm:items-center',
+          {
+            'float-right': this.props.standalone,
+          },
+          this.props.classNames?.footerContainer
+        )}
       >
         {buttons}
-        {maxDateBox}
+        {this.props.displayMaxDate && maxDateBox}
       </div>
     );
   }

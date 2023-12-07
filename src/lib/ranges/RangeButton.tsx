@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import type { PresetDateRanges } from '../types';
+import type { ClassNames, PresetDateRanges } from '../types';
 
 interface Props {
   selectedRange: number;
@@ -11,7 +11,7 @@ interface Props {
   viewingIndex: number;
   label: string;
   focused: boolean[];
-  style?: React.CSSProperties;
+  classNames?: ClassNames;
 }
 
 interface State {
@@ -78,8 +78,13 @@ export default class RangeButton extends React.Component<Props, State> {
   }
 
   render() {
-    let isViewingIndex = this.props.viewingIndex === this.props.index;
     let tabIndex;
+    const isViewingIndex = this.props.viewingIndex === this.props.index;
+
+    const buttonIsSelected =
+      this.props.focused[this.props.index] ||
+      this.props.index === this.props.selectedRange;
+
     if (isViewingIndex) {
       tabIndex = 0;
     } else {
@@ -95,14 +100,14 @@ export default class RangeButton extends React.Component<Props, State> {
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         tabIndex={tabIndex}
-        className={clsx(
-          'rangebuttontextstyle whitespace-nowrap rounded bg-gray-50 px-3 py-1 text-sm text-sky-600 hover:bg-sky-700 hover:text-white',
-          {
-            '!bg-sky-600 !text-white hover:!bg-sky-600 hover:!text-white':
-              this.props.focused[this.props.index] ||
-              this.props.index === this.props.selectedRange,
-          }
-        )}
+        className={clsx('whitespace-nowrap rounded px-3 py-1 text-sm', {
+          'bg-sky-600 text-white hover:bg-sky-600 hover:text-white':
+            buttonIsSelected,
+          'bg-gray-50 text-sky-600 hover:bg-sky-700 hover:text-white dark:bg-slate-600 dark:hover:bg-slate-500 dark:text-white':
+            !buttonIsSelected,
+          [this.props.classNames?.rangeButtonSelected || '']: buttonIsSelected,
+          [this.props.classNames?.rangeButtonDefault || '']: !buttonIsSelected,
+        })}
         onMouseDown={() => {
           this.props.rangeSelectedCallback(this.props.index, this.props.label);
           this.onFocus();
@@ -113,4 +118,3 @@ export default class RangeButton extends React.Component<Props, State> {
     );
   }
 }
-

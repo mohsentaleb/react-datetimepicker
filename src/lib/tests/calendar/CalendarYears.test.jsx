@@ -27,7 +27,7 @@ let ranges = {
   '90 Days': [moment(start).subtract(90, 'days'), moment(end)],
   '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
 };
-let local = {
+let locale = {
   format: 'DD-MM-YYYY HH:mm',
   sundayFirst: false,
 };
@@ -52,7 +52,7 @@ const dateTimeRangeCalendar = mount(
     focusOnCallback={focusOnCallback}
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
-    local={local}
+    locale={locale}
   />
 );
 
@@ -68,7 +68,7 @@ const dateTimeRangeCalendarDescendingFirst = mount(
     focusDate={focusDate}
     cellFocusedCallback={cellFocusedCallback}
     descendingYears
-    local={local}
+    locale={locale}
   />
 );
 
@@ -84,7 +84,7 @@ const dateTimeRangeContainer = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
   >
     <FormControl
@@ -101,7 +101,7 @@ const dateTimeRangeContainerDescendingYears = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
     descendingYears
   >
@@ -121,7 +121,7 @@ const dateTimeRangeContainerCustomYears = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
     years={customYears}
   >
@@ -139,7 +139,7 @@ const dateTimeRangeContainerCustomDescendingYears = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
     descendingYears
     years={customYears}

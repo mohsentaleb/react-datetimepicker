@@ -1,10 +1,10 @@
 import React from 'react';
-import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
 import ChevronRightIcon from '../icons/chevron-right.svg?react';
 import ChevronLeftIcon from '../icons/chevron-left.svg?react';
 import { Mode } from '../types';
 import type { BaseSyntheticEvent } from 'react';
+import clsx from 'clsx';
 
 interface Props {
   months: string[];
@@ -17,7 +17,6 @@ interface Props {
     isPreviousChange: boolean,
     isNextChange: boolean
   ) => void;
-  darkMode?: boolean;
   mode: Mode;
 }
 
@@ -73,11 +72,6 @@ export default class MonthYearSelector extends React.Component<Props, State> {
   render() {
     let months = this.createCalendarMonths(this.props.months);
     let years = this.createYears(this.props.years);
-    let theme = this.props.darkMode ? darkTheme : lightTheme;
-    let monthFocusStyle = {};
-    monthFocusStyle = addFocusStyle(this.state.monthFocus, monthFocusStyle);
-    let yearFocusStyle = {};
-    yearFocusStyle = addFocusStyle(this.state.yearFocus, yearFocusStyle);
 
     return (
       <div className="m-1 mt-2 flex items-center">
@@ -88,33 +82,33 @@ export default class MonthYearSelector extends React.Component<Props, State> {
           />
         </div>
         <div
-          className="grow"
+          className={clsx('grow', {
+            'ring-2 ring-offset-2': this.state.monthFocus,
+          })}
           onFocus={this.monthFocus}
           onBlur={this.monthBlur}
-          style={monthFocusStyle}
         >
           <select
             id={'MonthSelector_' + this.props.mode}
             value={this.props.months[this.props.month]}
             onChange={this.props.changeMonthCallback}
-            style={theme}
-            className="rounded border border-gray-200 p-1"
+            className="rounded border border-gray-200 p-1 dark:border-slate-500 dark:bg-slate-600"
           >
             {months}
           </select>
         </div>
         <div
-          className="grow"
+          className={clsx('grow', {
+            'ring-2 ring-offset-2': this.state.yearFocus,
+          })}
           onFocus={this.yearFocus}
           onBlur={this.yearBlur}
-          style={yearFocusStyle}
         >
           <select
             id={'YearSelector_' + this.props.mode}
             value={this.props.year}
             onChange={this.props.changeYearCallback}
-            style={theme}
-            className="rounded border border-gray-200 p-1"
+            className="rounded border border-gray-200 p-1 dark:border-slate-500 dark:bg-slate-600"
           >
             {years}
           </select>

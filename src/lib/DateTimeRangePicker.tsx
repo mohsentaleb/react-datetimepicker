@@ -6,8 +6,13 @@ import { isValidTimeChange } from './utils/TimeFunctionUtils';
 import { datePicked, pastMaxDate } from './utils/DateSelectedUtils';
 import ApplyCancelButtons from './date_picker/ApplyCancelButtons';
 
-import type { Moment } from 'moment-timezone';
-import type { Locale, Mode, PresetDateRanges, Style } from './types';
+import type { Moment } from 'moment';
+import type {
+  Locale,
+  Mode,
+  PresetDateRanges,
+  ClassNames,
+} from './types';
 
 export const ModeEnum = Object.freeze({ start: 'start', end: 'end' });
 export let momentFormat = 'DD-MM-YYYY HH:mm';
@@ -16,7 +21,7 @@ interface Props {
   ranges: PresetDateRanges;
   start: Moment;
   end: Moment;
-  local: Locale;
+  locale: Locale;
   applyCallback: (start: Moment, end: Moment) => void;
   rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
   autoApply?: boolean;
@@ -26,14 +31,13 @@ interface Props {
   pastSearchFriendly?: boolean;
   smartMode?: boolean;
   changeVisibleState: () => void;
-  screenWidthToTheRight: number;
-  style?: Style;
-  darkMode?: boolean;
   noMobileMode?: boolean;
   forceMobileMode?: boolean;
   standalone?: boolean;
   twelveHoursClock?: boolean;
   selectedRange?: number;
+  classNames?: ClassNames;
+  displayMaxDate?: boolean;
 }
 
 interface State {
@@ -54,13 +58,13 @@ class DateTimeRangePicker extends React.Component<Props, State> {
     let ranges = {} as PresetDateRanges;
     let customRange = { 'Custom Range': 'Custom Range' };
     Object.assign(ranges, this.props.ranges, customRange);
-    let localMomentFormat = `DD-MM-YYYY ${
+    let localeMomentFormat = `DD-MM-YYYY ${
       this.props.twelveHoursClock ? 'h:mm A' : 'HH:mm'
     }`;
 
-    if (this.props.local && this.props.local.format) {
-      momentFormat = this.props.local.format;
-      localMomentFormat = this.props.local.format;
+    if (this.props.locale && this.props.locale.format) {
+      momentFormat = this.props.locale.format;
+      localeMomentFormat = this.props.locale.format;
     }
 
     this.state = {
@@ -68,11 +72,11 @@ class DateTimeRangePicker extends React.Component<Props, State> {
       selectingModeFrom: true,
       ranges: ranges,
       start: this.props.start,
-      startLabel: this.props.start?.format(localMomentFormat),
+      startLabel: this.props.start?.format(localeMomentFormat),
       end: this.props.end,
-      endLabel: this.props.end?.format(localMomentFormat),
+      endLabel: this.props.end?.format(localeMomentFormat),
       focusDate: false,
-      momentFormat: localMomentFormat,
+      momentFormat: localeMomentFormat,
     };
   }
 
@@ -204,7 +208,7 @@ class DateTimeRangePicker extends React.Component<Props, State> {
     let isSelectingModeFrom;
     if (this.props.smartMode) {
       isSelectingModeFrom = this.state.selectingModeFrom;
-    } else if (cellMode === ModeEnum.start) {
+    } else if (cellMode === 'start') {
       isSelectingModeFrom = true;
     } else {
       isSelectingModeFrom = false;
@@ -536,14 +540,14 @@ class DateTimeRangePicker extends React.Component<Props, State> {
     }
   };
 
-  renderStartDate(local: Locale) {
-    let label = local && local.fromDate ? local.fromDate : 'From Date';
+  renderStartDate(locale: Locale) {
+    let label = locale && locale.fromDate ? locale.fromDate : 'From Date';
     return (
       <DatePicker
         label={label}
         date={this.state.start}
         otherDate={this.state.end}
-        mode={ModeEnum.start}
+        mode="start"
         dateSelectedNoTimeCallback={this.dateSelectedNoTimeCallback}
         timeChangeCallback={this.timeChangeCallback}
         dateTextFieldCallback={this.dateTextFieldCallback}
@@ -556,26 +560,25 @@ class DateTimeRangePicker extends React.Component<Props, State> {
         selectingModeFrom={this.state.selectingModeFrom}
         changeSelectingModeCallback={this.changeSelectingModeCallback}
         maxDate={this.props.maxDate}
-        local={this.props.local}
+        locale={this.props.locale}
         descendingYears={this.props.descendingYears}
         years={this.props.years}
         pastSearchFriendly={this.props.pastSearchFriendly}
         smartMode={this.props.smartMode}
-        style={this.props.style}
-        darkMode={this.props.darkMode}
         twelveHoursClock={this.props.twelveHoursClock}
+        classNames={this.props.classNames}
       />
     );
   }
 
-  renderEndDate(local: Locale) {
-    let label = local && local.toDate ? local.toDate : 'To Date';
+  renderEndDate(locale: Locale) {
+    let label = locale && locale.toDate ? locale.toDate : 'To Date';
     return (
       <DatePicker
         label={label}
         date={this.state.end}
         otherDate={this.state.start}
-        mode={ModeEnum.end}
+        mode="end"
         dateSelectedNoTimeCallback={this.dateSelectedNoTimeCallback}
         timeChangeCallback={this.timeChangeCallback}
         dateTextFieldCallback={this.dateTextFieldCallback}
@@ -588,14 +591,13 @@ class DateTimeRangePicker extends React.Component<Props, State> {
         selectingModeFrom={this.state.selectingModeFrom}
         changeSelectingModeCallback={this.changeSelectingModeCallback}
         maxDate={this.props.maxDate}
-        local={this.props.local}
+        locale={this.props.locale}
         descendingYears={this.props.descendingYears}
         years={this.props.years}
         pastSearchFriendly={this.props.pastSearchFriendly}
         smartMode={this.props.smartMode}
-        style={this.props.style}
-        darkMode={this.props.darkMode}
         twelveHoursClock={this.props.twelveHoursClock}
+        classNames={this.props.classNames}
       />
     );
   }
@@ -603,29 +605,28 @@ class DateTimeRangePicker extends React.Component<Props, State> {
   render() {
     return (
       <>
-        <div className="flex flex-col gap-2 p-1 md:flex-row">
+        <div className="flex flex-col gap-2 p-2 md:flex-row">
           <Ranges
             ranges={this.state.ranges}
             selectedRange={this.state.selectedRange}
             rangeSelectedCallback={this.rangeSelectedCallback}
-            screenWidthToTheRight={this.props.screenWidthToTheRight}
-            style={this.props.style}
             noMobileMode={this.props.noMobileMode}
             forceMobileMode={this.props.forceMobileMode}
+            classNames={this.props.classNames}
           />
-          {this.renderStartDate(this.props.local)}
-          {this.renderEndDate(this.props.local)}
+          {this.renderStartDate(this.props.locale)}
+          {this.renderEndDate(this.props.locale)}
         </div>
-        <div>
-          <ApplyCancelButtons
-            changeVisibleState={this.props.changeVisibleState}
-            applyCallback={this.applyCallback}
-            local={this.props.local}
-            maxDate={this.props.maxDate}
-            autoApply={this.props.autoApply}
-            standalone={this.props.standalone}
-          />
-        </div>
+        <ApplyCancelButtons
+          changeVisibleState={this.props.changeVisibleState}
+          applyCallback={this.applyCallback}
+          locale={this.props.locale}
+          maxDate={this.props.maxDate}
+          autoApply={this.props.autoApply}
+          standalone={this.props.standalone}
+          displayMaxDate={this.props.displayMaxDate}
+          classNames={this.props.classNames}
+        />
       </>
     );
   }

@@ -1,5 +1,4 @@
 import moment, { type Moment } from 'moment';
-import { ModeEnum } from '../DateTimeRangePicker';
 import { Mode } from '../types';
 
 export const generateHours = () => {
@@ -40,7 +39,7 @@ function workOutMonthYear(
   // have "end"/right as the month and "start"/left as -1 month
   else if (
     date.year() === secondDate.year() &&
-    mode === ModeEnum.start &&
+    mode === 'start' &&
     pastSearchFriendly &&
     smartMode
   ) {
@@ -53,7 +52,7 @@ function workOutMonthYear(
   // have "end"/right as the month and "start"/left as +1 month
   else if (
     date.year() === secondDate.year() &&
-    mode === ModeEnum.end &&
+    mode === 'end' &&
     !pastSearchFriendly &&
     smartMode
   ) {
@@ -216,82 +215,3 @@ export const isValidTimeChange = (
     mode === 'end' && date.isSameOrAfter(start);
   return modeStartAndDateSameOrBeforeStart || modeEndAndDateSameOrAfterEnd;
 };
-
-export const startDateStyle = () => ({
-  borderRadius: '4px 0 0 4px',
-  borderColour: 'transparent',
-  color: '#fff',
-  backgroundColor: '#357abd',
-  cursor: 'pointer',
-});
-
-export const endDateStyle = () => ({
-  borderRadius: '0 4px 4px 0',
-  borderColour: 'transparent',
-  color: '#fff',
-  backgroundColor: '#357abd',
-  cursor: 'pointer',
-});
-
-export const inBetweenStyle = () => ({
-  borderRadius: '0',
-  borderColour: 'transparent',
-  color: '#000',
-  backgroundColor: '#ebf4f8',
-  cursor: 'pointer',
-});
-
-export const normalCellStyle = (darkMode?: boolean) => {
-  let color = darkMode ? 'white' : 'black';
-  return {
-    borderRadius: '0 0 0 0',
-    borderColour: 'transparent',
-    color: color,
-    backgroundColor: '',
-  };
-};
-
-export const hoverCellStyle = (between: boolean, darkMode?: boolean) => {
-  let borderRadius = '4px 4px 4px 4px';
-  let color = darkMode ? 'white' : 'black';
-  let backgroundColor = darkMode ? 'rgb(53, 122, 189)' : '#eee';
-  if (between) {
-    borderRadius = '0 0 0 0';
-  }
-  return {
-    borderRadius: borderRadius,
-    borderColour: 'transparent',
-    color: color,
-    backgroundColor: backgroundColor,
-    cursor: 'pointer',
-  };
-};
-
-export const greyCellStyle = (darkMode?: boolean) => {
-  let color = darkMode ? '#ffffff' : '#999';
-  let backgroundColor = darkMode ? '#777777' : '#fff';
-  let opacity = darkMode ? '0.5' : '0.25';
-  let borderRadius = '4px 4px 4px 4px';
-  return {
-    borderRadius: borderRadius,
-    borderColour: 'transparent',
-    color: color,
-    backgroundColor: backgroundColor,
-    cursor: 'pointer',
-    opacity: opacity,
-  };
-};
-
-export const invalidStyle = (darkMode?: boolean) => {
-  let style = greyCellStyle(darkMode);
-  style.cursor = 'not-allowed';
-  return style;
-};
-
-export const rangeButtonSelectedStyle = () => ({
-  backgroundColor: '#08c',
-});
-
-export const rangeButtonStyle = () => ({
-  backgroundColor: '#f5f5f5',
-});

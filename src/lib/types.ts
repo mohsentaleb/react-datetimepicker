@@ -1,5 +1,4 @@
-import type { Moment } from 'moment-timezone';
-import type { CSSProperties } from 'react';
+import type { Moment } from 'moment';
 
 const customRange = { 'Custom Range': 'Custom Range' } as const;
 export type PresetDateRanges = Record<string, [Moment, Moment]> &
@@ -33,22 +32,25 @@ export type Locale = {
   cancel?: string;
 };
 
-export type Style = {
-  hoverCell?: boolean;
-  borderRadius: string;
-  borderColour: string;
-  color: string;
-  backgroundColor: string;
-  cursor?: string;
-  opacity?: string;
-  fromDate?: React.CSSProperties;
-  toDate?: React.CSSProperties;
-  betweenDates?: React.CSSProperties;
-  toDot?: React.CSSProperties;
-  fromDot?: React.CSSProperties;
-  customRangeButtons?: React.CSSProperties;
-  customRangeSelected?: React.CSSProperties;
-  standaloneLayout?: CSSProperties;
+export type ClassNames = {
+  rootContainer?: string;
+  rangesContainer?: string;
+  rangeButtonDefault?: string;
+  rangeButtonSelected?: string;
+  fromToRangeContainer?: string;
+  normalCell?: string;
+  normalCellHover?: string
+  greyCell?: string
+  invalidCell?: string
+  startCell?: string
+  endCell?: string
+  withinRangeCell?: string
+  startDot?: string;
+  endDot?: string;
+  footerContainer?: string;
+  applyButton?: string;
+  cancelButton?: string;
+
 };
 
 export type Mode = 'start' | 'end';

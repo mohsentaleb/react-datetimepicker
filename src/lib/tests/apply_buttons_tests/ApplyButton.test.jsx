@@ -32,7 +32,7 @@ let ranges = {
   '90 Days': [moment(start).subtract(90, 'days'), moment(end)],
   '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
 };
-let local = {
+let locale = {
   format: 'DD-MM-YYYY HH:mm',
   sundayFirst: false,
 };
@@ -47,7 +47,7 @@ const dateTimeRangeContainer = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
   >
     <FormControl
@@ -63,7 +63,7 @@ let dateTimeRangeContainerAutoApply = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
     autoApply
   >
@@ -81,7 +81,7 @@ let dateTimeRangeContainerSmartModeAutoApply = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
     autoApply
     smartMode
@@ -275,7 +275,7 @@ describe('Apply Button Tests Auto Apply Parameter', () => {
         ranges={ranges}
         start={start}
         end={end}
-        local={local}
+        locale={locale}
         applyCallback={applyCallback}
         autoApply
       >
@@ -293,7 +293,7 @@ describe('Apply Button Tests Auto Apply Parameter', () => {
         ranges={ranges}
         start={start}
         end={end}
-        local={local}
+        locale={locale}
         applyCallback={applyCallback}
         autoApply
         smartMode

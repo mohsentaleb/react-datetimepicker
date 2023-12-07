@@ -1,20 +1,19 @@
 import React from 'react';
-import clsx from 'clsx';
 import { generateMinutes } from '../utils/TimeFunctionUtils';
-import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
 import TimeIcon from '../icons/clock.svg?react';
 
-import type { Moment } from 'moment-timezone';
-import type { Meridiem, Mode } from '../types';
+import type { Moment } from 'moment';
+import type { ClassNames, Meridiem, Mode } from '../types';
 import type { BaseSyntheticEvent } from 'react';
+import clsx from 'clsx';
 
 interface Props {
   timeChangeCallback: (newHour: number, newMinute: number, mode: Mode) => void;
   mode: Mode;
   date: Moment;
-  darkMode?: boolean;
   twelveHoursClock?: boolean;
+  classNames?: ClassNames;
 }
 
 interface State {
@@ -133,14 +132,12 @@ export default class TimeField extends React.Component<Props, State> {
     optionsInput: JSX.Element[],
     id: string
   ) {
-    let theme = this.props.darkMode ? darkTheme : lightTheme;
     return (
       <select
         id={id + '_' + this.props.mode}
-        style={theme}
         value={valueInput}
         onChange={onChangeInput}
-        className="rounded border border-gray-200 p-1"
+        className="rounded border border-gray-200 p-1 dark:border-slate-500 dark:bg-slate-600"
       >
         {optionsInput}
       </select>
@@ -157,40 +154,34 @@ export default class TimeField extends React.Component<Props, State> {
     let minute = this.props.date.minute();
     let meridiem = this.props.date.format('a');
 
-    let hourFocusStyle = {};
-    hourFocusStyle = addFocusStyle(this.state.hourFocus, hourFocusStyle);
-    let minuteFocusStyle = {};
-    minuteFocusStyle = addFocusStyle(this.state.minuteFocus, minuteFocusStyle);
-
     return (
-      <div className="flex items-center justify-center p-2">
-        <TimeIcon
-          className={clsx('mr-2 h-4 w-4', {
-            'text-white': this.props.darkMode,
-            'text-gray-500': !this.props.darkMode,
-          })}
-        />
-        <div
-          className="inline-block"
-          onFocus={this.hourFocus}
-          onBlur={this.hourBlur}
-          style={hourFocusStyle}
-        >
-          {this.renderSelectField(hour, this.handleHourChange, hours, 'Hour')}
-        </div>
-        <div className="mx-2 inline-block">:</div>
-        <div
-          className="inline-block"
-          onFocus={this.minuteFocus}
-          onBlur={this.minuteBlur}
-          style={minuteFocusStyle}
-        >
-          {this.renderSelectField(
-            minute,
-            this.handleMinuteChange,
-            minutes,
-            'Minutes'
-          )}
+      <div className="flex items-center justify-center gap-2 p-2">
+        <TimeIcon className="mr-2 h-4 w-4 text-white dark:text-slate-500" />
+        <div className="flex items-center">
+          <div
+            className={clsx('grow', {
+              'ring-2 ring-offset-2': this.state.hourFocus,
+            })}
+            onFocus={this.hourFocus}
+            onBlur={this.hourBlur}
+          >
+            {this.renderSelectField(hour, this.handleHourChange, hours, 'Hour')}
+          </div>
+          <div className="mx-1">:</div>
+          <div
+            className={clsx('grow', {
+              'ring-2 ring-offset-2': this.state.minuteFocus,
+            })}
+            onFocus={this.minuteFocus}
+            onBlur={this.minuteBlur}
+          >
+            {this.renderSelectField(
+              minute,
+              this.handleMinuteChange,
+              minutes,
+              'Minutes'
+            )}
+          </div>
         </div>
         {this.props.twelveHoursClock && (
           <div className="inline-block">

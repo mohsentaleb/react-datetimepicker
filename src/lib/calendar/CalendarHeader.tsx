@@ -18,7 +18,9 @@ export default class CalendarHeader extends React.Component<Props> {
   render() {
     let headerDivs = this.mapHeaderToDiv(this.props.headers);
     return (
-      <div className="my-2 grid grid-cols-7 text-center">{headerDivs}</div>
+      <div className="my-2 grid grid-cols-7 text-center dark:text-slate-400">
+        {headerDivs}
+      </div>
     );
   }
 }

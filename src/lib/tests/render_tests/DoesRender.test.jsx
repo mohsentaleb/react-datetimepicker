@@ -25,7 +25,7 @@ let ranges = {
   '90 Days': [moment(start).subtract(90, 'days'), moment(end)],
   '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
 };
-let local = {
+let locale = {
   format: 'DD-MM-YYYY HH:mm',
   sundayFirst: false,
 };
@@ -39,7 +39,7 @@ const dateTimeRangeContainerExpectedUse = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
   >
     <FormControl
@@ -56,7 +56,7 @@ const dateTimeRangeContainerNoChildren = mount(
     ranges={ranges}
     start={start}
     end={end}
-    local={local}
+    locale={locale}
     applyCallback={applyCallback}
   />
 );

@@ -1,21 +1,22 @@
 import React from 'react';
 import moment from 'moment';
-import {
-  startDateStyle,
-  endDateStyle,
-  inBetweenStyle,
-  normalCellStyle,
-  hoverCellStyle,
-  greyCellStyle,
-  invalidStyle,
-  isInbetweenDates,
-} from '../utils/TimeFunctionUtils';
-import { addFocusStyle } from '../utils/StyleUtils';
+import { isInbetweenDates } from '../utils/TimeFunctionUtils';
 import { pastMaxDate } from '../utils/DateSelectedUtils';
-import { ModeEnum } from '../DateTimeRangePicker';
 
-import type { Moment } from 'moment-timezone';
-import { Mode, Style } from '../types';
+import type { Moment } from 'moment';
+import { ClassNames, Mode } from '../types';
+import clsx from 'clsx';
+
+const normalCellClasses = 'text-black cursor-pointer dark:text-white';
+const hoverCellClasses =
+  'text-black bg-sky-100 cursor-pointer dark:bg-slate-400';
+const hoverCellClassesNonBetween = clsx(hoverCellClasses, 'rounded-md');
+const greyCellClasses = 'rounded-md text-gray-200 cursor-pointer opacity-30';
+const invalidClasses = 'text-gray-300 cursor-not-allowed dark:text-slate-500';
+const startCellClasses = 'rounded-l-md text-white bg-sky-500 cursor-pointer';
+const endCellClasses = 'rounded-r-md text-white bg-sky-500 cursor-pointer';
+const inBetweenClasses =
+  'text-black bg-sky-50 cursor-pointer dark:bg-slate-500 dark:text-white';
 
 interface Props {
   id: number;
@@ -31,21 +32,20 @@ interface Props {
   cellFocusedCallback: (date: Moment) => void;
   mode: Mode;
   smartMode?: boolean;
-  style?: Style;
-  darkMode?: boolean;
   row?: number;
+  classNames?: ClassNames;
 }
 
 interface State {
-  style: Style;
   focus: boolean;
+  className: string;
 }
 
 export default class Cell extends React.Component<Props, State> {
   cell: HTMLDivElement | null = null;
   constructor(props: Props) {
     super(props);
-    this.state = { style: {} as State['style'], focus: false };
+    this.state = { focus: false, className: '' };
   }
 
   componentDidUpdate(oldProps: Props) {
@@ -177,14 +177,7 @@ export default class Cell extends React.Component<Props, State> {
     ) {
       return;
     }
-    // Custom hover cell styling
-    if (this.props.style && this.props.style.hoverCell) {
-      let style = Object.assign(
-        hoverCellStyle(false, this.props.darkMode),
-        this.props.style.hoverCell
-      );
-      return this.setState({ style: style });
-    }
+
     // Hover Style Cell, Different if inbetween start and end date
     let isDateStart = this.props.date.isSameOrBefore(
       this.props.otherDate,
@@ -198,9 +191,19 @@ export default class Cell extends React.Component<Props, State> {
         this.props.otherDate
       )
     ) {
-      this.setState({ style: hoverCellStyle(true, this.props.darkMode) });
+      this.setState({
+        className: clsx(
+          hoverCellClasses,
+          this.props.classNames?.normalCellHover
+        ),
+      });
     } else {
-      this.setState({ style: hoverCellStyle(false, this.props.darkMode) });
+      this.setState({
+        className: clsx(
+          hoverCellClassesNonBetween,
+          this.props.classNames?.normalCellHover
+        ),
+      });
     }
   };
 
@@ -253,7 +256,9 @@ export default class Cell extends React.Component<Props, State> {
   checkAndSetMaxDateStyle(cellDate: Moment) {
     // If Past Max Date Style Cell Out of Use
     if (pastMaxDate(cellDate, this.props.maxDate, false)) {
-      this.setState({ style: invalidStyle(this.props.darkMode) });
+      this.setState({
+        className: clsx(invalidClasses, this.props.classNames?.invalidCell),
+      });
       return true;
     }
     return false;
@@ -261,18 +266,22 @@ export default class Cell extends React.Component<Props, State> {
 
   nonSmartModePastStartAndEndChecks(cellDate: Moment) {
     // If in start mode and cellDate past end date style as unavailable. If in end mode and cellDate before start date style as unavailable
-    if (this.props.mode === ModeEnum.start) {
+    if (this.props.mode === 'start') {
       // We know now the date prop is the start date and the otherDate is the end date in non smart mode
       // If this cell is after end date then invalid cell as this is the start mode
       if (cellDate.isAfter(this.props.otherDate, 'day')) {
-        this.setState({ style: invalidStyle(this.props.darkMode) });
+        this.setState({
+          className: clsx(invalidClasses, this.props.classNames?.invalidCell),
+        });
         return true;
       }
-    } else if (this.props.mode === ModeEnum.end) {
+    } else if (this.props.mode === 'end') {
       // We know now the date prop is the end date and the otherDate is the start date in non smart mode
       // If this cell is before start date then invalid cell as this is the end mode
       if (cellDate.isBefore(this.props.otherDate, 'day')) {
-        this.setState({ style: invalidStyle(this.props.darkMode) });
+        this.setState({
+          className: clsx(invalidClasses, this.props.classNames?.invalidCell),
+        });
         return true;
       }
     }
@@ -299,7 +308,9 @@ export default class Cell extends React.Component<Props, State> {
 
     // Anything cellDay month that is before or after the cell prop month style grey
     if (this.isCellMonthSameAsPropMonth(cellDay)) {
-      this.setState({ style: greyCellStyle(this.props.darkMode) });
+      this.setState({
+        className: clsx(greyCellClasses, this.props.classNames?.greyCell),
+      });
       return;
     }
 
@@ -326,29 +337,29 @@ export default class Cell extends React.Component<Props, State> {
     );
     // If start, end or inbetween date then style according to user input or use default
     if (isStart || isEnd || inbetweenDates) {
-      let style;
-      if (isStart && this.props.style && this.props.style.fromDate) {
-        style = Object.assign(startDateStyle(), this.props.style.fromDate);
-      } else if (isStart) {
-        style = startDateStyle();
-      } else if (isEnd && this.props.style && this.props.style.toDate) {
-        style = Object.assign(endDateStyle(), this.props.style.toDate);
+      let className;
+      if (isStart) {
+        className = clsx(startCellClasses, this.props.classNames?.startCell);
       } else if (isEnd) {
-        style = endDateStyle();
-      } else if (
-        inbetweenDates &&
-        this.props.style &&
-        this.props.style.betweenDates
-      ) {
-        style = Object.assign(inBetweenStyle(), this.props.style.betweenDates);
+        className = clsx(endCellClasses, this.props.classNames?.endCell);
       } else {
-        style = inBetweenStyle();
+        className = clsx(
+          inBetweenClasses,
+          this.props.classNames?.withinRangeCell
+        );
       }
-      this.setState({ style: style });
+      this.setState({ className });
     } else if (inbetweenDates) {
-      this.setState({ style: inBetweenStyle() });
+      this.setState({
+        className: clsx(
+          inBetweenClasses,
+          this.props.classNames?.withinRangeCell
+        ),
+      });
     } else {
-      this.setState({ style: normalCellStyle(this.props.darkMode) });
+      this.setState({
+        className: clsx(normalCellClasses, this.props.classNames?.normalCell),
+      });
     }
   }
 
@@ -366,7 +377,7 @@ export default class Cell extends React.Component<Props, State> {
   }
 
   render() {
-    let dateFormatted = this.props.cellDay.format('D');
+    const dateFormatted = this.props.cellDay.format('D');
     let tabIndex = -1;
     if (
       this.isStartOrEndDate() &&
@@ -377,15 +388,19 @@ export default class Cell extends React.Component<Props, State> {
     } else {
       document.removeEventListener('keydown', this.keyDown, false);
     }
-    let style = addFocusStyle(this.state.focus, this.state.style);
     return (
       <div
         ref={(cell) => {
           this.cell = cell;
         }}
-        className="p-2"
+        className={clsx(
+          'p-2',
+          {
+            'ring-2 ring-offset-2 ': this.state.focus,
+          },
+          this.state.className
+        )}
         tabIndex={tabIndex}
-        style={style}
         onMouseEnter={this.mouseEnter}
         onMouseLeave={this.mouseLeave}
         onClick={this.onClick}

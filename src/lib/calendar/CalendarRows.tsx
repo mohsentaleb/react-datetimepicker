@@ -1,8 +1,8 @@
 import React from 'react';
 import CalendarRow from './CalendarRow';
 
-import type { Moment } from 'moment-timezone';
-import { Mode, Style } from '../types';
+import type { Moment } from 'moment';
+import { ClassNames, Mode } from '../types';
 
 interface Props {
   date: Moment;
@@ -18,8 +18,7 @@ interface Props {
   month: number;
   mode: Mode;
   smartMode?: boolean;
-  style?: Style;
-  darkMode?: boolean;
+  classNames?: ClassNames;
 }
 
 export default class CalendarRows extends React.Component<Props> {
@@ -46,8 +45,7 @@ export default class CalendarRows extends React.Component<Props> {
           cellFocusedCallback={this.props.cellFocusedCallback}
           mode={this.props.mode}
           smartMode={this.props.smartMode}
-          style={this.props.style}
-          darkMode={this.props.darkMode}
+          classNames={this.props.classNames}
         />
       );
     }

@@ -5,23 +5,22 @@ import TimeField from './TimeField';
 import Calendar from '../calendar/Calendar';
 import ActiveNotifier from './ActiveNotifier';
 
-import type { Moment } from 'moment-timezone';
-import type { Locale, Mode, Style } from '../types';
+import type { Moment } from 'moment';
+import type { ClassNames, Locale, Mode } from '../types';
+import clsx from 'clsx';
 
 interface Props {
-  local: Locale;
+  locale: Locale;
   date: Moment;
   otherDate: Moment;
   mode: Mode;
   maxDate?: Moment;
-  // applyCallback: PropTypes.func.isRequired,
   dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
   keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
   cellFocusedCallback: (date: Moment) => void;
   focusOnCallback: (date: Moment | boolean) => void;
   focusDate: boolean | Moment;
   selectingModeFrom: boolean;
-  // changeVisibleState: PropTypes.func,
   timeChangeCallback: (newHour: number, newMinute: number, mode: Mode) => void;
   changeSelectingModeCallback: (selectingModeFromParam: boolean) => void;
   onChangeDateTextHandlerCallback: (newValue: string, mode: Mode) => void;
@@ -32,19 +31,28 @@ interface Props {
   years?: [number, number];
   pastSearchFriendly?: boolean;
   smartMode?: boolean;
-  // enableButtons: boolean,
-  // autoApply: boolean,
-  style?: Style;
-  darkMode?: boolean;
-  // standalone: boolean,
   twelveHoursClock?: boolean;
+  classNames?: ClassNames;
 }
 
 export default class DatePicker extends React.Component<Props> {
   render() {
+    const identifier = this.props.label
+      .toLocaleLowerCase()
+      .split(' ')
+      .join('-');
     return (
-      <div className="fromDateTimeContainer m-1 w-72 text-sm">
-        <div className="fromDateHourContainer rounded border p-2">
+      <div
+        className={clsx(
+          'w-full text-sm md:w-72',
+          this.props.classNames?.fromToRangeContainer
+        )}
+        id={`datepicker-${identifier}`}
+      >
+        <div
+          id={`datepicker-hour-container-${identifier}`}
+          className="rounded border p-2 dark:border-slate-600"
+        >
           <Label label={this.props.label} />
           <DateField
             // date={moment(this.props.date)}
@@ -55,14 +63,14 @@ export default class DatePicker extends React.Component<Props> {
             dateLabel={this.props.dateLabel}
             mode={this.props.mode}
             changeSelectingModeCallback={this.props.changeSelectingModeCallback}
-            darkMode={this.props.darkMode}
+            classNames={this.props.classNames}
           />
           <TimeField
             date={this.props.date}
             timeChangeCallback={this.props.timeChangeCallback}
             mode={this.props.mode}
-            darkMode={this.props.darkMode}
             twelveHoursClock={this.props.twelveHoursClock}
+            classNames={this.props.classNames}
           />
         </div>
         <Calendar
@@ -75,20 +83,19 @@ export default class DatePicker extends React.Component<Props> {
           focusOnCallback={this.props.focusOnCallback}
           focusDate={this.props.focusDate}
           cellFocusedCallback={this.props.cellFocusedCallback}
-          local={this.props.local}
+          locale={this.props.locale}
           descendingYears={this.props.descendingYears}
           years={this.props.years}
           pastSearchFriendly={this.props.pastSearchFriendly}
           smartMode={this.props.smartMode}
-          style={this.props.style}
-          darkMode={this.props.darkMode}
+          classNames={this.props.classNames}
         />
         <ActiveNotifier
           selectingModeFrom={this.props.selectingModeFrom}
           mode={this.props.mode}
           smartMode={this.props.smartMode}
-          style={this.props.style}
-          local={this.props.local}
+          locale={this.props.locale}
+          classNames={this.props.classNames}
         />
       </div>
     );

@@ -1,4 +1,4 @@
-import moment from 'moment-timezone';
+import moment from 'moment';
 import { PresetDateRanges } from '../lib/types';
 
 const now = new Date();

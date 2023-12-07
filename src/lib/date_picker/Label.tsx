@@ -7,7 +7,10 @@ interface Props {
 export default class Label extends React.Component<Props> {
   render() {
     return (
-      <div className="dateTimeLabel pb-1 text-center font-bold">
+      <div
+        id="datepicker-fromto-label"
+        className="pb-1 text-center font-bold dark:text-slate-300"
+      >
         {this.props.label}
       </div>
     );
