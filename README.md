@@ -93,7 +93,7 @@ import moment, { type Moment } from "moment";
 
 // If you are already using TailwindCSS, you can omit this.
 // Check out section "Installing With TailwindCSS" in docs.
-import "react-tailwindcss-datetimepicker/style.css"; 
+import "react-tailwindcss-datetimepicker/style.css";
 
 const startOfToday = moment(new Date())
   .set("hour", 0)
@@ -139,13 +139,13 @@ export default App;
   <summary>For using it in a legacy class component check out the sample code here</summary>
 
 ```tsx
-import React from "react";
-import DateTimePicker from "react-tailwindcss-datetimepicker";
-import moment, { type Moment } from "moment";
+import React from 'react';
+import DateTimePicker from 'react-tailwindcss-datetimepicker';
+import moment, { type Moment } from 'moment';
 
 // If you are already using TailwindCSS, you can omit this.
 // Check out section "Installing With TailwindCSS" in docs.
-import "react-tailwindcss-datetimepicker/style.css"; 
+import 'react-tailwindcss-datetimepicker/style.css';
 
 interface Props {}
 interface State {
@@ -157,7 +157,7 @@ const now = new Date();
 const startOfToday = moment(
   new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
 );
-const endOfToday = moment(startOfToday).add(1, "days").subtract(1, "seconds");
+const endOfToday = moment(startOfToday).add(1, 'days').subtract(1, 'seconds');
 
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -165,8 +165,8 @@ class App extends React.Component<Props, State> {
 
     // Initial selected range
     this.state = {
-      start: moment(new Date()).subtract(2, "days"),
-      end: moment(new Date()).add(1, "days").subtract(1, "seconds"),
+      start: moment(new Date()).subtract(2, 'days'),
+      end: moment(new Date()).add(1, 'days').subtract(1, 'seconds'),
     };
   }
 
@@ -182,8 +182,8 @@ class App extends React.Component<Props, State> {
       <DateTimePicker
         ranges={{
           Today: [moment(startOfToday), moment(endOfToday)],
-          "Last 30 Days": [
-            moment(startOfToday).subtract(1, "months"),
+          'Last 30 Days': [
+            moment(startOfToday).subtract(1, 'months'),
             moment(endOfToday),
           ],
         }}
@@ -209,8 +209,8 @@ export default App;
 | [`ranges`](#ranges)                         | **Required** | `Object`      | `undefined`   | A record of ranges defined using a tuple of Moment times.                      |
 | [`start`](#start)                           | **Required** | `Moment Date` | `undefined`   | Initial start Date set in the picker                                           |
 | [`end`](#end)                               | **Required** | `Moment Date` | `undefined`   | Initial end Date set in the picker                                             |
-| [`locale`](#locale)                         | **Required** | `Object`      | `undefined`   | locale format for date labels                                                  |
 | [`applyCallback`](#applycallback)           | **Required** | `Function`    | `null`        | Function which is called when the apply button is clicked                      |
+| [`locale`](#locale)                         | optional     | `Object`      | `undefined`   | locale format for date labels                                                  |
 | [`rangeCallback`](#rangecallback)           | optional     | `Function`    | `null`        | Function which is called when one of the preset ranges is clicked              |
 | [`maxDate`](#maxdate)                       | optional     | `Moment Date` | `undefined`   | Maximum date that can be selected in calendar                                  |
 | [`autoApply`](#autoapply)                   | optional     | `Boolean`     | `false`       | Set dates as soon as they're clicked without pressing apply                    |
@@ -235,13 +235,15 @@ export default App;
 A record of ranges defined using a tuple of Moment times.
 
 ```js
+const startOfToday = moment(new Date())
+  .set('hour', 0)
+  .set('minute', 0)
+  .set('second', 0);
+const endOfToday = moment(startOfToday).add(1, 'days').subtract(1, 'second');
+
 const ranges = {
-  Today: [moment(start), moment(end)],
-  Yesterday: [
-    moment(start).subtract(1, 'days'),
-    moment(end).subtract(1, 'days'),
-  ],
-  'Last 3 Days': [moment(start).subtract(3, 'days'), moment(end)],
+  Today: [startOfToday, startOfToday],
+  'Last 30 Days': [moment(startOfToday).subtract(1, 'months'), startOfToday],
 };
 ```
 
@@ -259,11 +261,17 @@ Initial start Date set in the picker
 
 Initial end Date set in the picker
 
+### `applyCallback`
+
+(Required) `(start: Moment, end: Moment) => void`
+
+Function which is called when the apply button is clicked/pressed. Takes two params, start date and the end date which are both `Moment` dates.
+
 ### `locale`
 
 (optional)
 
-Defines a locale format for date labels to be shown as. Can also set Sunday to be first day or Monday. 
+Defines a locale format for date labels to be shown as. Can also set Sunday to be first day or Monday.
 
 Example:
 
@@ -296,12 +304,6 @@ const locale = {
   cancel: 'Cancel',
 };
 ```
-
-### `applyCallback`
-
-(Required) `(start: Moment, end: Moment) => void`
-
-Function which is called when the apply button is clicked/pressed. Takes two params, start date and the end date which are both `Moment` dates.
 
 ### `rangeCallback`
 
