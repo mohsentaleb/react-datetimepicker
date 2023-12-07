@@ -10,12 +10,6 @@ This is a feature rich React date-time picker component built with **React 18** 
 - ✅ Out of the box Dark Mode support
 - ✅ Fully responsive (Optimized for mobile devices)
 
-This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepicker) with **significant alterations** including:
-
-- Complete revamp of CSS styles utilizing [TailwindCSS](https://tailwindcss.com/).
-- Transition to [Vitejs](https://vitejs.dev/) for the build system.
-- Conversion of all files to TypeScript for improved type safety and development efficiency.
-
 <a href="https://github.com/microsoft/react-native-macos/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native for macOS is released under the MIT license." />
   </a>
@@ -29,6 +23,13 @@ This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react
 
 ![Date Time Picker](https://raw.githubusercontent.com/mohsentaleb/react-tailwindcss-datetimepicker/master/public/demo.gif)
 
+This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react-datetimepicker) with **significant alterations** including:
+
+- Complete revamp of CSS styles utilizing [TailwindCSS](https://tailwindcss.com/).
+- Transition to [Vitejs](https://vitejs.dev/) for the build system.
+- Conversion of all files to TypeScript for improved type safety and development efficiency.
+
+
 ## Table of Contents
 
 - [Install](#install)
@@ -41,7 +42,6 @@ This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react
 - [Development](#development)
 - [Production](#production)
 - [Breaking changes in v2](#breaking-changes-in-v2)
-  * [Upgrading from `1.x.x to ` to `2.x.x`](#upgrading-from-1xx-to--to-2xx)
 - [Roadmap](#roadmap)
 - [License](#license)
 
