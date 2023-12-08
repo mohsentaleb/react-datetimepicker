@@ -7,14 +7,18 @@ import type { Moment } from 'moment';
 import { ClassNames, Mode } from '../types';
 import clsx from 'clsx';
 
-const normalCellClasses = 'text-black cursor-pointer dark:text-white';
+const normalCellClasses =
+  'text-black cursor-pointer dark:text-white caret-transparent';
 const hoverCellClasses =
-  'text-black bg-sky-100 cursor-pointer dark:bg-slate-400';
+  'text-black bg-sky-100 cursor-pointer dark:bg-slate-400 caret-transparent';
 const hoverCellClassesNonBetween = clsx(hoverCellClasses, 'rounded-md');
-const greyCellClasses = 'rounded-md text-gray-200 cursor-pointer opacity-30';
+const greyCellClasses =
+  'rounded-md text-gray-200 cursor-pointer opacity-30 caret-transparent';
 const invalidClasses = 'text-gray-300 cursor-not-allowed dark:text-slate-500';
-const startCellClasses = 'rounded-l-md text-white bg-sky-500 cursor-pointer';
-const endCellClasses = 'rounded-r-md text-white bg-sky-500 cursor-pointer';
+const startCellClasses =
+  'rounded-l-md text-white bg-sky-500 cursor-pointer caret-transparent';
+const endCellClasses =
+  'rounded-r-md text-white bg-sky-500 cursor-pointer caret-transparent';
 const inBetweenClasses =
   'text-black bg-sky-50 cursor-pointer dark:bg-slate-500 dark:text-white';
 
