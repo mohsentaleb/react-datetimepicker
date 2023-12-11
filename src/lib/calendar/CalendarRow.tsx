@@ -1,22 +1,21 @@
 import React from 'react';
 import Cell from './Cell';
 
-import type { Moment } from 'moment';
 import { ClassNames, Mode } from '../types';
 
 interface Props {
   row: number;
-  rowDays: Moment[];
-  date: Moment;
-  otherDate: Moment;
-  maxDate?: Moment;
-  dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
-  keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
-  focusOnCallback: (date: Moment | boolean) => void;
-  focusDate: boolean | Moment;
+  rowDays: Date[];
+  date: Date;
+  otherDate: Date;
+  maxDate?: Date;
+  dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
+  keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
+  focusOnCallback: (date: Date | boolean) => void;
+  focusDate: boolean | Date;
   year: number;
   month: number;
-  cellFocusedCallback: (date: Moment) => void;
+  cellFocusedCallback: (date: Date) => void;
   mode: Mode;
   smartMode?: boolean;
   classNames?: ClassNames;

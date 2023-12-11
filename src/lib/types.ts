@@ -1,7 +1,5 @@
-import type { Moment } from 'moment';
-
 const customRange = { 'Custom Range': 'Custom Range' } as const;
-export type PresetDateRanges = Record<string, [Moment, Moment]> &
+export type PresetDateRanges = Record<string, [Date, Date]> &
   Partial<typeof customRange>;
 
 export type Locale = {

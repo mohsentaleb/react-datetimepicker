@@ -4,17 +4,16 @@ import { propValidation } from './utils/PropValidation';
 import clsx from 'clsx';
 
 import type { ReactNode } from 'react';
-import type { Moment } from 'moment';
 import type { ClassNames, Locale, PresetDateRanges } from './types';
 
 export interface ReactDateTimePickerProps {
   ranges: PresetDateRanges;
-  start: Moment;
-  end: Moment;
+  start: Date;
+  end: Date;
   locale?: Locale;
-  applyCallback: (start: Moment, end: Moment) => void;
+  applyCallback: (start: Date, end: Date) => void;
   rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
-  maxDate?: Moment;
+  maxDate?: Date;
   autoApply?: boolean;
   descendingYears?: boolean;
   years?: [number, number];

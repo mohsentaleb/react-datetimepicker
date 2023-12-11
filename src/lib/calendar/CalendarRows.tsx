@@ -1,19 +1,18 @@
 import React from 'react';
 import CalendarRow from './CalendarRow';
 
-import type { Moment } from 'moment';
 import { ClassNames, Mode } from '../types';
 
 interface Props {
-  date: Moment;
-  fourtyTwoDays: Moment[];
-  otherDate: Moment;
-  maxDate?: Moment;
-  dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
-  keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
-  focusOnCallback: (date: Moment | boolean) => void;
-  focusDate: boolean | Moment;
-  cellFocusedCallback: (date: Moment) => void;
+  date: Date;
+  fourtyTwoDays: Date[];
+  otherDate: Date;
+  maxDate?: Date;
+  dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
+  keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
+  focusOnCallback: (date: Date | boolean) => void;
+  focusDate: boolean | Date;
+  cellFocusedCallback: (date: Date) => void;
   year: number;
   month: number;
   mode: Mode;

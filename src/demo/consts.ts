@@ -1,24 +1,19 @@
-import moment from 'moment';
+import { add, startOfDay, sub, subMonths } from 'date-fns';
 import { PresetDateRanges } from '../lib/types';
 
 const now = new Date();
-const start = moment(
-  new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
-);
-const end = moment(start).add(1, 'days').subtract(1, 'seconds');
+const start = startOfDay(now);
+const end = add(sub(start, { seconds: 1 }), { days: 1 });
 
-export const MomentDateRanges: PresetDateRanges = {
-  Today: [moment(start), moment(end)],
-  Yesterday: [
-    moment(start).subtract(1, 'days'),
-    moment(end).subtract(1, 'days'),
-  ],
-  'Last 3 Days': [moment(start).subtract(3, 'days'), moment(end)],
-  'Last 1 Week': [moment(start).subtract(7, 'days'), moment(end)],
-  'Last 2 Weeks': [moment(start).subtract(14, 'days'), moment(end)],
-  'Last 3 Weeks': [moment(start).subtract(21, 'days'), moment(end)],
-  'Last Month': [moment(start).subtract(1, 'months'), moment(end)],
-  'Last 2 Months': [moment(start).subtract(2, 'months'), moment(end)],
-  'Last 3 Months': [moment(start).subtract(3, 'months'), moment(end)],
-  'Last 6 Months': [moment(start).subtract(6, 'months'), moment(end)],
+export const DateRanges: PresetDateRanges = {
+  Today: [startOfDay(start), end],
+  Yesterday: [startOfDay(sub(start, { days: 1 })), sub(end, { days: 1 })],
+  'Last 3 Days': [startOfDay(sub(start, { days: 3 })), end],
+  'Last 1 Week': [startOfDay(sub(start, { days: 7 })), end],
+  'Last 2 Weeks': [startOfDay(sub(start, { days: 14 })), end],
+  'Last 3 Weeks': [startOfDay(sub(start, { days: 21 })), end],
+  'Last Month': [startOfDay(subMonths(start, 1)), end],
+  'Last 2 Months': [startOfDay(subMonths(start, 2)), end],
+  'Last 3 Months': [startOfDay(subMonths(start, 3)), end],
+  'Last 6 Months': [startOfDay(subMonths(start, 6)), end],
 };

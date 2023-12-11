@@ -1,4 +1,6 @@
 import React from 'react';
+
+import { isEqual, format } from 'date-fns';
 import MonthYearSelector from './MonthYearSelector';
 import CalendarHeader from './CalendarHeader';
 import CalendarRows from './CalendarRows';
@@ -9,24 +11,23 @@ import {
   getFourtyTwoDays,
 } from '../utils/TimeFunctionUtils';
 
-import type { Moment } from 'moment';
 import type { ClassNames, Locale, Mode } from '../types';
 import type { BaseSyntheticEvent } from 'react';
 
 interface Props {
-  date: Moment;
+  date: Date;
   mode: Mode;
-  otherDate: Moment;
-  maxDate?: Moment;
-  dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
-  keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
-  focusOnCallback: (date: Moment | boolean) => void;
-  focusDate: boolean | Moment;
+  otherDate: Date;
+  maxDate?: Date;
+  dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
+  keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
+  focusOnCallback: (date: Date | boolean) => void;
+  focusDate: boolean | Date;
   descendingYears?: boolean;
   years?: [number, number];
   pastSearchFriendly?: boolean;
   smartMode?: boolean;
-  cellFocusedCallback: (date: Moment) => void;
+  cellFocusedCallback: (date: Date) => void;
   locale?: Locale;
   classNames?: ClassNames;
 }
@@ -50,14 +51,14 @@ export default class Calendar extends React.Component<Props, State> {
   }
 
   componentDidUpdate(previousProps: Props) {
-    let isDifferentMomentObject =
-      !previousProps.date?.isSame(this.props.date) ||
-      !previousProps.otherDate?.isSame(this.props.otherDate);
-    let isDifferentTime =
-      this.props.date?.format('DD-MM-YYYY HH:mm') !==
-        previousProps.date?.format('DD-MM-YYYY HH:mm') ||
-      this.props.otherDate?.format('DD-MM-YYYY HH:mm') !==
-        previousProps.otherDate?.format('DD-MM-YYYY HH:mm');
+    const isDifferentMomentObject =
+      !isEqual(previousProps.date, this.props.date) ||
+      !isEqual(previousProps.otherDate, this.props.otherDate);
+    const isDifferentTime =
+      format(this.props.date, 'dd-MM-yyyy HH:mm') !==
+        format(previousProps.date, 'dd-MM-yyyy HH:mm') ||
+      format(this.props.otherDate, 'dd-MM-yyyy HH:mm') !==
+        format(previousProps.otherDate, 'dd-MM-yyyy HH:mm');
     if (isDifferentMomentObject || isDifferentTime) {
       this.updateMonthYear();
     }

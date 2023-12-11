@@ -1,12 +1,14 @@
 import React, { KeyboardEvent } from 'react';
 import clsx from 'clsx';
+import { format } from 'date-fns';
 
-import type { Moment } from 'moment';
-import { ClassNames, Locale } from '../types';
+import { defaultDateFormat } from '../DateTimeRangePicker';
+
+import type { ClassNames, Locale } from '../types';
 
 interface Props {
   locale?: Locale;
-  maxDate?: Moment;
+  maxDate?: Date;
   applyCallback: () => void;
   changeVisibleState: () => void;
   autoApply?: boolean;
@@ -52,7 +54,11 @@ export default class ApplyCancelButtons extends React.Component<Props> {
       let label = this.props.locale?.maxDate || 'Max Date';
       return (
         <div className="maxDateLabel p-2 text-xs">
-          {label}: {this.props.maxDate.format(this.props.locale?.format)}
+          {label}:{' '}
+          {format(
+            this.props.maxDate,
+            this.props.locale?.format || defaultDateFormat
+          )}
         </div>
       );
     }
@@ -82,7 +88,7 @@ export default class ApplyCancelButtons extends React.Component<Props> {
     const closeButton = (
       <button
         className={clsx(
-          'cancelButton mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-slate-500 dark:hover:dark:bg-slate-400 dark:border-transparent dark:text-white sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm',
+          'cancelButton mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-transparent dark:bg-slate-500 dark:text-white dark:hover:dark:bg-slate-400 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm',
           this.props.classNames?.cancelButton
         )}
         type="button"
@@ -103,9 +109,6 @@ export default class ApplyCancelButtons extends React.Component<Props> {
   };
 
   render() {
-    const maxDateBox = this.getMaxDateBox();
-    const buttons = this.renderButtons();
-
     return (
       <div
         id="datepicker-footer"
@@ -117,8 +120,8 @@ export default class ApplyCancelButtons extends React.Component<Props> {
           this.props.classNames?.footerContainer
         )}
       >
-        {buttons}
-        {this.props.displayMaxDate && maxDateBox}
+        {this.renderButtons()}
+        {this.props.displayMaxDate && this.getMaxDateBox()}
       </div>
     );
   }

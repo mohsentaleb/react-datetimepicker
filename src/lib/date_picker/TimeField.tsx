@@ -3,15 +3,15 @@ import { generateMinutes } from '../utils/TimeFunctionUtils';
 
 import TimeIcon from '../icons/clock.svg?react';
 
-import type { Moment } from 'moment';
 import type { ClassNames, Meridiem, Mode } from '../types';
 import type { BaseSyntheticEvent } from 'react';
 import clsx from 'clsx';
+import { format, getHours, getMinutes } from 'date-fns';
 
 interface Props {
   timeChangeCallback: (newHour: number, newMinute: number, mode: Mode) => void;
   mode: Mode;
-  date: Moment;
+  date: Date;
   twelveHoursClock?: boolean;
   classNames?: ClassNames;
 }
@@ -83,17 +83,17 @@ export default class TimeField extends React.Component<Props, State> {
       this.props.twelveHoursClock
         ? this.convertHourUsingMeridiem(
             parseInt(event.target.value),
-            this.props.date.format('a') as Meridiem
+            format(this.props.date, 'aaa') as Meridiem
           )
         : parseInt(event.target.value),
-      this.props.date.minute(),
+      getMinutes(this.props.date),
       this.props.mode
     );
   };
 
   handleMinuteChange = (event: BaseSyntheticEvent) => {
     this.props.timeChangeCallback(
-      this.props.date.hour(),
+      getHours(this.props.date),
       parseInt(event.target.value),
       this.props.mode
     );
@@ -102,10 +102,10 @@ export default class TimeField extends React.Component<Props, State> {
   handleMeridiemChange = (event: BaseSyntheticEvent) => {
     this.props.timeChangeCallback(
       this.convertHourUsingMeridiem(
-        parseInt(this.props.date.format('h')),
+        parseInt(format(this.props.date, 'h')),
         event.target.value
       ),
-      this.props.date.minute(),
+      getMinutes(this.props.date),
       this.props.mode
     );
   };
@@ -149,10 +149,10 @@ export default class TimeField extends React.Component<Props, State> {
     let minutes = this.generateMinuteSelectValues();
     let meridiems = this.generateMeridiemSelectValues();
     let hour = this.props.twelveHoursClock
-      ? parseInt(this.props.date.format('h'))
-      : this.props.date.hour();
-    let minute = this.props.date.minute();
-    let meridiem = this.props.date.format('a');
+      ? parseInt(format(this.props.date, 'h'))
+      : getHours(this.props.date);
+    let minute = getMinutes(this.props.date);
+    let meridiem = format(this.props.date, 'aaa');
 
     return (
       <div className="flex items-center justify-center gap-2 p-2">

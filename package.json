@@ -35,7 +35,7 @@
   "homepage": "https://github.com/mohsentaleb/react-tailwindcss-datetimepicker",
   "dependencies": {
     "clsx": "^2.0.0",
-    "moment": "^2.29.4"
+    "date-fns": "^2.30.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.41",

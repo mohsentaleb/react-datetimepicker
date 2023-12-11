@@ -5,21 +5,20 @@ import TimeField from './TimeField';
 import Calendar from '../calendar/Calendar';
 import ActiveNotifier from './ActiveNotifier';
 
-import type { Moment } from 'moment';
 import type { ClassNames, Locale, Mode } from '../types';
 import clsx from 'clsx';
 
 interface Props {
   locale?: Locale;
-  date: Moment;
-  otherDate: Moment;
+  date: Date;
+  otherDate: Date;
   mode: Mode;
-  maxDate?: Moment;
-  dateSelectedNoTimeCallback: (cellDate: Moment, cellMode: Mode) => void;
-  keyboardCellCallback: (originalDate: Moment, newDate: Moment) => boolean;
-  cellFocusedCallback: (date: Moment) => void;
-  focusOnCallback: (date: Moment | boolean) => void;
-  focusDate: boolean | Moment;
+  maxDate?: Date;
+  dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
+  keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
+  cellFocusedCallback: (date: Date) => void;
+  focusOnCallback: (date: Date | boolean) => void;
+  focusDate: boolean | Date;
   selectingModeFrom: boolean;
   timeChangeCallback: (newHour: number, newMinute: number, mode: Mode) => void;
   changeSelectingModeCallback: (selectingModeFromParam: boolean) => void;
@@ -55,7 +54,6 @@ export default class DatePicker extends React.Component<Props> {
         >
           <Label label={this.props.label} />
           <DateField
-            // date={moment(this.props.date)}
             dateTextFieldCallback={this.props.dateTextFieldCallback}
             onChangeDateTextHandlerCallback={
               this.props.onChangeDateTextHandlerCallback

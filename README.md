@@ -4,11 +4,12 @@ This is a feature rich React date-time picker component built with **React 18** 
 
 - ✅ Selection of date ranges
 - ✅ Selection of times for the selected range
-- ✅ Customizable range presets for faster selection (e.g.: Yesterday, last months etc.)
+- ✅ Customizable range presets for faster selection (e.g.: Yesterday, last 30 days, etc.)
 - ✅ Keyboard navigation for accessibility
 - ✅ TypeScript support
-- ✅ Out of the box Dark Mode support
+- ✅ Out of the box dark mode support
 - ✅ Fully responsive (Optimized for mobile devices)
+- ✅ No date library dependency for implementation (You can use vanilla js, `date-fns`, `moment` etc)
 
 <a href="https://github.com/microsoft/react-native-macos/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native for macOS is released under the MIT license." />
@@ -31,7 +32,7 @@ This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react
 
 ## Table of Contents
 
-- [Install](#install)
+- [Installation](#installation)
   - [With TailwindCSS](#with-tailwindcss)
   - [Without TailwindCSS](#without-tailwindcss)
 - [Basic Usage](#basic-usage)
@@ -40,11 +41,13 @@ This project is a fork of [react-datetimepicker](https://github.com/v0ltoz/react
 - [Component Props](#component-props)
 - [Development](#development)
 - [Production](#production)
-- [Breaking changes in v2](#breaking-changes-in-v2)
+- [Migration](#migration)
+  - [from `2.x.x to ` to `3.x.x`:](#from-2xx-to--to-3xx)
+  - [From `1.x.x to ` to `2.x.x`:](#from-1xx-to--to-2xx)
 - [Roadmap](#roadmap)
 - [License](#license)
 
-## Install
+## Installation
 
 ```shell
 // Npm
@@ -65,8 +68,7 @@ module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
     './node_modules/react-tailwindcss-datetimepicker/dist/react-tailwindcss-datetimepicker.js',
-    // ^^^^^^^^^
-    // Add this line
+    // Add this line 👆
   ],
 };
 ```
@@ -89,35 +91,45 @@ import 'react-tailwindcss-datetimepicker/style.css';
 ```ts
 import { useState } from "react";
 import DateTimePicker from "react-tailwindcss-datetimepicker";
-import moment, { type Moment } from "moment";
 
 // If you are already using TailwindCSS, you can omit this.
 // Check out section "Installing With TailwindCSS" in docs.
 import "react-tailwindcss-datetimepicker/style.css";
 
-const startOfToday = moment(new Date())
-  .set("hour", 0)
-  .set("minute", 0)
-  .set("second", 0);
-const endOfToday = moment(startOfToday).add(1, "days").subtract(1, "second");
+const now = new Date();
+const startOfToday = new Date();
+startOfToday.setHours(0, 0, 0, 0);
+
+const endOfToday = new Date(startOfToday);
+endOfToday.setDate(endOfToday.getDate() + 1);
+endOfToday.setSeconds(endOfToday.getSeconds() - 1);
 
 function App() {
+  // Set the initial view of picker to last 2 days
   const [selectedRange, setSelectedRange] = useState({
-    start: moment(startOfToday).subtract(2, "days"),
+    start: new Date(new Date().setDate(new Date().getDate() - 2)),
     end: endOfToday,
   });
 
-  function handleApply(startDate: Moment, endDate: Moment) {
+  function handleApply(startDate: Date, endDate: Date) {
     setSelectedRange({ start: startDate, end: endDate });
   }
 
   return (
     <DateTimePicker
       ranges={{
-        Today: [startOfToday, endOfToday],
+        Today: [new Date(startOfToday), new Date(endOfToday)],
         "Last 30 Days": [
-          moment(startOfToday).subtract(1, "months"),
-          endOfToday,
+          new Date(
+            now.getFullYear(),
+            now.getMonth() - 1,
+            now.getDate(),
+            0,
+            0,
+            0,
+            0
+          ),
+          new Date(endOfToday),
         ],
       }}
       start={selectedRange.start}
@@ -130,7 +142,6 @@ function App() {
 }
 
 export default App;
-
 ```
 
 ### Legacy Class Components
@@ -141,7 +152,6 @@ export default App;
 ```tsx
 import React from 'react';
 import DateTimePicker from 'react-tailwindcss-datetimepicker';
-import moment, { type Moment } from 'moment';
 
 // If you are already using TailwindCSS, you can omit this.
 // Check out section "Installing With TailwindCSS" in docs.
@@ -149,28 +159,37 @@ import 'react-tailwindcss-datetimepicker/style.css';
 
 interface Props {}
 interface State {
-  start: Moment;
-  end: Moment;
+  start: Date;
+  end: Date;
 }
 
 const now = new Date();
-const startOfToday = moment(
-  new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0)
+const startOfToday = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate(),
+  0,
+  0,
+  0,
+  0
 );
-const endOfToday = moment(startOfToday).add(1, 'days').subtract(1, 'seconds');
+
+const endOfToday = new Date(startOfToday);
+endOfToday.setDate(endOfToday.getDate() + 1);
+endOfToday.setSeconds(endOfToday.getSeconds() - 1);
 
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    // Initial selected range
+    // Set the initial view of picker to last 2 days
     this.state = {
-      start: moment(new Date()).subtract(2, 'days'),
-      end: moment(new Date()).add(1, 'days').subtract(1, 'seconds'),
+      start: new Date(new Date().setDate(new Date().getDate() - 2)),
+      end: endOfToday,
     };
   }
 
-  applyCallback = (startDate: Moment, endDate: Moment) => {
+  applyCallback = (startDate: Date, endDate: Date) => {
     this.setState({
       start: startDate,
       end: endDate,
@@ -181,15 +200,24 @@ class App extends React.Component<Props, State> {
     return (
       <DateTimePicker
         ranges={{
-          Today: [moment(startOfToday), moment(endOfToday)],
+          Today: [new Date(startOfToday), new Date(endOfToday)],
           'Last 30 Days': [
-            moment(startOfToday).subtract(1, 'months'),
-            moment(endOfToday),
+            new Date(
+              now.getFullYear(),
+              now.getMonth() - 1,
+              now.getDate(),
+              0,
+              0,
+              0,
+              0
+            ),
+            new Date(endOfToday),
           ],
         }}
         start={this.state.start}
         end={this.state.end}
         applyCallback={this.applyCallback}
+        displayMaxDate
       >
         <button type="button">{`${this.state.start} - ${this.state.end}`}</button>
       </DateTimePicker>
@@ -204,68 +232,86 @@ export default App;
 
 ## Component Props
 
-| Option                                      | Required     | Type          | Default       | Description                                                                    |
-| ------------------------------------------- | ------------ | ------------- | ------------- | ------------------------------------------------------------------------------ |
-| [`ranges`](#ranges)                         | **Required** | `Object`      | `undefined`   | A record of ranges defined using a tuple of Moment times.                      |
-| [`start`](#start)                           | **Required** | `Moment Date` | `undefined`   | Initial start Date set in the picker                                           |
-| [`end`](#end)                               | **Required** | `Moment Date` | `undefined`   | Initial end Date set in the picker                                             |
-| [`applyCallback`](#applycallback)           | **Required** | `Function`    | `null`        | Function which is called when the apply button is clicked                      |
-| [`locale`](#locale)                         | optional     | `Object`      | `undefined`   | locale format for date labels                                                  |
-| [`rangeCallback`](#rangecallback)           | optional     | `Function`    | `null`        | Function which is called when one of the preset ranges is clicked              |
-| [`maxDate`](#maxdate)                       | optional     | `Moment Date` | `undefined`   | Maximum date that can be selected in calendar                                  |
-| [`autoApply`](#autoapply)                   | optional     | `Boolean`     | `false`       | Set dates as soon as they're clicked without pressing apply                    |
-| [`descendingYears`](#descendingyears)       | optional     | `Boolean`     | `false`       | Set years be displayed in descending order                                     |
-| [`years`](#years)                           | optional     | `Array`       | `[1900, now]` | Limit the years shown in calendar                                              |
-| [`smartMode`](#smartmode)                   | optional     | `Boolean`     | `false`       | Switch the month on the right hand side (RHS) when two dates in the same month |
-| [`pastSearchFriendly`](#pastsearchfriendly) | optional     | `Boolean`     | `false`       | Optimize calendar for past searches                                            |
-| [`noMobileMode`](#nomobilemode)             | optional     | `Boolean`     | `false`       | Picker will always be displayed in full screen mode                            |
-| [`forceMobileMode`](#forcemobilemode)       | optional     | `Boolean`     | `false`       | Picker will always be displayed in condensed mode all the time                 |
-| [`twelveHoursClock`](#twelvehoursclock)     | optional     | `Boolean`     | `false`       | Display time values in a 12-hour format rather than a 24-hour format           |
-| [`standalone`](#standalone)                 | optional     | `Boolean`     | `false`       | When set the picker will be open by default                                    |
-| [`leftMode`](#leftmode)                     | optional     | `Boolean`     | `false`       | Picker will open to the left                                                   |
-| [`centerMode`](#centermode)                 | optional     | `Boolean`     | `false`       | Picker will open in center                                                     |
-| [`displayMaxDate`](#displaymaxdate)         | optional     | `Boolean`     | `false`       | Will display Max Date in picker footer                                         |
-| [`classNames`](#classnames)                 | optional     | `Object`      | `undefined`   | Will override classNames for different parts of the picker                     |
+| Option                                      | Required     | Type       | Default       | Description                                                                    |
+| ------------------------------------------- | ------------ | ---------- | ------------- | ------------------------------------------------------------------------------ |
+| [`ranges`](#ranges)                         | **Required** | `Object`   | `undefined`   | A record of ranges defined as labels and a tuple of Date times.                |
+| [`start`](#start)                           | **Required** | `Date`     | `undefined`   | Initial start Date set in the picker                                           |
+| [`end`](#end)                               | **Required** | `Date`     | `undefined`   | Initial end Date set in the picker                                             |
+| [`applyCallback`](#applycallback)           | **Required** | `Function` | `undefined`   | Function which is called when the apply button is clicked                      |
+| [`locale`](#locale)                         | optional     | `Object`   | `undefined`   | locale format for date labels                                                  |
+| [`rangeCallback`](#rangecallback)           | optional     | `Function` | `undefined`   | Function which is called when one of the preset ranges is clicked              |
+| [`maxDate`](#maxdate)                       | optional     | `Date`     | `undefined`   | Maximum date that can be selected in calendar                                  |
+| [`autoApply`](#autoapply)                   | optional     | `Boolean`  | `false`       | Set dates as soon as they're clicked without pressing apply                    |
+| [`descendingYears`](#descendingyears)       | optional     | `Boolean`  | `false`       | Set years be displayed in descending order                                     |
+| [`years`](#years)                           | optional     | `Array`    | `[1900, now]` | Limit the years shown in calendar                                              |
+| [`smartMode`](#smartmode)                   | optional     | `Boolean`  | `false`       | Switch the month on the right hand side (RHS) when two dates in the same month |
+| [`pastSearchFriendly`](#pastsearchfriendly) | optional     | `Boolean`  | `false`       | Optimize calendar for past searches                                            |
+| [`noMobileMode`](#nomobilemode)             | optional     | `Boolean`  | `false`       | Picker will always be displayed in full screen mode                            |
+| [`forceMobileMode`](#forcemobilemode)       | optional     | `Boolean`  | `false`       | Picker will always be displayed in condensed mode all the time                 |
+| [`twelveHoursClock`](#twelvehoursclock)     | optional     | `Boolean`  | `false`       | Display time values in a 12-hour format rather than a 24-hour format           |
+| [`standalone`](#standalone)                 | optional     | `Boolean`  | `false`       | When set the picker will be open by default                                    |
+| [`leftMode`](#leftmode)                     | optional     | `Boolean`  | `false`       | Picker will open to the left                                                   |
+| [`centerMode`](#centermode)                 | optional     | `Boolean`  | `false`       | Picker will open in center                                                     |
+| [`displayMaxDate`](#displaymaxdate)         | optional     | `Boolean`  | `false`       | Will display Max Date in picker footer                                         |
+| [`classNames`](#classnames)                 | optional     | `Object`   | `undefined`   | Will override classNames for different parts of the picker                     |
 
 ### `ranges`
 
 (Required)
-`Record<string, [Moment, Moment]>`
+`Record<string, [Date, Date]>`
 
-A record of ranges defined using a tuple of Moment times.
+A record of ranges defined using a tuple of `Date` instances.
+
+Using vanilla Javascript:
 
 ```js
-const startOfToday = moment(new Date())
-  .set('hour', 0)
-  .set('minute', 0)
-  .set('second', 0);
-const endOfToday = moment(startOfToday).add(1, 'days').subtract(1, 'second');
+const startOfToday = new Date(new Date().setHours(0, 0, 0, 0));
+startOfToday.setHours(0, 0, 0, 0);
+
+const endOfToday = new Date(startOfToday);
+endOfToday.setDate(endOfToday.getDate() + 1);
+endOfToday.setSeconds(endOfToday.getSeconds() - 1);
 
 const ranges = {
   Today: [startOfToday, startOfToday],
-  'Last 30 Days': [moment(startOfToday).subtract(1, 'months'), startOfToday],
+  // 'Last 30 Days': [..., ...],
+};
+```
+
+Or using [`date-fns`](https://date-fns.org/) lib:
+
+```ts
+import { add, sub, startOfDay } from 'date-fns';
+
+const now = new Date();
+const startOfToday = startOfDay(now);
+const endOfToday = add(sub(startOfToday, { seconds: 1 }), { days: 1 });
+
+const ranges = {
+  Today: [startOfDay(startOfToday), endOfToday],
+  'Last 30 Days': [startOfDay(sub(startOfToday, { days: 30 })), endOfToday],
 };
 ```
 
 ### `start`
 
 (Required)
-`Moment`
+`Date`
 
 Initial start Date set in the picker
 
 ### `end`
 
 (Required)
-`Moment`
+`Date`
 
 Initial end Date set in the picker
 
 ### `applyCallback`
 
-(Required) `(start: Moment, end: Moment) => void`
+(Required) `(start: Date, end: Date) => void`
 
-Function which is called when the apply button is clicked/pressed. Takes two params, start date and the end date which are both `Moment` dates.
+Function which is called when the apply button is clicked/pressed. Takes two params, start date and the end date.
 
 ### `locale`
 
@@ -277,7 +323,7 @@ Example:
 
 ```ts
 const locale = {
-  format: 'DD-MM-YYYY HH:mm', // See: https://momentjs.com/docs/#/parsing/special-formats/
+  format: 'dd-MM-yyyy HH:mm', // See: https://date-fns.org/v2.16.1/docs/format
   sundayFirst: false,
   days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'So'],
   months: [
@@ -316,7 +362,7 @@ Function which is called when one of the preset ranges is clicked/selected. Take
 
 ### `maxDate`
 
-(optional) `Moment`
+(optional) `Date`
 
 Maximum date that can be selected in calendar.
 
@@ -334,21 +380,15 @@ To set years be displayed in descending order in picker instead of ascending.
 
 ### `years`
 
-(optional) `[number, number]` defaults to `[1900, <currentYear>]`
+(optional) `[number, number]` defaults to `[1900, new Date().getFullYear()]`
 
-Takes a tuple where the first value is the start year and the second values is the end year. This will update the dropdown years to only show these years.
-
-**WARNING:** This does not affect the ability to type in years in the text box and go beyond the values set here.
+Takes a tuple where the first value is the start year and the second values is the end year users can pick from.
 
 Example:
 
 ```js
-years={[1900, 2023]}
+years={[2000, 2025]}
 ```
-
-Takes an array where the first value is the start year and the second values is the end year. This will
-update the dropdown years to only show these years.
-<br> WARNING: This does not affect the ability to type in years in the text box and go beyond the values set here.
 
 ### `smartMode`
 
@@ -442,6 +482,9 @@ classNames={{
   rootContainer: '!bg-red-700'
 }}
 ```
+The following illustration shows the different components of the picker which can be customized:
+
+![Date Time Picker Components Illustration](https://raw.githubusercontent.com/mohsentaleb/react-tailwindcss-datetimepicker/master/public/date-picker-illustration.png)
 
 ## Development
 
@@ -461,11 +504,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 npm run build
 ```
 
-Builds the app for production to the `/dist` folder using vite's [library mode](https://vitejs.dev/guide/build.html#library-mode). Type declarations are also created in the same directory.
+Builds the app for production to the `/dist` folder using vite's [library mode](https://vitejs.dev/guide/build.html#library-mode). Type declarations (`index.d.ts`) are also created in the same directory.
 
-## Breaking changes in v2
+## Migration
 
-If you're upgrading from `1.x.x to ` to `2.x.x`:
+### from `2.x.x to ` to `3.x.x`:
+
+- [`Moment`](https://momentjs.com/) has been removed from the dependencies. Now you can use any date library (or even vanilla js) to construct your date objects. See [`ranges`](#ranges).
+
+### From `1.x.x to ` to `2.x.x`:
 
 - `local` prop has been renamed to [`locale`](#locale) and it's now an **optional** prop.
 - `style` prop has been removed in favor of [`classNames`](#classnames).
@@ -475,8 +522,9 @@ If you're upgrading from `1.x.x to ` to `2.x.x`:
 
 - [x] Support TypeScript
 - [x] Ability to add custom CSS classes for different parts of the component
-- [ ] Migrate to [date-fns](https://www.npmjs.com/package/date-fns)
-- [ ] Write more tests
+- [x] Migrate to [date-fns](https://www.npmjs.com/package/date-fns)
+- [ ] More demos showcasing different props
+- [ ] Write tests
 
 ## License
 

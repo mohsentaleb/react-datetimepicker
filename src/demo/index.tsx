@@ -1,24 +1,30 @@
 import { useState } from 'react';
-import moment, { type Moment } from 'moment';
 import ReactDateTimePicker from '../lib/index';
-import { MomentDateRanges } from './consts';
+import { DateRanges } from './consts';
 import Header from './components/Header';
+import { add, set, format } from 'date-fns';
 
 export default function Demo() {
-  const [start, end] = MomentDateRanges['Today'];
+  const [start, end] = DateRanges['Today'];
 
   const [selectedRange, setSelectedRange] = useState({
     start,
     end,
   });
 
-  function handleApply(startDate: Moment, endDate: Moment) {
+  function handleApply(startDate: Date, endDate: Date) {
     setSelectedRange({ start: startDate, end: endDate });
   }
 
   function getUserFriendlyDateRangeString() {
-    const formattedSelectedStart = selectedRange.start.format('LLL');
-    const formattedSelectedEnd = selectedRange.end.format('LLL');
+    const formattedSelectedStart = format(
+      selectedRange.start,
+      'MMM d, yyyy h:mm a'
+    );
+    const formattedSelectedEnd = format(
+      selectedRange.end,
+      'MMM d, yyyy h:mm a'
+    );
     const formattedDateRange = `${formattedSelectedStart} to ${formattedSelectedEnd}`;
 
     return formattedDateRange;
@@ -27,21 +33,18 @@ export default function Demo() {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-7x px-2 py-4 sm:px-6 lg:px-8">
+      <div className="max-w-7x mx-auto px-2 py-4 sm:px-6 lg:px-8">
         <p className="mb-5">Click on the button to display the date picker</p>
         <ReactDateTimePicker
-          ranges={MomentDateRanges}
+          ranges={DateRanges}
           start={selectedRange.start}
           end={selectedRange.end}
           years={[2020, new Date().getFullYear()]}
-          locale={{
-            format: 'DD-MM-YYYY HH:mm',
-            sundayFirst: false,
-          }}
-          maxDate={moment(start)
-            .add(24, 'hour')
-            .set('hour', 23)
-            .set('minute', 59)}
+          maxDate={set(add(start, { days: 1 }), {
+            hours: 23,
+            minutes: 59,
+            seconds: 59,
+          })}
           applyCallback={handleApply}
           twelveHoursClock
           displayMaxDate

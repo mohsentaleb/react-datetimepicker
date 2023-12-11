@@ -1,10 +1,22 @@
-import moment from 'moment';
-import type { Moment } from 'moment';
+import {
+  isBefore,
+  setHours,
+  setMinutes,
+  setSeconds,
+  isEqual,
+  addDays,
+  subDays,
+  isAfter,
+  isSameDay,
+  getHours,
+  getMinutes,
+  getSeconds,
+} from 'date-fns';
 
 export const datePicked = (
-  startDate: Moment,
-  endDate: Moment,
-  newDate: Moment,
+  startDate: Date,
+  endDate: Date,
+  newDate: Date,
   startMode: boolean,
   smartMode?: boolean
 ) => {
@@ -16,24 +28,24 @@ export const datePicked = (
 };
 
 const newDateStartMode = (
-  newDate: Moment,
-  endDate: Moment,
-  startDate: Moment,
+  newDate: Date,
+  endDate: Date,
+  startDate: Date,
   smartMode?: boolean
 ) => {
   // Create a new moment object which combines the new date and the original start date as newDate
   // doesnt contain time info which is important to determining equality
   let newDateWithTime = createNewDateWithTime(
     newDate,
-    startDate.hour(),
-    startDate.minute(),
-    startDate.second()
+    getHours(startDate),
+    getMinutes(startDate),
+    getSeconds(startDate)
   );
-  if (newDateWithTime.isSameOrBefore(endDate, 'seconds')) {
+
+  if (isBefore(newDateWithTime, endDate) || isEqual(newDateWithTime, endDate)) {
     return returnDateObject(newDate, endDate);
   } else if (smartMode) {
-    let newEnd = moment(newDate);
-    newEnd.add(1, 'days');
+    const newEnd = addDays(newDate, 1);
     return returnDateObject(newDate, newEnd);
   } else {
     return returnDateObject(startDate, endDate);
@@ -41,24 +53,26 @@ const newDateStartMode = (
 };
 
 const newDateEndMode = (
-  newDate: Moment,
-  startDate: Moment,
-  endDate: Moment,
+  newDate: Date,
+  startDate: Date,
+  endDate: Date,
   smartMode?: boolean
 ) => {
   // Create a new moment object which combines the new date and the original end date as newDate
   // doesnt contain time info which is important to determining equality
   let newDateWithTime = createNewDateWithTime(
     newDate,
-    endDate.hour(),
-    endDate.minute(),
-    endDate.second()
+    getHours(endDate),
+    getMinutes(endDate),
+    getSeconds(endDate)
   );
-  if (newDateWithTime.isSameOrAfter(startDate, 'seconds')) {
+  if (
+    isAfter(newDateWithTime, startDate) ||
+    isEqual(newDateWithTime, startDate)
+  ) {
     return returnDateObject(startDate, newDate);
   } else if (smartMode) {
-    let newStart = moment(newDate);
-    newStart.subtract(1, 'days');
+    let newStart = subDays(newDate, 1);
     return returnDateObject(newStart, newDate);
   } else {
     return returnDateObject(startDate, endDate);
@@ -66,20 +80,19 @@ const newDateEndMode = (
 };
 
 const createNewDateWithTime = (
-  newDate: Moment,
+  newDate: Date,
   hour: number,
   minute: number,
   second: number
 ) => {
-  let newDateTmp = [newDate.year(), newDate.month(), newDate.date()];
-  let newDateWithTime = moment(newDateTmp);
-  newDateWithTime.hour(hour);
-  newDateWithTime.minute(minute);
-  newDateWithTime.second(second);
-  return newDateWithTime;
+  const updatedDate = setSeconds(
+    setMinutes(setHours(newDate, hour), minute),
+    second
+  );
+  return updatedDate;
 };
 
-const returnDateObject = (startDate: Moment, endDate: Moment) => {
+const returnDateObject = (startDate: Date, endDate: Date) => {
   return {
     startDate,
     endDate,
@@ -87,17 +100,23 @@ const returnDateObject = (startDate: Moment, endDate: Moment) => {
 };
 
 export const pastMaxDate = (
-  currentDate: Moment,
-  maxDate?: Moment,
+  currentDate: Date,
+  maxDate?: Date,
   minuteMode?: boolean
-) => {
+): boolean => {
   if (!maxDate) {
     return false;
   }
-  if (minuteMode && maxDate && currentDate.isAfter(maxDate, 'seconds')) {
+
+  if (minuteMode && maxDate && isAfter(currentDate, maxDate)) {
     return true;
   }
-  if (maxDate && currentDate.isAfter(maxDate, 'day')) {
+
+  if (
+    maxDate &&
+    !isSameDay(currentDate, maxDate) &&
+    isAfter(currentDate, maxDate)
+  ) {
     return true;
   }
   return false;
