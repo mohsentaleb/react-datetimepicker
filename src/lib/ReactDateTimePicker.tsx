@@ -153,7 +153,7 @@ export default class ReactDateTimePicker extends React.Component<
         <div
           id="datepicker"
           className={clsx(
-            'absolute top-full z-20 mt-[1px] w-full max-w-2xl rounded border border-gray-100 bg-white shadow-lg dark:border-none dark:bg-slate-700 dark:text-white',
+            'absolute top-full z-20 mt-[1px] w-full max-w-2xl rounded border border-gray-100 bg-white shadow-lg dark:border-none dark:bg-slate-700 dark:text-white md:w-auto',
             {
               'right-0': this.props.leftMode,
               'left-1/2': this.props.centerMode,
