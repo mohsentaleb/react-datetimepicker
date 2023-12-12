@@ -138,22 +138,22 @@ export default class Cell extends React.Component<Props, State> {
       let isCellDateProp = isSameDay(this.props.cellDay, this.props.date);
       if (e.key === 'ArrowUp') {
         // Up Key
-        subDays(newDate, 7);
+        newDate = subDays(newDate, 7);
       } else if (e.key === 'ArrowDown') {
         // Down Key
         if (this.pastMaxDatePropsChecker(isCellDateProp, 7)) {
           return;
         }
-        addDays(newDate, 7);
+        newDate = addDays(newDate, 7);
       } else if (e.key === 'ArrowLeft') {
         // Left Key
-        subDays(newDate, 1);
+        newDate = subDays(newDate, 1);
       } else if (e.key === 'ArrowRight') {
         // Right Key
         if (this.pastMaxDatePropsChecker(isCellDateProp, 1)) {
           return;
         }
-        addDays(newDate, 1);
+        newDate = addDays(newDate, 1);
       }
       let isSuccessfulCallback = this.props.keyboardCellCallback(
         this.props.cellDay,

@@ -11,7 +11,7 @@ This is a feature rich React date-time picker component built with **React 18** 
 - ✅ Fully responsive (Optimized for mobile devices)
 - ✅ No date library dependency for implementation (You can use vanilla js, `date-fns`, `moment` etc)
 
-<a href="https://github.com/microsoft/react-native-macos/blob/master/LICENSE">
+<a href="https://github.com/mohsentaleb/react-tailwindcss-datetimepicker/blob/master/LICENSE.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native for macOS is released under the MIT license." />
   </a>
 <a href="https://www.npmjs.com/package/react-tailwindcss-datetimepicker">
@@ -238,7 +238,7 @@ export default App;
 | [`start`](#start)                           | **Required** | `Date`     | `undefined`   | Initial start Date set in the picker                                           |
 | [`end`](#end)                               | **Required** | `Date`     | `undefined`   | Initial end Date set in the picker                                             |
 | [`applyCallback`](#applycallback)           | **Required** | `Function` | `undefined`   | Function which is called when the apply button is clicked                      |
-| [`locale`](#locale)                         | optional     | `Object`   | `undefined`   | locale format for date labels                                                  |
+| [`locale`](#locale)                         | optional     | `Object`   | `undefined`   | locale format for translatable labels                                                  |
 | [`rangeCallback`](#rangecallback)           | optional     | `Function` | `undefined`   | Function which is called when one of the preset ranges is clicked              |
 | [`maxDate`](#maxdate)                       | optional     | `Date`     | `undefined`   | Maximum date that can be selected in calendar                                  |
 | [`autoApply`](#autoapply)                   | optional     | `Boolean`  | `false`       | Set dates as soon as they're clicked without pressing apply                    |
@@ -317,7 +317,7 @@ Function which is called when the apply button is clicked/pressed. Takes two par
 
 (optional)
 
-Defines a locale format for date labels to be shown as. Can also set Sunday to be first day or Monday.
+Locale for translatable labels. Can also set Sunday to be first day or Monday.
 
 Example:
 
@@ -523,9 +523,10 @@ Builds the app for production to the `/dist` folder using vite's [library mode](
 - [x] Support TypeScript
 - [x] Ability to add custom CSS classes for different parts of the component
 - [x] Migrate to [date-fns](https://www.npmjs.com/package/date-fns)
+- [ ] Adding predefined themes
 - [ ] More demos showcasing different props
 - [ ] Write tests
 
 ## License
 
-[MIT](/LICENSE.md)
+[MIT](https://github.com/mohsentaleb/react-tailwindcss-datetimepicker/blob/master/LICENSE.md)
