@@ -26,7 +26,13 @@ import { isValidTimeChange } from './utils/TimeFunctionUtils';
 import { datePicked, pastMaxDate } from './utils/DateSelectedUtils';
 import ApplyCancelButtons from './date_picker/ApplyCancelButtons';
 
-import type { Locale, Mode, PresetDateRanges, ClassNames } from './types';
+import type {
+  Locale,
+  Mode,
+  PresetDateRanges,
+  ClassNames,
+  Theme,
+} from './types';
 
 export const ModeEnum = Object.freeze({ start: 'start', end: 'end' });
 export const defaultDateFormat = 'dd-MM-yyyy HH:mm';
@@ -52,6 +58,7 @@ interface Props {
   selectedRange?: number;
   classNames?: ClassNames;
   displayMaxDate?: boolean;
+  theme?: Theme;
 }
 
 interface State {
@@ -589,6 +596,7 @@ class DateTimeRangePicker extends React.Component<Props, State> {
         smartMode={this.props.smartMode}
         twelveHoursClock={this.props.twelveHoursClock}
         classNames={this.props.classNames}
+        theme={this.props.theme}
       />
     );
   }
@@ -620,6 +628,7 @@ class DateTimeRangePicker extends React.Component<Props, State> {
         smartMode={this.props.smartMode}
         twelveHoursClock={this.props.twelveHoursClock}
         classNames={this.props.classNames}
+        theme={this.props.theme}
       />
     );
   }
@@ -635,7 +644,8 @@ class DateTimeRangePicker extends React.Component<Props, State> {
             noMobileMode={this.props.noMobileMode}
             forceMobileMode={this.props.forceMobileMode}
             classNames={this.props.classNames}
-          />
+            theme={this.props.theme}
+            />
           {this.renderStartDate(this.props.locale)}
           {this.renderEndDate(this.props.locale)}
         </div>
@@ -648,10 +658,11 @@ class DateTimeRangePicker extends React.Component<Props, State> {
           standalone={this.props.standalone}
           displayMaxDate={this.props.displayMaxDate}
           classNames={this.props.classNames}
+          theme={this.props.theme}
         />
       </>
     );
   }
 }
 
-export { DateTimeRangePicker };
+export default DateTimeRangePicker;

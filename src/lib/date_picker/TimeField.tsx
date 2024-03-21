@@ -31,11 +31,7 @@ export default class TimeField extends React.Component<Props, State> {
 
   generateHourSelectValues() {
     let selectValues = [];
-    for (
-      let i = this.props.twelveHoursClock ? 1 : 0;
-      i <= (this.props.twelveHoursClock ? 12 : 23);
-      i++
-    ) {
+    for (let i = this.props.twelveHoursClock ? 1 : 0; i <= (this.props.twelveHoursClock ? 12 : 23); i++) {
       selectValues.push(
         <option key={i} value={i}>
           {i}
@@ -81,10 +77,7 @@ export default class TimeField extends React.Component<Props, State> {
   handleHourChange = (event: BaseSyntheticEvent) => {
     this.props.timeChangeCallback(
       this.props.twelveHoursClock
-        ? this.convertHourUsingMeridiem(
-            parseInt(event.target.value),
-            format(this.props.date, 'aaa') as Meridiem
-          )
+        ? this.convertHourUsingMeridiem(parseInt(event.target.value), format(this.props.date, 'aaa') as Meridiem)
         : parseInt(event.target.value),
       getMinutes(this.props.date),
       this.props.mode
@@ -92,19 +85,12 @@ export default class TimeField extends React.Component<Props, State> {
   };
 
   handleMinuteChange = (event: BaseSyntheticEvent) => {
-    this.props.timeChangeCallback(
-      getHours(this.props.date),
-      parseInt(event.target.value),
-      this.props.mode
-    );
+    this.props.timeChangeCallback(getHours(this.props.date), parseInt(event.target.value), this.props.mode);
   };
 
   handleMeridiemChange = (event: BaseSyntheticEvent) => {
     this.props.timeChangeCallback(
-      this.convertHourUsingMeridiem(
-        parseInt(format(this.props.date, 'h')),
-        event.target.value
-      ),
+      this.convertHourUsingMeridiem(parseInt(format(this.props.date, 'h')), event.target.value),
       getMinutes(this.props.date),
       this.props.mode
     );
@@ -148,15 +134,13 @@ export default class TimeField extends React.Component<Props, State> {
     let hours = this.generateHourSelectValues();
     let minutes = this.generateMinuteSelectValues();
     let meridiems = this.generateMeridiemSelectValues();
-    let hour = this.props.twelveHoursClock
-      ? parseInt(format(this.props.date, 'h'))
-      : getHours(this.props.date);
+    let hour = this.props.twelveHoursClock ? parseInt(format(this.props.date, 'h')) : getHours(this.props.date);
     let minute = getMinutes(this.props.date);
     let meridiem = format(this.props.date, 'aaa');
 
     return (
-      <div className="flex items-center justify-center gap-2 p-2">
-        <TimeIcon className="mr-2 h-4 w-4 text-white dark:text-slate-500" />
+      <div className="flex shrink items-center justify-center gap-2 p-2">
+        <TimeIcon className="size-5 mr-1 text-gray-400 dark:text-slate-500" />
         <div className="flex items-center">
           <div
             className={clsx('grow', {
@@ -175,22 +159,12 @@ export default class TimeField extends React.Component<Props, State> {
             onFocus={this.minuteFocus}
             onBlur={this.minuteBlur}
           >
-            {this.renderSelectField(
-              minute,
-              this.handleMinuteChange,
-              minutes,
-              'Minutes'
-            )}
+            {this.renderSelectField(minute, this.handleMinuteChange, minutes, 'Minutes')}
           </div>
         </div>
         {this.props.twelveHoursClock && (
           <div className="inline-block">
-            {this.renderSelectField(
-              meridiem,
-              this.handleMeridiemChange,
-              meridiems,
-              'Meridiem'
-            )}
+            {this.renderSelectField(meridiem, this.handleMeridiemChange, meridiems, 'Meridiem')}
           </div>
         )}
       </div>

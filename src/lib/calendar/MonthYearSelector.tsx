@@ -13,10 +13,7 @@ interface Props {
   year: number;
   changeMonthCallback: (event: BaseSyntheticEvent) => void;
   changeYearCallback: (event: BaseSyntheticEvent) => void;
-  changeMonthArrowsCallback: (
-    isPreviousChange: boolean,
-    isNextChange: boolean
-  ) => void;
+  changeMonthArrowsCallback: (isPreviousChange: boolean, isNextChange: boolean) => void;
   mode: Mode;
 }
 
@@ -74,48 +71,44 @@ export default class MonthYearSelector extends React.Component<Props, State> {
     let years = this.createYears(this.props.years);
 
     return (
-      <div className="m-1 mt-2 flex items-center">
+      <div className="m-2 flex items-center gap-1">
         <div className="grow text-left">
           <ChevronLeftIcon
-            className="h-4 w-4 cursor-pointer"
+            className="size-7 cursor-pointer rounded p-2 hover:bg-gray-100"
             onClick={() => this.props.changeMonthArrowsCallback(true, false)}
           />
         </div>
-        <div
-          className={clsx('grow', {
-            'ring-2 ring-offset-2': this.state.monthFocus,
-          })}
-          onFocus={this.monthFocus}
-          onBlur={this.monthBlur}
-        >
+        <div className="shrink text-center">
           <select
             id={'MonthSelector_' + this.props.mode}
             value={this.props.months[this.props.month]}
             onChange={this.props.changeMonthCallback}
-            className="rounded border border-gray-200 p-1 dark:border-slate-500 dark:bg-slate-600"
+            className={clsx('rounded border border-gray-200 p-1 dark:border-slate-500 dark:bg-slate-600', {
+              'ring-2 ring-offset-2': this.state.monthFocus,
+            })}
+            onFocus={this.monthFocus}
+            onBlur={this.monthBlur}
           >
             {months}
           </select>
         </div>
-        <div
-          className={clsx('grow', {
-            'ring-2 ring-offset-2': this.state.yearFocus,
-          })}
-          onFocus={this.yearFocus}
-          onBlur={this.yearBlur}
-        >
+        <div className="shrink text-center">
           <select
             id={'YearSelector_' + this.props.mode}
             value={this.props.year}
             onChange={this.props.changeYearCallback}
-            className="rounded border border-gray-200 p-1 dark:border-slate-500 dark:bg-slate-600"
+            className={clsx('rounded border border-gray-200 p-1 dark:border-slate-500 dark:bg-slate-600', {
+              'ring-2 ring-offset-2': this.state.yearFocus,
+            })}
+            onFocus={this.yearFocus}
+            onBlur={this.yearBlur}
           >
             {years}
           </select>
         </div>
-        <div className="inline-block text-right">
+        <div className="grow text-right ">
           <ChevronRightIcon
-            className="h-4 w-4 cursor-pointer"
+            className="size-7 cursor-pointer rounded p-2 hover:bg-gray-100"
             onClick={() => this.props.changeMonthArrowsCallback(false, true)}
           />
         </div>

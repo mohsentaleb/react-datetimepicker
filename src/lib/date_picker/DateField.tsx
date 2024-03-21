@@ -15,10 +15,7 @@ interface Props {
 
 export default class DateField extends React.Component<Props> {
   onChangeDateTextHandler = (event: BaseSyntheticEvent) => {
-    this.props.onChangeDateTextHandlerCallback(
-      event.target.value,
-      this.props.mode
-    );
+    this.props.onChangeDateTextHandlerCallback(event.target.value, this.props.mode);
   };
 
   onBlur = () => {
@@ -35,12 +32,12 @@ export default class DateField extends React.Component<Props> {
 
   render() {
     return (
-      <div className="flex items-stretch" onClick={this.onClick}>
-        <span className="block border-gray-200 p-2">
-          <CalendarIcon className="h-4 w-4 text-white dark:text-slate-500" />
-        </span>
+      <div className="flex justify-center" onClick={this.onClick}>
+        <div className="flex shrink items-center justify-center gap-2 p-2">
+          <CalendarIcon className="mr-1 size-5  text-gray-400 dark:text-slate-500" />
+        </div>
         <input
-          className="grow rounded border border-gray-200 p-2 dark:border-slate-500 dark:bg-slate-600"
+          className="rounded border border-gray-200 p-2 dark:border-slate-500 dark:bg-slate-600"
           id={`datepicker-date-${this.props.mode}`}
           type="text"
           value={this.props.dateLabel}
