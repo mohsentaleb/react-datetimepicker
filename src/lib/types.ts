@@ -37,19 +37,19 @@ export type ClassNames = {
   rangeButtonSelected?: string;
   fromToRangeContainer?: string;
   normalCell?: string;
-  normalCellHover?: string
-  greyCell?: string
-  invalidCell?: string
-  startCell?: string
-  endCell?: string
-  withinRangeCell?: string
+  normalCellHover?: string;
+  greyCell?: string;
+  invalidCell?: string;
+  startCell?: string;
+  endCell?: string;
+  withinRangeCell?: string;
   startDot?: string;
   endDot?: string;
   footerContainer?: string;
   applyButton?: string;
   cancelButton?: string;
-
 };
 
 export type Mode = 'start' | 'end';
 export type Meridiem = 'am' | 'pm';
+export type Theme = 'blue' | 'orange' | 'green' | 'purple';

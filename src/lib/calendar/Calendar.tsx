@@ -11,7 +11,7 @@ import {
   getFourtyTwoDays,
 } from '../utils/TimeFunctionUtils';
 
-import type { ClassNames, Locale, Mode } from '../types';
+import type { ClassNames, Locale, Mode, Theme } from '../types';
 import type { BaseSyntheticEvent } from 'react';
 
 interface Props {
@@ -30,6 +30,7 @@ interface Props {
   cellFocusedCallback: (date: Date) => void;
   locale?: Locale;
   classNames?: ClassNames;
+  theme?: Theme
 }
 
 interface State {
@@ -220,6 +221,7 @@ export default class Calendar extends React.Component<Props, State> {
           cellFocusedCallback={this.props.cellFocusedCallback}
           smartMode={this.props.smartMode}
           classNames={this.props.classNames}
+          theme={this.props.theme}
         />
       </div>
     );

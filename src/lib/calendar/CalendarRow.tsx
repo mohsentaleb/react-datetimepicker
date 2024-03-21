@@ -1,7 +1,7 @@
 import React from 'react';
 import Cell from './Cell';
 
-import { ClassNames, Mode } from '../types';
+import { ClassNames, Mode, Theme } from '../types';
 
 interface Props {
   row: number;
@@ -19,6 +19,7 @@ interface Props {
   mode: Mode;
   smartMode?: boolean;
   classNames?: ClassNames;
+  theme?: Theme;
 }
 
 export default class CalendarRow extends React.Component<Props> {
@@ -44,6 +45,7 @@ export default class CalendarRow extends React.Component<Props> {
           mode={this.props.mode}
           smartMode={this.props.smartMode}
           classNames={this.props.classNames}
+          theme={this.props.theme}
         />
       );
     }

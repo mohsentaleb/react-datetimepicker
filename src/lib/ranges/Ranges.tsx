@@ -1,7 +1,7 @@
 import React from 'react';
 import RangeButton from './RangeButton';
 
-import type { ClassNames, PresetDateRanges } from '../types';
+import type { ClassNames, PresetDateRanges, Theme } from '../types';
 import { clsx } from 'clsx';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   noMobileMode?: boolean;
   forceMobileMode?: boolean;
   classNames?: ClassNames;
+  theme?: Theme;
 }
 
 interface State {
@@ -90,6 +91,7 @@ export default class Ranges extends React.Component<Props, State> {
             focused={this.state.focused}
             setFocusedCallback={this.setFocusedCallback}
             classNames={this.props.classNames}
+            theme={this.props.theme}
           />
         ))}
       </div>

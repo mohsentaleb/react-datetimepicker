@@ -1,10 +1,10 @@
 import React from 'react';
-import { DateTimeRangePicker } from './DateTimeRangePicker';
+import DateTimeRangePicker from './DateTimeRangePicker';
 import { propValidation } from './utils/PropValidation';
 import clsx from 'clsx';
 
 import type { ReactNode } from 'react';
-import type { ClassNames, Locale, PresetDateRanges } from './types';
+import type { ClassNames, Locale, PresetDateRanges, Theme } from './types';
 
 export interface ReactDateTimePickerProps {
   ranges: PresetDateRanges;
@@ -27,12 +27,15 @@ export interface ReactDateTimePickerProps {
   centerMode?: boolean;
   classNames?: ClassNames;
   displayMaxDate?: boolean;
+  theme?: Theme;
   children: ReactNode;
 }
 
 interface State {
   visible: boolean;
 }
+
+export const defaultTheme: Theme = 'blue';
 
 export default class ReactDateTimePicker extends React.Component<
   ReactDateTimePickerProps,
@@ -114,6 +117,7 @@ export default class ReactDateTimePicker extends React.Component<
         twelveHoursClock={this.props.twelveHoursClock == true}
         classNames={this.props.classNames}
         displayMaxDate={this.props.displayMaxDate}
+        theme={this.props.theme}
       />
     );
   }
@@ -159,7 +163,7 @@ export default class ReactDateTimePicker extends React.Component<
               'left-1/2': this.props.centerMode,
               'flex flex-col': this.state.visible,
               '!flex-col': this.props.forceMobileMode,
-              '!flex-row': this.props.noMobileMode, // If no mobile mode prop not set then allow mobile mode
+              '!flex-row': this.props.noMobileMode, // If "noMobileMode" prop not set then allow mobile mode
               hidden: !this.state.visible,
             },
             this.props.classNames?.rootContainer

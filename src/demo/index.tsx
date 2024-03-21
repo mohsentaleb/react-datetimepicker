@@ -5,8 +5,7 @@ import Header from './components/Header';
 import { add, set, format } from 'date-fns';
 
 export default function Demo() {
-  const [start, end] = DateRanges['Today'];
-
+  const [start, end] = DateRanges['Last 5 Days'];
   const [selectedRange, setSelectedRange] = useState({
     start,
     end,
@@ -40,7 +39,7 @@ export default function Demo() {
           start={selectedRange.start}
           end={selectedRange.end}
           years={[2020, new Date().getFullYear()]}
-          maxDate={set(add(start, { days: 1 }), {
+          maxDate={set(add(end, { days: 1 }), {
             hours: 23,
             minutes: 59,
             seconds: 59,
@@ -48,6 +47,8 @@ export default function Demo() {
           applyCallback={handleApply}
           twelveHoursClock
           displayMaxDate
+          // theme='green'
+          standalone
         >
           <button className="w-3/5 cursor-pointer rounded border bg-gray-50 px-3 py-2 text-left hover:border-gray-300">
             {getUserFriendlyDateRangeString()}

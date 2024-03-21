@@ -5,7 +5,7 @@ import TimeField from './TimeField';
 import Calendar from '../calendar/Calendar';
 import ActiveNotifier from './ActiveNotifier';
 
-import type { ClassNames, Locale, Mode } from '../types';
+import type { ClassNames, Locale, Mode, Theme } from '../types';
 import clsx from 'clsx';
 
 interface Props {
@@ -32,6 +32,7 @@ interface Props {
   smartMode?: boolean;
   twelveHoursClock?: boolean;
   classNames?: ClassNames;
+  theme?: Theme;
 }
 
 export default class DatePicker extends React.Component<Props> {
@@ -87,6 +88,7 @@ export default class DatePicker extends React.Component<Props> {
           pastSearchFriendly={this.props.pastSearchFriendly}
           smartMode={this.props.smartMode}
           classNames={this.props.classNames}
+          theme={this.props.theme}
         />
         <ActiveNotifier
           selectingModeFrom={this.props.selectingModeFrom}

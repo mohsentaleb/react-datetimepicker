@@ -1,7 +1,7 @@
 import React from 'react';
 import CalendarRow from './CalendarRow';
 
-import { ClassNames, Mode } from '../types';
+import { ClassNames, Mode, Theme } from '../types';
 
 interface Props {
   date: Date;
@@ -18,6 +18,7 @@ interface Props {
   mode: Mode;
   smartMode?: boolean;
   classNames?: ClassNames;
+  theme?: Theme
 }
 
 export default class CalendarRows extends React.Component<Props> {
@@ -45,6 +46,7 @@ export default class CalendarRows extends React.Component<Props> {
           mode={this.props.mode}
           smartMode={this.props.smartMode}
           classNames={this.props.classNames}
+          theme={this.props.theme}
         />
       );
     }
