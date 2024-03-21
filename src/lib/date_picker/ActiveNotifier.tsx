@@ -13,10 +13,7 @@ export default class ActiveNotifier extends React.Component<Props> {
   getDotDiv(text: string, classNames: string, id: string) {
     return (
       <div className="activeNotifier flex items-center justify-center" id={id}>
-        {text}{' '}
-        <span
-          className={clsx('ml-2 inline-block h-3 w-3 rounded-full', classNames)}
-        />
+        {text} <span className={clsx('ml-2 inline-block h-3 w-3 rounded-full', classNames)} />
       </div>
     );
   }
@@ -32,12 +29,10 @@ export default class ActiveNotifier extends React.Component<Props> {
     let locale = this.props.locale;
     if (this.props.smartMode) {
       if (selectingModeFrom && mode === 'start') {
-        let label =
-          locale && locale.selectingFrom ? locale.selectingFrom : 'Selecting From';
+        let label = locale && locale.selectingFrom ? locale.selectingFrom : 'Selecting From';
         return this.getDotDiv(`${label} `, startDotStyle, startNotifierID);
       } else if (!selectingModeFrom && mode === 'end') {
-        let label =
-          locale && locale.selectingTo ? locale.selectingTo : 'Selecting To';
+        let label = locale && locale.selectingTo ? locale.selectingTo : 'Selecting To';
         return this.getDotDiv(`${label} `, endDotStyle, endNotifierID);
       }
     } else {

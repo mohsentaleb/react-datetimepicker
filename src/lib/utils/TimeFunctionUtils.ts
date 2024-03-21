@@ -51,23 +51,13 @@ function workOutMonthYear(
   }
   // If pastSearch Friendly mode is on and both months are the same and the same year
   // have "end"/right as the month and "start"/left as -1 month
-  else if (
-    isSameYear(date, secondDate) &&
-    mode === 'start' &&
-    pastSearchFriendly &&
-    smartMode
-  ) {
+  else if (isSameYear(date, secondDate) && mode === 'start' && pastSearchFriendly && smartMode) {
     let lastMonth = subMonths(date, 1);
     return lastMonth;
   }
   // If pastSearch Friendly mode is off and both months are the same and the same year
   // have "end"/right as the month and "start"/left as +1 month
-  else if (
-    isSameYear(date, secondDate) &&
-    mode === 'end' &&
-    !pastSearchFriendly &&
-    smartMode
-  ) {
+  else if (isSameYear(date, secondDate) && mode === 'end' && !pastSearchFriendly && smartMode) {
     let lastMonth = addMonths(date, 1);
     return lastMonth;
   } else {
@@ -81,21 +71,10 @@ export const getMonth = (
   mode?: Mode,
   pastSearchFriendly?: boolean,
   smartMode?: boolean
-) =>
-  dateFnsGetMonth(
-    workOutMonthYear(date, secondDate, mode, pastSearchFriendly, smartMode)
-  );
+) => dateFnsGetMonth(workOutMonthYear(date, secondDate, mode, pastSearchFriendly, smartMode));
 
-export const getYear = (
-  date: Date,
-  secondDate: Date,
-  mode?: Mode,
-  pastSearchFriendly?: boolean,
-  smartMode?: boolean
-) =>
-  dateFnsGetYear(
-    workOutMonthYear(date, secondDate, mode, pastSearchFriendly, smartMode)
-  );
+export const getYear = (date: Date, secondDate: Date, mode?: Mode, pastSearchFriendly?: boolean, smartMode?: boolean) =>
+  dateFnsGetYear(workOutMonthYear(date, secondDate, mode, pastSearchFriendly, smartMode));
 
 const getDaysBeforeStartMonday = (firstDayOfMonth: Date) => {
   let fortyTwoDays = [];
@@ -155,11 +134,7 @@ const getDaysBeforeStart = (firstDayOfMonth: Date, sundayFirst: boolean) => {
   }
 };
 
-export const getFourtyTwoDays = (
-  initMonth: number,
-  initYear: number,
-  sundayFirst: boolean
-) => {
+export const getFourtyTwoDays = (initMonth: number, initYear: number, sundayFirst: boolean) => {
   let fourtyTwoDays = [];
   let firstDayOfMonth = startOfMonth(new Date(initYear, initMonth, 1));
   let lastDayOfMonth = endOfMonth(firstDayOfMonth);
@@ -183,34 +158,20 @@ export const getFourtyTwoDays = (
   return fourtyTwoDays;
 };
 
-export const isInbetweenDates = (
-  isStartDate: boolean,
-  dayToFindOut: Date,
-  start: Date,
-  end: Date
-) => {
+export const isInbetweenDates = (isStartDate: boolean, dayToFindOut: Date, start: Date, end: Date) => {
   let isInBetweenDates;
 
   if (isStartDate) {
-    isInBetweenDates =
-      isAfter(dayToFindOut, start) && isBefore(dayToFindOut, end);
+    isInBetweenDates = isAfter(dayToFindOut, start) && isBefore(dayToFindOut, end);
   } else {
-    isInBetweenDates =
-      isBefore(dayToFindOut, start) && isAfter(dayToFindOut, end);
+    isInBetweenDates = isBefore(dayToFindOut, start) && isAfter(dayToFindOut, end);
   }
 
   return isInBetweenDates;
 };
 
-export const isValidTimeChange = (
-  mode: Mode,
-  date: Date,
-  start: Date,
-  end: Date
-) => {
-  let modeStartAndDateSameOrBeforeStart =
-    mode === 'start' && (isBefore(date, end) || isEqual(date, end));
-  let modeEndAndDateSameOrAfterEnd =
-    mode === 'end' && (isAfter(date, start) || isEqual(date, start));
+export const isValidTimeChange = (mode: Mode, date: Date, start: Date, end: Date) => {
+  let modeStartAndDateSameOrBeforeStart = mode === 'start' && (isBefore(date, end) || isEqual(date, end));
+  let modeEndAndDateSameOrAfterEnd = mode === 'end' && (isAfter(date, start) || isEqual(date, start));
   return modeStartAndDateSameOrBeforeStart || modeEndAndDateSameOrAfterEnd;
 };

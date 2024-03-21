@@ -56,11 +56,7 @@ export default class ApplyCancelButtons extends React.Component<Props> {
       let label = this.props.locale?.maxDate || 'Max Date';
       return (
         <div className="maxDateLabel p-2 text-xs">
-          {label}:{' '}
-          {format(
-            this.props.maxDate,
-            this.props.locale?.format || defaultDateFormat
-          )}
+          {label}: {format(this.props.maxDate, this.props.locale?.format || defaultDateFormat)}
         </div>
       );
     }
@@ -77,20 +73,16 @@ export default class ApplyCancelButtons extends React.Component<Props> {
           className={clsx(
             'applyButton inline-flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm',
             {
-              'bg-green-600 hover:bg-green-500 focus:ring-green-300':
-                theme === 'blue',
+              'bg-green-600 hover:bg-green-500 focus:ring-green-300': theme === 'blue',
             },
             {
-              'bg-orange-600 hover:bg-orange-500 focus:ring-orange-300':
-                theme === 'orange',
+              'bg-orange-600 hover:bg-orange-500 focus:ring-orange-300': theme === 'orange',
             },
             {
-              'bg-emerald-600 hover:bg-emerald-500 focus:ring-emerald-300':
-                theme === 'green',
+              'bg-emerald-600 hover:bg-emerald-500 focus:ring-emerald-300': theme === 'green',
             },
             {
-              'bg-purple-600 hover:bg-purple-500 focus:ring-purple-300':
-                theme === 'purple',
+              'bg-purple-600 hover:bg-purple-500 focus:ring-purple-300': theme === 'purple',
             },
             this.props.classNames?.applyButton
           )}
@@ -106,7 +98,7 @@ export default class ApplyCancelButtons extends React.Component<Props> {
     }
     const closeButton = (
       <button
-        id='datepicker-cancel-button'
+        id="datepicker-cancel-button"
         className={clsx(
           'mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-transparent dark:bg-slate-500 dark:text-white dark:hover:dark:bg-slate-400 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm',
           this.props.classNames?.cancelButton

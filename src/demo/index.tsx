@@ -16,14 +16,8 @@ export default function Demo() {
   }
 
   function getUserFriendlyDateRangeString() {
-    const formattedSelectedStart = format(
-      selectedRange.start,
-      'MMM d, yyyy h:mm a'
-    );
-    const formattedSelectedEnd = format(
-      selectedRange.end,
-      'MMM d, yyyy h:mm a'
-    );
+    const formattedSelectedStart = format(selectedRange.start, 'MMM d, yyyy h:mm a');
+    const formattedSelectedEnd = format(selectedRange.end, 'MMM d, yyyy h:mm a');
     const formattedDateRange = `${formattedSelectedStart} to ${formattedSelectedEnd}`;
 
     return formattedDateRange;

@@ -5,11 +5,7 @@ import MonthYearSelector from './MonthYearSelector';
 import CalendarHeader from './CalendarHeader';
 import CalendarRows from './CalendarRows';
 import { createYears } from '../utils/YearUtils';
-import {
-  getMonth,
-  getYear,
-  getFourtyTwoDays,
-} from '../utils/TimeFunctionUtils';
+import { getMonth, getYear, getFourtyTwoDays } from '../utils/TimeFunctionUtils';
 
 import type { ClassNames, Locale, Mode, Theme } from '../types';
 import type { BaseSyntheticEvent } from 'react';
@@ -30,7 +26,7 @@ interface Props {
   cellFocusedCallback: (date: Date) => void;
   locale?: Locale;
   classNames?: ClassNames;
-  theme?: Theme
+  theme?: Theme;
 }
 
 interface State {
@@ -53,13 +49,10 @@ export default class Calendar extends React.Component<Props, State> {
 
   componentDidUpdate(previousProps: Props) {
     const isDifferentMomentObject =
-      !isEqual(previousProps.date, this.props.date) ||
-      !isEqual(previousProps.otherDate, this.props.otherDate);
+      !isEqual(previousProps.date, this.props.date) || !isEqual(previousProps.otherDate, this.props.otherDate);
     const isDifferentTime =
-      format(this.props.date, 'dd-MM-yyyy HH:mm') !==
-        format(previousProps.date, 'dd-MM-yyyy HH:mm') ||
-      format(this.props.otherDate, 'dd-MM-yyyy HH:mm') !==
-        format(previousProps.otherDate, 'dd-MM-yyyy HH:mm');
+      format(this.props.date, 'dd-MM-yyyy HH:mm') !== format(previousProps.date, 'dd-MM-yyyy HH:mm') ||
+      format(this.props.otherDate, 'dd-MM-yyyy HH:mm') !== format(previousProps.otherDate, 'dd-MM-yyyy HH:mm');
     if (isDifferentMomentObject || isDifferentTime) {
       this.updateMonthYear();
     }
@@ -115,10 +108,7 @@ export default class Calendar extends React.Component<Props, State> {
     }
   };
 
-  changeMonthArrowsCallback = (
-    isPreviousChange: boolean,
-    isNextChange: boolean
-  ) => {
+  changeMonthArrowsCallback = (isPreviousChange: boolean, isNextChange: boolean) => {
     let years = createYears(this.props.years, this.props.descendingYears);
     let monthLocale = this.state.month;
     let yearLocale = this.state.year;
@@ -188,11 +178,7 @@ export default class Calendar extends React.Component<Props, State> {
       }
     }
 
-    let fourtyTwoDays = getFourtyTwoDays(
-      this.state.month,
-      this.state.year,
-      sundayFirst
-    );
+    let fourtyTwoDays = getFourtyTwoDays(this.state.month, this.state.year, sundayFirst);
     return (
       <div>
         <MonthYearSelector

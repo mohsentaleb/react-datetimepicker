@@ -1,25 +1,11 @@
 const customRange = { 'Custom Range': 'Custom Range' } as const;
-export type PresetDateRanges = Record<string, [Date, Date]> &
-  Partial<typeof customRange>;
+export type PresetDateRanges = Record<string, [Date, Date]> & Partial<typeof customRange>;
 
 export type Locale = {
   format?: string;
   sundayFirst?: boolean;
   days?: [string, string, string, string, string, string, string];
-  months?: [
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-  ];
+  months?: [string, string, string, string, string, string, string, string, string, string, string, string];
   fromDate?: string;
   toDate?: string;
   selectingFrom?: string;

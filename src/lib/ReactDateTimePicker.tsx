@@ -37,10 +37,7 @@ interface State {
 
 export const defaultTheme: Theme = 'blue';
 
-export default class ReactDateTimePicker extends React.Component<
-  ReactDateTimePickerProps,
-  State
-> {
+export default class ReactDateTimePicker extends React.Component<ReactDateTimePickerProps, State> {
   container: HTMLDivElement | null = null;
 
   constructor(props: ReactDateTimePickerProps) {
@@ -151,9 +148,7 @@ export default class ReactDateTimePicker extends React.Component<
           this.container = container;
         }}
       >
-        {this.props.children && (
-          <div id="datepicker-children">{this.props.children}</div>
-        )}
+        {this.props.children && <div id="datepicker-children">{this.props.children}</div>}
         <div
           id="datepicker"
           className={clsx(

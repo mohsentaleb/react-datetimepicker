@@ -2,7 +2,7 @@
   "trailingComma": "es5",
   "tabWidth": 2,
   "singleQuote": true,
-  "printWidth": 80,
+  "printWidth": 120,
   "useTabs": false,
   "semi": true,
   "plugins": ["prettier-plugin-tailwindcss"]

@@ -18,7 +18,7 @@ interface Props {
   mode: Mode;
   smartMode?: boolean;
   classNames?: ClassNames;
-  theme?: Theme
+  theme?: Theme;
 }
 
 export default class CalendarRows extends React.Component<Props> {

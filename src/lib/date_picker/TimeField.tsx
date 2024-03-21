@@ -140,7 +140,7 @@ export default class TimeField extends React.Component<Props, State> {
 
     return (
       <div className="flex shrink items-center justify-center gap-2 p-2">
-        <TimeIcon className="size-5 mr-1 text-gray-400 dark:text-slate-500" />
+        <TimeIcon className="mr-1 size-5 text-gray-400 dark:text-slate-500" />
         <div className="flex items-center">
           <div
             className={clsx('grow', {

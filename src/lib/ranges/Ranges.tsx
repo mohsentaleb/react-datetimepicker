@@ -35,8 +35,7 @@ export default class Ranges extends React.Component<Props, State> {
       focused: focused,
     };
 
-    this.viewingIndexChangeCallback =
-      this.viewingIndexChangeCallback.bind(this);
+    this.viewingIndexChangeCallback = this.viewingIndexChangeCallback.bind(this);
     this.setFocusedCallback = this.setFocusedCallback.bind(this);
   }
 
@@ -72,12 +71,7 @@ export default class Ranges extends React.Component<Props, State> {
   render() {
     // Map the range index and object name and value to a range button
     return (
-      <div
-        className={clsx(
-          'flex flex-col gap-2',
-          this.props.classNames?.rangesContainer
-        )}
-      >
+      <div className={clsx('flex flex-col gap-2', this.props.classNames?.rangesContainer)}>
         {Object.keys(this.props.ranges).map((range, i) => (
           <RangeButton
             key={i}

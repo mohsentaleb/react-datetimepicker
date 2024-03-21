@@ -37,28 +37,17 @@ interface Props {
 
 export default class DatePicker extends React.Component<Props> {
   render() {
-    const identifier = this.props.label
-      .toLocaleLowerCase()
-      .split(' ')
-      .join('-');
+    const identifier = this.props.label.toLocaleLowerCase().split(' ').join('-');
     return (
       <div
-        className={clsx(
-          'w-full text-sm md:w-72',
-          this.props.classNames?.fromToRangeContainer
-        )}
+        className={clsx('w-full text-sm md:w-72', this.props.classNames?.fromToRangeContainer)}
         id={`datepicker-${identifier}`}
       >
-        <div
-          id={`datepicker-hour-container-${identifier}`}
-          className="rounded border p-2 dark:border-slate-600"
-        >
+        <div id={`datepicker-hour-container-${identifier}`} className="rounded border p-2 dark:border-slate-600">
           <Label label={this.props.label} />
           <DateField
             dateTextFieldCallback={this.props.dateTextFieldCallback}
-            onChangeDateTextHandlerCallback={
-              this.props.onChangeDateTextHandlerCallback
-            }
+            onChangeDateTextHandlerCallback={this.props.onChangeDateTextHandlerCallback}
             dateLabel={this.props.dateLabel}
             mode={this.props.mode}
             changeSelectingModeCallback={this.props.changeSelectingModeCallback}

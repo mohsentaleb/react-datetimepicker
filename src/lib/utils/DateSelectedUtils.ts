@@ -13,13 +13,7 @@ import {
   getSeconds,
 } from 'date-fns';
 
-export const datePicked = (
-  startDate: Date,
-  endDate: Date,
-  newDate: Date,
-  startMode: boolean,
-  smartMode?: boolean
-) => {
+export const datePicked = (startDate: Date, endDate: Date, newDate: Date, startMode: boolean, smartMode?: boolean) => {
   if (startMode) {
     return newDateStartMode(newDate, endDate, startDate, smartMode);
   } else {
@@ -27,12 +21,7 @@ export const datePicked = (
   }
 };
 
-const newDateStartMode = (
-  newDate: Date,
-  endDate: Date,
-  startDate: Date,
-  smartMode?: boolean
-) => {
+const newDateStartMode = (newDate: Date, endDate: Date, startDate: Date, smartMode?: boolean) => {
   // Create a new moment object which combines the new date and the original start date as newDate
   // doesnt contain time info which is important to determining equality
   let newDateWithTime = createNewDateWithTime(
@@ -52,24 +41,11 @@ const newDateStartMode = (
   }
 };
 
-const newDateEndMode = (
-  newDate: Date,
-  startDate: Date,
-  endDate: Date,
-  smartMode?: boolean
-) => {
+const newDateEndMode = (newDate: Date, startDate: Date, endDate: Date, smartMode?: boolean) => {
   // Create a new moment object which combines the new date and the original end date as newDate
   // doesnt contain time info which is important to determining equality
-  let newDateWithTime = createNewDateWithTime(
-    newDate,
-    getHours(endDate),
-    getMinutes(endDate),
-    getSeconds(endDate)
-  );
-  if (
-    isAfter(newDateWithTime, startDate) ||
-    isEqual(newDateWithTime, startDate)
-  ) {
+  let newDateWithTime = createNewDateWithTime(newDate, getHours(endDate), getMinutes(endDate), getSeconds(endDate));
+  if (isAfter(newDateWithTime, startDate) || isEqual(newDateWithTime, startDate)) {
     return returnDateObject(startDate, newDate);
   } else if (smartMode) {
     let newStart = subDays(newDate, 1);
@@ -79,16 +55,8 @@ const newDateEndMode = (
   }
 };
 
-const createNewDateWithTime = (
-  newDate: Date,
-  hour: number,
-  minute: number,
-  second: number
-) => {
-  const updatedDate = setSeconds(
-    setMinutes(setHours(newDate, hour), minute),
-    second
-  );
+const createNewDateWithTime = (newDate: Date, hour: number, minute: number, second: number) => {
+  const updatedDate = setSeconds(setMinutes(setHours(newDate, hour), minute), second);
   return updatedDate;
 };
 
@@ -99,11 +67,7 @@ const returnDateObject = (startDate: Date, endDate: Date) => {
   };
 };
 
-export const pastMaxDate = (
-  currentDate: Date,
-  maxDate?: Date,
-  minuteMode?: boolean
-): boolean => {
+export const pastMaxDate = (currentDate: Date, maxDate?: Date, minuteMode?: boolean): boolean => {
   if (!maxDate) {
     return false;
   }
@@ -112,11 +76,7 @@ export const pastMaxDate = (
     return true;
   }
 
-  if (
-    maxDate &&
-    !isSameDay(currentDate, maxDate) &&
-    isAfter(currentDate, maxDate)
-  ) {
+  if (maxDate && !isSameDay(currentDate, maxDate) && isAfter(currentDate, maxDate)) {
     return true;
   }
   return false;
