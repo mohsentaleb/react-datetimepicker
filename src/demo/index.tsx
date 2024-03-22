@@ -3,7 +3,7 @@ import ReactDateTimePicker from '../lib/index';
 import { DateRanges } from './consts';
 import Header from './components/Header';
 import { add, set, format } from 'date-fns';
-import { Theme } from '../lib/types';
+import type { Theme } from '../lib/types';
 
 export default function Demo() {
   const [standaloneMode, setStandaloneMode] = useState(true);
