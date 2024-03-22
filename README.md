@@ -523,7 +523,7 @@ Builds the app for production to the `/dist` folder using vite's [library mode](
 - [x] Support TypeScript
 - [x] Ability to add custom CSS classes for different parts of the component
 - [x] Migrate to [date-fns](https://www.npmjs.com/package/date-fns)
-- [ ] Adding predefined themes
+- [x] Adding predefined themes
 - [ ] More demos showcasing different props
 - [ ] Write tests
 

@@ -68,6 +68,7 @@ export default class Cell extends React.Component<Props, State> {
   }
 
   componentDidUpdate(previousProps: Props) {
+    let isDifferentTheme = previousProps.theme !== this.props.theme
     let isDifferentDateObject =
       !isEqual(previousProps.date, this.props.date) || !isEqual(previousProps.otherDate, this.props.otherDate);
     let isDifferentTime =
@@ -81,7 +82,7 @@ export default class Cell extends React.Component<Props, State> {
     isDifferentTime =
       format(this.props.cellDay, 'dd-MM-yyyy HH:mm') !== format(previousProps.cellDay, 'dd-MM-yyyy HH:mm');
 
-    if (isDifferentDateObject || isDifferentTime) {
+    if (isDifferentDateObject || isDifferentTime || isDifferentTheme) {
       this.styleCellNonMouseEnter();
     }
 

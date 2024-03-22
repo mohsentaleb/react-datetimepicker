@@ -40,7 +40,7 @@ export default class DatePicker extends React.Component<Props> {
     const identifier = this.props.label.toLocaleLowerCase().split(' ').join('-');
     return (
       <div
-        className={clsx('w-full text-sm md:w-72', this.props.classNames?.fromToRangeContainer)}
+        className={clsx('w-full text-sm', this.props.classNames?.fromToRangeContainer)}
         id={`datepicker-${identifier}`}
       >
         <div id={`datepicker-hour-container-${identifier}`} className="rounded border p-2 dark:border-slate-600">
