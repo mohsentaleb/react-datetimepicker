@@ -164,15 +164,7 @@ interface State {
 }
 
 const now = new Date();
-const startOfToday = new Date(
-  now.getFullYear(),
-  now.getMonth(),
-  now.getDate(),
-  0,
-  0,
-  0,
-  0
-);
+const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
 
 const endOfToday = new Date(startOfToday);
 endOfToday.setDate(endOfToday.getDate() + 1);
@@ -202,15 +194,7 @@ class App extends React.Component<Props, State> {
         ranges={{
           Today: [new Date(startOfToday), new Date(endOfToday)],
           'Last 30 Days': [
-            new Date(
-              now.getFullYear(),
-              now.getMonth() - 1,
-              now.getDate(),
-              0,
-              0,
-              0,
-              0
-            ),
+            new Date(now.getFullYear(), now.getMonth() - 1, now.getDate(), 0, 0, 0, 0),
             new Date(endOfToday),
           ],
         }}
@@ -238,7 +222,7 @@ export default App;
 | [`start`](#start)                           | **Required** | `Date`     | `undefined`   | Initial start Date set in the picker                                           |
 | [`end`](#end)                               | **Required** | `Date`     | `undefined`   | Initial end Date set in the picker                                             |
 | [`applyCallback`](#applycallback)           | **Required** | `Function` | `undefined`   | Function which is called when the apply button is clicked                      |
-| [`locale`](#locale)                         | optional     | `Object`   | `undefined`   | locale format for translatable labels                                                  |
+| [`locale`](#locale)                         | optional     | `Object`   | `undefined`   | locale format for translatable labels                                          |
 | [`rangeCallback`](#rangecallback)           | optional     | `Function` | `undefined`   | Function which is called when one of the preset ranges is clicked              |
 | [`maxDate`](#maxdate)                       | optional     | `Date`     | `undefined`   | Maximum date that can be selected in calendar                                  |
 | [`autoApply`](#autoapply)                   | optional     | `Boolean`  | `false`       | Set dates as soon as they're clicked without pressing apply                    |
@@ -254,6 +238,7 @@ export default App;
 | [`centerMode`](#centermode)                 | optional     | `Boolean`  | `false`       | Picker will open in center                                                     |
 | [`displayMaxDate`](#displaymaxdate)         | optional     | `Boolean`  | `false`       | Will display Max Date in picker footer                                         |
 | [`classNames`](#classnames)                 | optional     | `Object`   | `undefined`   | Will override classNames for different parts of the picker                     |
+| [`theme`](#theme)                           | optional     | `string`   | `blue`        | Predefined color themes for the calendar view                                  |
 
 ### `ranges`
 
@@ -482,9 +467,17 @@ classNames={{
   rootContainer: '!bg-red-700'
 }}
 ```
+
 The following illustration shows the different components of the picker which can be customized:
 
 ![Date Time Picker Components Illustration](https://raw.githubusercontent.com/mohsentaleb/react-tailwindcss-datetimepicker/master/public/date-picker-illustration.png)
+
+### `theme`
+There are 4 color themes available to choose from. (More to come later)
+- `blue` (Default)
+- `orange`
+- `green`
+- `purple`
 
 ## Development
 
