@@ -104,8 +104,8 @@ export default class ApplyCancelButtons extends React.Component<Props> {
           this.props.classNames?.cancelButton
         )}
         type="button"
-        onClick={this.applyPressed}
-        onKeyDown={this.applyOnKeyPress}
+        onClick={this.cancelPressed}
+        onKeyDown={this.cancelOnKeyPress}
         tabIndex={0}
       >
         {closeButtonText}
