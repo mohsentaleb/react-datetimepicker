@@ -74,7 +74,7 @@ export default class MonthYearSelector extends React.Component<Props, State> {
       <div className="m-2 flex items-center gap-1">
         <div className="grow text-left">
           <ChevronLeftIcon
-            className="size-7 cursor-pointer rounded p-2 hover:bg-gray-100"
+            className="size-7 cursor-pointer rounded p-2 hover:bg-gray-100 dark:hover:bg-slate-600"
             onClick={() => this.props.changeMonthArrowsCallback(true, false)}
           />
         </div>
@@ -108,7 +108,7 @@ export default class MonthYearSelector extends React.Component<Props, State> {
         </div>
         <div className="grow text-right ">
           <ChevronRightIcon
-            className="size-7 cursor-pointer rounded p-2 hover:bg-gray-100"
+            className="size-7 cursor-pointer rounded p-2 hover:bg-gray-100 dark:hover:bg-slate-600"
             onClick={() => this.props.changeMonthArrowsCallback(false, true)}
           />
         </div>
