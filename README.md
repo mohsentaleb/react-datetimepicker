@@ -1,15 +1,15 @@
 # 📦 React TailwindCSS Date and Time Picker
 
-This is a feature rich React date-time picker component built with **React 18** and [Vitejs](https://vitejs.dev/) offering the following functionalities:
+Feature-rich React date-time picker with range selection, customizable presets, keyboard navigation, TypeScript support, dark mode, and no date library dependency. Fully responsive. Built on top of **React 18** and [Vitejs](https://vitejs.dev/).
 
-- ✅ Selection of date ranges
-- ✅ Selection of times for the selected range
-- ✅ Customizable range presets for faster selection (e.g.: Yesterday, last 30 days, etc.)
-- ✅ Keyboard navigation for accessibility
-- ✅ TypeScript support
-- ✅ Out of the box dark mode support
-- ✅ Fully responsive (Optimized for mobile devices)
-- ✅ No date library dependency for implementation (You can use vanilla js, `date-fns`, `moment` etc)
+✅ Selection of date ranges
+✅ Selection of times within the chosen date range
+✅ Customizable range presets for quick selection (e.g., Yesterday, last 30 days)
+✅ Keyboard navigation for enhanced accessibility
+✅ Full TypeScript support
+✅ Built-in dark mode
+✅ Fully responsive, optimized for mobile devices
+✅ No dependency on external date libraries (compatible with vanilla JS, [date-fns](https://date-fns.org/), [moment](https://momentjs.com/), etc.)
 
 <a href="https://github.com/mohsentaleb/react-tailwindcss-datetimepicker/blob/master/LICENSE.md">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="React Native for macOS is released under the MIT license." />

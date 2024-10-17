@@ -78,7 +78,27 @@
     "vite",
     "react-component",
     "react-tailwind",
-    "ui"
+    "ui",
+    "datetime-picker",
+    "react-date-time",
+    "react-date-selector",
+    "react-time-selector",
+    "react-calendar-picker",
+    "react-date-range",
+    "react-date-input",
+    "react-time-input",
+    "date-range-selector",
+    "time-range-picker",
+    "date-selector",
+    "time-selector",
+    "date-input",
+    "time-input",
+    "react-date-module",
+    "react-time-module",
+    "react-ui-component",
+    "react-date-widget",
+    "date-picker-component",
+    "date-time-module"
   ],
   "license": "MIT"
 }
