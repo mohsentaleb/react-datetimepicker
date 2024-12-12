@@ -8,6 +8,7 @@ interface Props {
   rowDays: Date[];
   date: Date;
   otherDate: Date;
+  minDate?: Date;
   maxDate?: Date;
   dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
   keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
@@ -35,6 +36,7 @@ export default class CalendarRow extends React.Component<Props> {
           cellDay={this.props.rowDays[i]}
           date={this.props.date}
           otherDate={this.props.otherDate}
+          minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           month={this.props.month}
           dateSelectedNoTimeCallback={this.props.dateSelectedNoTimeCallback}

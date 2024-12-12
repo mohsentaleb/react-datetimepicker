@@ -14,6 +14,7 @@ interface Props {
   date: Date;
   mode: Mode;
   otherDate: Date;
+  minDate?: Date;
   maxDate?: Date;
   dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
   keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
@@ -197,6 +198,7 @@ export default class Calendar extends React.Component<Props, State> {
           date={this.props.date}
           mode={this.props.mode}
           otherDate={this.props.otherDate}
+          minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           month={this.state.month}
           year={this.state.year}

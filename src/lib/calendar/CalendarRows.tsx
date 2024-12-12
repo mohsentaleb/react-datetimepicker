@@ -7,6 +7,7 @@ interface Props {
   date: Date;
   fourtyTwoDays: Date[];
   otherDate: Date;
+  minDate?: Date;
   maxDate?: Date;
   dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
   keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
@@ -35,6 +36,7 @@ export default class CalendarRows extends React.Component<Props> {
           rowDays={rowDays}
           date={this.props.date}
           otherDate={this.props.otherDate}
+          minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           month={this.props.month}
           year={this.props.year}

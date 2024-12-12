@@ -9,7 +9,7 @@ export default function Demo() {
   const [standaloneMode, setStandaloneMode] = useState(true);
   const [twelveHoursClock, setTwelveHoursClock] = useState(true);
   const [theme, setTheme] = useState<Theme>();
-  const [start, end] = DateRanges['Last 5 Days'];
+  const [start, end] = DateRanges['Today'];
   const [selectedRange, setSelectedRange] = useState({
     start,
     end,
@@ -39,6 +39,11 @@ export default function Demo() {
               start={selectedRange.start}
               end={selectedRange.end}
               years={[2020, new Date().getFullYear()]}
+              minDate={set(add(start, { days: 0 }), {
+                hours: 0,
+                minutes: 0,
+                seconds: 0,
+              })}
               maxDate={set(add(end, { days: 1 }), {
                 hours: 23,
                 minutes: 59,
@@ -46,6 +51,7 @@ export default function Demo() {
               })}
               applyCallback={handleApply}
               twelveHoursClock={twelveHoursClock}
+              displayMinDate
               displayMaxDate
               theme={theme}
               standalone={standaloneMode}

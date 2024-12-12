@@ -201,6 +201,7 @@ class App extends React.Component<Props, State> {
         start={this.state.start}
         end={this.state.end}
         applyCallback={this.applyCallback}
+        displayMinDate
         displayMaxDate
       >
         <button type="button">{`${this.state.start} - ${this.state.end}`}</button>
@@ -217,7 +218,7 @@ export default App;
 ## Component Props
 
 | Option                                      | Required     | Type       | Default       | Description                                                                    |
-| ------------------------------------------- | ------------ | ---------- | ------------- | ------------------------------------------------------------------------------ |
+|---------------------------------------------| ------------ | ---------- | ------------- |--------------------------------------------------------------------------------|
 | [`ranges`](#ranges)                         | **Required** | `Object`   | `undefined`   | A record of ranges defined as labels and a tuple of Date times.                |
 | [`start`](#start)                           | **Required** | `Date`     | `undefined`   | Initial start Date set in the picker                                           |
 | [`end`](#end)                               | **Required** | `Date`     | `undefined`   | Initial end Date set in the picker                                             |
@@ -225,6 +226,7 @@ export default App;
 | [`locale`](#locale)                         | optional     | `Object`   | `undefined`   | locale format for translatable labels                                          |
 | [`rangeCallback`](#rangecallback)           | optional     | `Function` | `undefined`   | Function which is called when one of the preset ranges is clicked              |
 | [`maxDate`](#maxdate)                       | optional     | `Date`     | `undefined`   | Maximum date that can be selected in calendar                                  |
+| [`minDate`](#mindate)                       | optional     | `Date`     | `undefined`   | Minimum date that can be selected in calendar                                  |
 | [`autoApply`](#autoapply)                   | optional     | `Boolean`  | `false`       | Set dates as soon as they're clicked without pressing apply                    |
 | [`descendingYears`](#descendingyears)       | optional     | `Boolean`  | `false`       | Set years be displayed in descending order                                     |
 | [`years`](#years)                           | optional     | `Array`    | `[1900, now]` | Limit the years shown in calendar                                              |
@@ -236,6 +238,7 @@ export default App;
 | [`standalone`](#standalone)                 | optional     | `Boolean`  | `false`       | When set the picker will be open by default                                    |
 | [`leftMode`](#leftmode)                     | optional     | `Boolean`  | `false`       | Picker will open to the left                                                   |
 | [`centerMode`](#centermode)                 | optional     | `Boolean`  | `false`       | Picker will open in center                                                     |
+| [`displayMinDate`](#displaymindate)         | optional     | `Boolean`  | `false`       | Will display Min Date in picker footer                                         |
 | [`displayMaxDate`](#displaymaxdate)         | optional     | `Boolean`  | `false`       | Will display Max Date in picker footer                                         |
 | [`classNames`](#classnames)                 | optional     | `Object`   | `undefined`   | Will override classNames for different parts of the picker                     |
 | [`theme`](#theme)                           | optional     | `string`   | `blue`        | Predefined color themes for the calendar view                                  |
@@ -329,6 +332,7 @@ const locale = {
   toDate: 'To Date',
   selectingFrom: 'Selecting From',
   selectingTo: 'Selecting To',
+  minDate: 'Min Date',
   maxDate: 'Max Date',
   close: 'Close',
   apply: 'Apply',
@@ -344,6 +348,12 @@ Function which is called when one of the preset ranges is clicked/selected. Take
 
 - `index` is the index of item which is selected
 - `value` is the label of that item
+
+### `minDate`
+
+(optional) `Date`
+
+Minimum date that can be selected in calendar.
 
 ### `maxDate`
 
@@ -423,6 +433,12 @@ When set the picker will be open by default.
 When set and changed the picker will open to the left (right to left) instead of the default which is to open to the right (left to right)
 
 ### `centerMode`
+
+(optional) `boolean` defaults to `false`
+
+To allow flexibility, center mode has been added where leftMode or default is not enough.
+
+### `displayMinDate`
 
 (optional) `boolean` defaults to `false`
 
