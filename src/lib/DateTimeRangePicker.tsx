@@ -577,11 +577,28 @@ class DateTimeRangePicker extends React.Component<Props, State> {
   }
 
   render() {
+    const disabledButtons = Object.keys(this.props.ranges).map(rangeKey => {
+      const range = this.props.ranges[rangeKey];
+
+      if (Array.isArray(range)) {
+        const [start, end] = range.map(date => new Date(date));
+        const min = this.props.minDate ? new Date(this.props.minDate) : null;
+        const max = this.props.maxDate ? new Date(this.props.maxDate) : null;
+
+        if ((max && (pastMaxDate(start, max, true) || pastMaxDate(end, max, true))) ||
+          (min && (beforeMinDate(start, min, true) || beforeMinDate(end, min, true)))) {
+          return true;
+        }
+      }
+
+      return false;
+    });
     return (
       <>
         <div className="flex flex-col gap-2 p-2 md:flex-row">
           <Ranges
             ranges={this.state.ranges}
+            disabledRanges={disabledButtons}
             selectedRange={this.state.selectedRange}
             rangeSelectedCallback={this.rangeSelectedCallback}
             noMobileMode={this.props.noMobileMode}

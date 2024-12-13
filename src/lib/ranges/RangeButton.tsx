@@ -12,6 +12,7 @@ interface Props {
   viewingIndex: number;
   label: string;
   focused: boolean[];
+  disabled: boolean[];
   theme?: Theme;
   classNames?: ClassNames;
 }
@@ -84,6 +85,7 @@ export default class RangeButton extends React.Component<Props, State> {
     const isViewingIndex = this.props.viewingIndex === this.props.index;
     const theme = this.props.theme || defaultTheme;
     const buttonIsSelected = this.props.focused[this.props.index] || this.props.index === this.props.selectedRange;
+    const disabled = this.props.disabled[this.props.index]
 
     if (isViewingIndex) {
       tabIndex = 0;
@@ -96,29 +98,31 @@ export default class RangeButton extends React.Component<Props, State> {
           this.button = button;
         }}
         type="button"
+        disabled={disabled}
         id={'rangeButton' + this.props.index}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         tabIndex={tabIndex}
         className={clsx('whitespace-nowrap rounded px-3 py-1 text-sm', {
-          'bg-sky-600 text-white hover:bg-sky-600 hover:text-white': buttonIsSelected && theme === 'blue',
+          'bg-sky-600 text-white hover:bg-sky-600 hover:text-white': buttonIsSelected && theme === 'blue' && !disabled,
           'bg-gray-50 text-black hover:bg-sky-100 hover:text-black dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500':
-            !buttonIsSelected && theme === 'blue',
+            !buttonIsSelected && theme === 'blue' && !disabled,
 
-          'bg-orange-600 text-white hover:bg-orange-600 hover:text-white': buttonIsSelected && theme === 'orange',
+          'bg-orange-600 text-white hover:bg-orange-600 hover:text-white': buttonIsSelected && theme === 'orange' && !disabled,
           'bg-gray-50 text-black hover:bg-orange-100 hover:text-black dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500':
-            !buttonIsSelected && theme === 'orange',
+            !buttonIsSelected && theme === 'orange' && !disabled,
 
-          'bg-emerald-600 text-white hover:bg-emerald-600 hover:text-white': buttonIsSelected && theme === 'green',
+          'bg-emerald-600 text-white hover:bg-emerald-600 hover:text-white': buttonIsSelected && theme === 'green' && !disabled,
           'bg-gray-50 text-black hover:bg-emerald-100 hover:text-black dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500':
-            !buttonIsSelected && theme === 'green',
+            !buttonIsSelected && theme === 'green' && !disabled,
 
-          'bg-purple-600 text-white hover:bg-purple-600 hover:text-white': buttonIsSelected && theme === 'purple',
+          'bg-purple-600 text-white hover:bg-purple-600 hover:text-white': buttonIsSelected && theme === 'purple' && !disabled,
           'bg-gray-50 text-black hover:bg-purple-100 hover:text-black dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500':
-            !buttonIsSelected && theme === 'purple',
+            !buttonIsSelected && theme === 'purple' && !disabled,
 
-          [this.props.classNames?.rangeButtonSelected || '']: buttonIsSelected,
-          [this.props.classNames?.rangeButtonDefault || '']: !buttonIsSelected,
+          [this.props.classNames?.rangeButtonSelected || '']: buttonIsSelected && !disabled,
+          [this.props.classNames?.rangeButtonDefault || '']: !buttonIsSelected && !disabled,
+          'bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-500 dark:text-gray-400': disabled,
         })}
         onMouseDown={() => {
           this.props.rangeSelectedCallback(this.props.index, this.props.label);
