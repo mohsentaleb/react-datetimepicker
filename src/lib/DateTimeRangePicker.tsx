@@ -23,7 +23,7 @@ import {
 import Ranges from './ranges/Ranges';
 import DatePicker from './date_picker/DatePicker';
 import { isValidTimeChange } from './utils/TimeFunctionUtils';
-import { datePicked, pastMaxDate } from './utils/DateSelectedUtils';
+import { beforeMinDate, datePicked, pastMaxDate } from './utils/DateSelectedUtils';
 import ApplyCancelButtons from './date_picker/ApplyCancelButtons';
 
 import type { Locale, Mode, PresetDateRanges, ClassNames, Theme } from './types';
@@ -39,6 +39,7 @@ interface Props {
   applyCallback: (start: Date, end: Date) => void;
   rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
   autoApply?: boolean;
+  minDate?: Date;
   maxDate?: Date;
   descendingYears?: boolean;
   years?: [number, number];
@@ -51,6 +52,7 @@ interface Props {
   twelveHoursClock?: boolean;
   selectedRange?: number;
   classNames?: ClassNames;
+  displayMinDate?: boolean;
   displayMaxDate?: boolean;
   theme?: Theme;
 }
@@ -133,6 +135,9 @@ class DateTimeRangePicker extends React.Component<Props, State> {
       start = this.state.ranges[value][0];
       end = this.state.ranges[value][1];
       if (pastMaxDate(start, this.props.maxDate, true) || pastMaxDate(end, this.props.maxDate, true)) {
+        return false;
+      }
+      if (beforeMinDate(start, this.props.minDate, true) || beforeMinDate(end, this.props.minDate, true)) {
         return false;
       }
     }
@@ -280,6 +285,9 @@ class DateTimeRangePicker extends React.Component<Props, State> {
     if (pastMaxDate(date, this.props.maxDate, true)) {
       return false;
     }
+    if (beforeMinDate(date, this.props.minDate, true)) {
+      return false;
+    }
     // If Valid Time Change allow the change else if in smart mode
     // set new start and end times to be minute ahead/behind the new date
     // else dont allow the change
@@ -355,6 +363,10 @@ class DateTimeRangePicker extends React.Component<Props, State> {
   ) {
     // If new date past max date dont allow change
     if (pastMaxDate(newDate, this.props.maxDate, true)) {
+      this.updateStartEndAndLabels(this.state.start, this.state.end);
+      return false;
+    }
+    if (beforeMinDate(newDate, this.props.minDate, true)) {
       this.updateStartEndAndLabels(this.state.start, this.state.end);
       return false;
     }
@@ -517,6 +529,7 @@ class DateTimeRangePicker extends React.Component<Props, State> {
         dateLabel={this.state.startLabel}
         selectingModeFrom={this.state.selectingModeFrom}
         changeSelectingModeCallback={this.changeSelectingModeCallback}
+        minDate={this.props.minDate}
         maxDate={this.props.maxDate}
         locale={this.props.locale}
         descendingYears={this.props.descendingYears}
@@ -549,6 +562,7 @@ class DateTimeRangePicker extends React.Component<Props, State> {
         dateLabel={this.state.endLabel}
         selectingModeFrom={this.state.selectingModeFrom}
         changeSelectingModeCallback={this.changeSelectingModeCallback}
+        minDate={this.props.minDate}
         maxDate={this.props.maxDate}
         locale={this.props.locale}
         descendingYears={this.props.descendingYears}
@@ -563,11 +577,28 @@ class DateTimeRangePicker extends React.Component<Props, State> {
   }
 
   render() {
+    const disabledButtons = Object.keys(this.props.ranges).map(rangeKey => {
+      const range = this.props.ranges[rangeKey];
+
+      if (Array.isArray(range)) {
+        const [start, end] = range.map(date => new Date(date));
+        const min = this.props.minDate ? new Date(this.props.minDate) : null;
+        const max = this.props.maxDate ? new Date(this.props.maxDate) : null;
+
+        if ((max && (pastMaxDate(start, max, true) || pastMaxDate(end, max, true))) ||
+          (min && (beforeMinDate(start, min, true) || beforeMinDate(end, min, true)))) {
+          return true;
+        }
+      }
+
+      return false;
+    });
     return (
       <>
         <div className="flex flex-col gap-2 p-2 md:flex-row">
           <Ranges
             ranges={this.state.ranges}
+            disabledRanges={disabledButtons}
             selectedRange={this.state.selectedRange}
             rangeSelectedCallback={this.rangeSelectedCallback}
             noMobileMode={this.props.noMobileMode}
@@ -582,9 +613,11 @@ class DateTimeRangePicker extends React.Component<Props, State> {
           changeVisibleState={this.props.changeVisibleState}
           applyCallback={this.applyCallback}
           locale={this.props.locale}
+          minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           autoApply={this.props.autoApply}
           standalone={this.props.standalone}
+          displayMinDate={this.props.displayMinDate}
           displayMaxDate={this.props.displayMaxDate}
           classNames={this.props.classNames}
           theme={this.props.theme}

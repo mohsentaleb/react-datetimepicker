@@ -10,6 +10,7 @@ export type Locale = {
   toDate?: string;
   selectingFrom?: string;
   selectingTo?: string;
+  minDate?: string;
   maxDate?: string;
   close?: string;
   apply?: string;

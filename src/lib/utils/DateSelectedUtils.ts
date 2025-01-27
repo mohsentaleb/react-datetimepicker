@@ -81,3 +81,18 @@ export const pastMaxDate = (currentDate: Date, maxDate?: Date, minuteMode?: bool
   }
   return false;
 };
+
+export const beforeMinDate = (currentDate: Date, minDate?: Date, minuteMode?: boolean): boolean => {
+  if (!minDate) {
+    return false;
+  }
+
+  if (minuteMode && minDate && isBefore(currentDate, minDate)) {
+    return true;
+  }
+
+  if (minDate && !isSameDay(currentDate, minDate) && isBefore(currentDate, minDate)) {
+    return true;
+  }
+  return false;
+};

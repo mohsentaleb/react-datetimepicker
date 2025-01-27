@@ -6,6 +6,7 @@ import { clsx } from 'clsx';
 
 interface Props {
   ranges: PresetDateRanges;
+  disabledRanges: boolean[];
   selectedRange: number;
   rangeSelectedCallback: (index: number, value: keyof PresetDateRanges) => void;
   noMobileMode?: boolean;
@@ -77,6 +78,7 @@ export default class Ranges extends React.Component<Props, State> {
             key={i}
             index={i}
             label={range}
+            disabled={this.props.disabledRanges}
             // value={this.props.ranges[range]}
             selectedRange={this.props.selectedRange}
             rangeSelectedCallback={this.props.rangeSelectedCallback}

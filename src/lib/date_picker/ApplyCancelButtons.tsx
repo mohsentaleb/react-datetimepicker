@@ -9,11 +9,13 @@ import { defaultTheme } from '../ReactDateTimePicker';
 
 interface Props {
   locale?: Locale;
+  minDate?: Date;
   maxDate?: Date;
   applyCallback: () => void;
   changeVisibleState: () => void;
   autoApply?: boolean;
   standalone?: boolean;
+  displayMinDate?: boolean;
   displayMaxDate?: boolean;
   classNames?: ClassNames;
   theme?: Theme;
@@ -50,6 +52,17 @@ export default class ApplyCancelButtons extends React.Component<Props> {
       this.props.changeVisibleState();
     }
   };
+
+  getMinDateBox() {
+    if (this.props.minDate) {
+      let label = this.props.locale?.minDate || 'Min Date';
+      return (
+        <div className="maxDateLabel p-2 text-xs">
+          {label}: {format(this.props.minDate, this.props.locale?.format || defaultDateFormat)}
+        </div>
+      );
+    }
+  }
 
   getMaxDateBox() {
     if (this.props.maxDate) {
@@ -134,6 +147,7 @@ export default class ApplyCancelButtons extends React.Component<Props> {
       >
         {this.renderButtons()}
         {this.props.displayMaxDate && this.getMaxDateBox()}
+        {this.props.displayMinDate && this.getMinDateBox()}
       </div>
     );
   }

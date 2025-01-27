@@ -13,6 +13,7 @@ export interface ReactDateTimePickerProps {
   locale?: Locale;
   applyCallback: (start: Date, end: Date) => void;
   rangeCallback?: (index: number, value: keyof PresetDateRanges) => void;
+  minDate?: Date;
   maxDate?: Date;
   autoApply?: boolean;
   descendingYears?: boolean;
@@ -26,6 +27,7 @@ export interface ReactDateTimePickerProps {
   leftMode?: boolean;
   centerMode?: boolean;
   classNames?: ClassNames;
+  displayMinDate?: boolean;
   displayMaxDate?: boolean;
   theme?: Theme;
   children: ReactNode;
@@ -103,6 +105,7 @@ export default class ReactDateTimePicker extends React.Component<ReactDateTimePi
         rangeCallback={this.props.rangeCallback}
         autoApply={this.props.autoApply}
         changeVisibleState={this.changeVisibleState}
+        minDate={this.props.minDate}
         maxDate={this.props.maxDate}
         descendingYears={this.props.descendingYears}
         years={this.props.years}
@@ -113,6 +116,7 @@ export default class ReactDateTimePicker extends React.Component<ReactDateTimePi
         standalone={this.props.standalone}
         twelveHoursClock={this.props.twelveHoursClock == true}
         classNames={this.props.classNames}
+        displayMinDate={this.props.displayMinDate}
         displayMaxDate={this.props.displayMaxDate}
         theme={this.props.theme}
       />

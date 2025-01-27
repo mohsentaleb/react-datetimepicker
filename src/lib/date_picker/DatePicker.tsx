@@ -13,6 +13,7 @@ interface Props {
   date: Date;
   otherDate: Date;
   mode: Mode;
+  minDate?: Date;
   maxDate?: Date;
   dateSelectedNoTimeCallback: (cellDate: Date, cellMode: Mode) => void;
   keyboardCellCallback: (originalDate: Date, newDate: Date) => boolean;
@@ -65,6 +66,7 @@ export default class DatePicker extends React.Component<Props> {
           date={this.props.date}
           mode={this.props.mode}
           otherDate={this.props.otherDate}
+          minDate={this.props.minDate}
           maxDate={this.props.maxDate}
           dateSelectedNoTimeCallback={this.props.dateSelectedNoTimeCallback}
           keyboardCellCallback={this.props.keyboardCellCallback}
